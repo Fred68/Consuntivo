@@ -1,0 +1,62 @@
+﻿ <Window x:Class="WPF02.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF02"
+        mc:Ignorable="d"
+        Title="Consuntivo" Height="532.461" Width="988.859" Loaded="Window_Loaded" MinHeight="100" Closing="Window_Closing">
+	<Grid >
+		<Menu x:Name="menu" Grid.Column="1" HorizontalAlignment="Left" Margin="2,0,0,0" VerticalAlignment="Top">
+			<MenuItem Header="File" >
+				<MenuItem Header="New" Click="New_Click"/>
+				<MenuItem Header="Open" Click="Open_Click"/>
+				<MenuItem Header="Save" Click="Save_Click"/>
+				<MenuItem Header="Save as..." Click="SaveAs_Click"/>
+				<MenuItem Header="Print..." Click="Print_Click"/>
+				<MenuItem Header="Quit" Click="Close_Click"/>
+			</MenuItem>
+			<MenuItem Header="Edit">
+				<MenuItem Header="View data" Click="View_Click"/>
+				<MenuItem Header="View log" Click="ViewLog_Click"/>
+				<MenuItem Header="Enable log" Click="EnableLog_Click"/>
+				<MenuItem Header="Disable log" Click="DisableLog_Click"/>
+				<MenuItem Header="Clear log" Click="ClearLog_Click"/>
+ 			</MenuItem>
+			<MenuItem Header="Help"/>
+		</Menu>
+		<TabControl x:Name="tabControl" Margin="10,30,10,10">
+			<TabItem Header="Operazioni">
+				<Grid Margin="0,0,13,13">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="455*"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="3*"/>
+						<ColumnDefinition Width="239*"/>
+						<ColumnDefinition Width="0*"/>
+					</Grid.ColumnDefinitions>
+					<DataGrid x:Name="dgOperazioni" Margin="10,52,0,10" AutoGenerateColumns="True" Loaded="dgOperazioni_Loaded" BorderThickness="2" IsSynchronizedWithCurrentItem="False" Grid.Row="1" MouseDoubleClick="dgOperazioni_MouseDoubleClick" Grid.Column="1" MouseRightButtonDown="dgOperazioni_MouseRightButtonDown" AutoGeneratingColumn="dgOperazioni_AutoGeneratingColumn"/>
+					<Button x:Name="pausa" Content="Pausa" HorizontalAlignment="Left" Height="24" Margin="2,26,0,0" VerticalAlignment="Top" Width="48" Click="buttonPausa_Click" Grid.Column="1"/>
+					<Button x:Name="vediProprieta" Content="Vedi proprietà" HorizontalAlignment="Left" Height="24" Margin="55,26,0,0" VerticalAlignment="Top" Width="89" IsDefault="True" Click="buttonVediProprieta_Click" Grid.Column="1"/>
+					<Button x:Name="listaOperazioni" Content="Lista Operazioni" HorizontalAlignment="Left" Height="24" Margin="149,26,0,0" VerticalAlignment="Top" Width="114" IsDefault="True" Grid.Column="1" Click="listaOperazioni_Click"/>
+					<Button x:Name="Filtra" Content="Filtra" HorizontalAlignment="Left" Height="24" Margin="268,26,0,0" VerticalAlignment="Top" Width="55" IsDefault="True" Grid.Column="1" Click="Filtra_Click"/>
+					<Button x:Name="VediMsg" Content="Vedi msg" HorizontalAlignment="Left" Height="24" Margin="328,26,0,0" VerticalAlignment="Top" Width="55" IsDefault="True" Grid.Column="1" Click="VediMsg_Click"/>
+					<Button x:Name="editSelected" Content="Modifica" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="388,26,0,0" VerticalAlignment="Top" Width="62" Click="editSelected_Click"/>
+					<Button x:Name="Inserisci" Content="Inserisci" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="455,26,0,0" VerticalAlignment="Top" Width="77" Click="Inserisci_Click"/>
+				</Grid>
+			</TabItem>
+			<TabItem Header="Conti">
+				<Grid Background="#FFE5E5E5">
+					<DataGrid x:Name="dgConti" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="935" Height="414"/>
+				</Grid>
+			</TabItem>
+			<TabItem Header="Operazioni standard">
+				<Grid Background="#FFE5E5E5">
+					<DataGrid x:Name="dgOpStandard" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="935" Height="414"/>
+				</Grid>
+			</TabItem>
+
+		</TabControl>
+	</Grid>
+</Window>
