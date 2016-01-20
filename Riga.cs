@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Globalization;
+using System.Collections.ObjectModel;       // Per Observable collection
 
 namespace WPF02
 	{
@@ -28,7 +29,9 @@ namespace WPF02
 			}
 		public const string strTrue =  "v";
 		public const string strFalse = "x";
-		
+
+		protected int _id;									// Numero identificativo unico
+
 		// Metodi da implementare nelle classi derivate
 		public abstract bool FromString(string str);			// Importa i dati da una stringa
 		public abstract override string ToString();				// Esporta i dati ina una stringa
@@ -119,6 +122,25 @@ namespace WPF02
 						strb.Append(ch);
 					}
 			return strb.ToString();
+			}
+		public static bool CheckUnique(IEnumerable<Riga> cl)	// Verifica unicità dei numeri identificativi
+			{
+			bool ok = true;
+			foreach(Riga r in cl)
+				{
+				int cnt = 0;
+				foreach(Riga t in cl)
+					{
+					if (t._id == r._id)
+						cnt++;
+					}
+				if(cnt>1)
+					{
+					ok = false;
+					break;
+					}
+				}
+			return ok;
 			}
 		}
 	}

@@ -15,3 +15,4 @@ D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Debug\WPF02.exe
 D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Debug\WPF02.pdb
 D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Debug\OpEditWindow.g.cs
 D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Debug\OpEditWindow.baml
+D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Debug\WPF02.csprojResolveAssemblyReference.cache

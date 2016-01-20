@@ -10,7 +10,11 @@ namespace WPF02
 		public const int CAMPI = 3;
 
 		#region PROPERTIES
-		public int numero { get; set; }
+		public int numero
+			{
+			get {return _id; }
+			set { _id = value; }
+			}
 		public string descrizione { get; set; }
 		public string conti
 			{
@@ -30,8 +34,8 @@ namespace WPF02
 				larghezze.Add(prop.Name, new TipoColonna(prop.PropertyType.ToString(), 0));
 				}
 			larghezze["numero"].larghezzaColonna = 50;
-			larghezze["descrizione"].larghezzaColonna = 130;
-			larghezze["conti"].larghezzaColonna = 55;
+			larghezze["descrizione"].larghezzaColonna = 150;
+			larghezze["conti"].larghezzaColonna = 100;
 			}
 		public OpStandard()
 			{
@@ -125,6 +129,12 @@ namespace WPF02
 				TipoColonna tipo = new TipoColonna(prop.PropertyType.ToString(), larghezze[prop.Name].larghezzaColonna);
 				yield return tipo as TipoColonna;
 				}
+			yield break;
+			}
+		public IEnumerable<int> Conti()             // Restituisce i numeri dei conti
+			{
+			foreach (int c in cnt)
+				yield return c;
 			yield break;
 			}
 		}

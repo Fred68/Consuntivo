@@ -77,15 +77,38 @@ namespace WPF02
 			string str2 = (bSave ? "Errore salvataggio" : "Errore caricamento");
 			if (ok)
 				{
+				dgOperazioni.CommitEdit();
+				dgOperazioni.CancelEdit();
+				dgConti.CommitEdit();
+				dgConti.CancelEdit();
+				dgOpStandard.CommitEdit();
+				dgOpStandard.CancelEdit();
 				dgOperazioni.Items.Refresh();
 				dgConti.Items.Refresh();
 				dgOpStandard.Items.Refresh();
+				UpdateLstConti();
 				UpdateTitle();
 				this.InvalidateVisual();
-				// MessageBox.Show(operazioni.Filename + str1);
 				}
 			else
 				MessageBox.Show(str2);
+			}
+		void UpdateLstConti()
+			{
+			if(!operazioni.contiUpdated)
+				{
+				//lstConti.ItemsSource = operazioni.conti.ToList();
+				FillLstConti();
+				operazioni.contiUpdated = true;
+				}
+			}
+		void FillLstConti()
+			{
+			lstConti.Items.Clear();
+			foreach(Conto c in operazioni.conti)
+				{
+				lstConti.Items.Add(c.numero + " - " + c.descrizione);
+				}
 			}
 		void UpdateTitle()
 			{
@@ -103,7 +126,6 @@ namespace WPF02
 			Operazione nouse = new Operazione();
 			Table tOp = new Table();
 			int ncol = nouse.Count();
-			//for (int i = 0; i < ncol; i++)
 			foreach (TipoColonna str in nouse.Tipi())
 				{
 				TableColumn tc = new TableColumn();
@@ -155,11 +177,9 @@ namespace WPF02
 				rg.Rows.Add(row);
 				}
 			tOp.RowGroups.Add(rg);
-
-
-
 			doc.Blocks.Add(tOp);
 
+			// Interruzione di pagine
 			Section section = new Section();
 			section.BreakPageBefore = true;
 			doc.Blocks.Add(section);
@@ -214,13 +234,75 @@ namespace WPF02
 					tc.BorderBrush = Brushes.Black;
 					tc.BorderThickness = new Thickness(0, 0, 0, 0.5);
 					row.Cells.Add(tc);
-					//row.Cells.Add(new TableCell(new Paragraph(new Run(str))));
 					}
 				rgC.Rows.Add(row);
 				}
 			tCn.RowGroups.Add(rgC);
 
 			doc.Blocks.Add(tCn);
+			
+			// Interruzione di pagina
+			Section section2 = new Section();
+			section2.BreakPageBefore = true;
+			doc.Blocks.Add(section2);
+
+			// Op standard
+			OpStandard nouseS = new OpStandard();
+			Table tSn = new Table();
+			int ncolS = nouseS.Count();
+			for (int i = 0; i < ncolS; i++)
+				{
+				TableColumn tc = new TableColumn();
+				tc.Width = new GridLength(70, GridUnitType.Pixel);
+				tSn.Columns.Add(tc);
+				}
+			var rgS = new TableRowGroup();
+
+			TableRow rowintS = new TableRow();
+			rowintS.Background = Brushes.Transparent;
+			rowintS.FontSize = 12;
+			rowintS.FontWeight = FontWeights.Bold;
+			foreach (string str in nouseS.Titoli())
+				{
+				TableCell tc = new TableCell(new Paragraph(new Run(str)));
+				tc.BorderBrush = Brushes.Black;
+				tc.BorderThickness = new Thickness(0, 1, 0, 1);
+				rowintS.Cells.Add(tc);
+				}
+			rgS.Rows.Add(rowintS);
+
+			TableRow rowtypS = new TableRow();
+			rowtypS.Background = Brushes.Transparent;
+			rowtypS.FontSize = 12;
+			rowtypS.FontWeight = FontWeights.Bold;
+			foreach (TipoColonna str in nouseS.Tipi())
+				{
+				TableCell tc = new TableCell(new Paragraph(new Run(str.tipo)));
+				tc.BorderBrush = Brushes.Black;
+				tc.BorderThickness = new Thickness(0, 1, 0, 1);
+				rowtypS.Cells.Add(tc);
+				}
+			rgS.Rows.Add(rowtypS);
+
+			foreach (OpStandard op in operazioni.opStandard)
+				{
+				TableRow row = new TableRow();
+				row.Background = Brushes.Transparent;
+				row.FontSize = 10;
+				row.FontWeight = FontWeights.Normal;
+				foreach (string str in op.Valori())
+					{
+					TableCell tc = new TableCell(new Paragraph(new Run(str)));
+					tc.BorderBrush = Brushes.Black;
+					tc.BorderThickness = new Thickness(0, 0, 0, 0.5);
+					row.Cells.Add(tc);
+					}
+				rgS.Rows.Add(row);
+				}
+			tSn.RowGroups.Add(rgS);
+
+			doc.Blocks.Add(tSn);
+
 
 			return doc;
 			}
@@ -247,10 +329,10 @@ namespace WPF02
 				}
 			}
 
-
 		private void dgOperazioni_Loaded(object sender, RoutedEventArgs e)
             {
-			operazioni.setDatiGrid(this.dgOperazioni, this.dgConti, this.dgOpStandard);
+			operazioni.setDatiGrid(this.dgOperazioni, this.dgConti, this.dgOpStandard, this.dgConsuntivi);
+			this.lstConti.IsReadOnly = true;
 			}
         private void buttonVediProprieta_Click(object sender, RoutedEventArgs e)
             {
@@ -262,18 +344,7 @@ namespace WPF02
 			}
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 			{
-			//operazioni.operazioni.Add(new Operazione());
-			//operazioni.operazioni.Add(new Operazione("x", System.DateTime.Now, "pippo", 100, Operazione.Tipo.P, 0,"10"));
-			//operazioni.operazioni.Add(new Operazione("y", new System.DateTime(2015,1,30) , "pluto", -20, Operazione.Tipo.P, 0,"-1,-10,90"));
-			//operazioni.operazioni.Add(new Operazione("a", new System.DateTime(2010,7,2), "birthday", 1000, Operazione.Tipo.A, 0,""));
-			//operazioni.operazioni.Add(new Operazione("", new System.DateTime(2014, 12, 1), "aaa", 1000, Operazione.Tipo.A, 0, "-9,5"));
-			//operazioni.operazioni.Add(new Operazione("", new System.DateTime(2010, 8, 30), "bbb", 1000, Operazione.Tipo.A, 0, "-9,5"));
-			//operazioni.conti.Add(new Conto(1, "Conto Fred"));
-			//operazioni.conti.Add(new Conto(2, "Conto Veronica"));
-			//operazioni.conti.Add(new Conto(10, "Conto Galia"));
-			//operazioni.conti.Add(new Conto(20, "Spese casa"));
-			//operazioni.opStandard.Add(new OpStandard(1, "Prelievo", "-10 -5 -9"));
-			//operazioni.opStandard.Add(new OpStandard(2, "Versamento", "10 8 4"));
+			operazioni.azioneStatus = AggiornaLblStatus;
 			}
 		private void VediMsg_Click(object sender, RoutedEventArgs e)
 			{
@@ -286,7 +357,9 @@ namespace WPF02
 		private void editSelected_Click(object sender, RoutedEventArgs e)
 			{
 			ModificaElementoSelezionato();
+			dgOperazioni.CommitEdit();
 			dgOperazioni.Items.Refresh();
+			dgOperazioni.InvalidateVisual();
 			}
 		private void dgOperazioni_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 			{
@@ -381,7 +454,6 @@ namespace WPF02
 			PrintDialog printDlg = new PrintDialog();
 			if (printDlg.ShowDialog() == true)
 				{
-
 				Size pageSize = new Size(printDlg.PrintableAreaWidth, printDlg.PrintableAreaHeight);
 				FlowDocument doc = new FlowDocument();
 				doc.ColumnWidth = doc.MaxPageWidth = pageSize.Width;
@@ -389,7 +461,8 @@ namespace WPF02
 				FillFlowDocument(ref doc, pageSize);
 				doc.Name = "FlowDoc";
 				IDocumentPaginatorSource idpSource = doc;
-				printDlg.PrintDocument(idpSource.DocumentPaginator, "OperazioniComplesso");
+				string prName = "Consuntivo" + (operazioni.Filename.Length>0 ? " - "+ operazioni.Filename : "");
+				printDlg.PrintDocument(idpSource.DocumentPaginator, prName);
 				}
 
 			//Operazione op = new Operazione("nota..", DateTime.Now, "Nuova operazione", 1000, Operazione.Tipo.A, 1, "1,2,3");
@@ -435,6 +508,57 @@ namespace WPF02
 			//	}
 			
 			}
+		private void lstConti_GotFocus(object sender, RoutedEventArgs e)
+			{
+			UpdateLstConti();
+			}
+		private void btGeneraCons_Click(object sender, RoutedEventArgs e)
+			{
+			#warning DA COMPLETARE
+			if (lstConti.SelectedIndex != -1)
+				{
+				if (operazioni.Check())
+					{
+					MessageBox.Show("OK");
+					}
+				else
+					MessageBox.Show("ERRORI");
+				MessageBox.Show("Funzione da scrivere");
+				}
+			else
+				MessageBox.Show("Nessun conto selezionato");
 
+			
+
+			}
+		private void lstConti_SelectionChanged(object sender, SelectionChangedEventArgs e)
+			{
+			if(lstConti.SelectedIndex!=-1)
+				{
+				string str = lstConti.SelectedItem.ToString();
+				MessageBox.Show(str);
+				}
+			}
+
+		private void Check_Click(object sender, RoutedEventArgs e)
+			{
+			operazioni.Check();
+			}
+		private void ViewError_Click(object sender, RoutedEventArgs e)
+			{
+			StringBuilder strb = new StringBuilder();
+			foreach(string str in operazioni.Errori())
+				{
+				strb.Append(str);
+				}
+			MessageBox.Show(strb.ToString());
+			}
+		public void AggiornaLblStatus()
+			{
+			if (operazioni.status)
+				this.lblStatus.Content = "";
+			else
+				this.lblStatus.Content = "Errori";
+			}
 		}
     }

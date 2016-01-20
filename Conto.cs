@@ -10,7 +10,11 @@ namespace WPF02
 		public const int CAMPI = 3;
 
 		#region PROPERTIES
-		public int numero { get; set; }
+		public int numero
+			{
+			get { return _id; }
+			set { _id = value; }
+			}
 		public string descrizione { get; set; }
 		public string nota { get; set; }
 		#endregion
@@ -24,8 +28,8 @@ namespace WPF02
 				larghezze.Add(prop.Name, new TipoColonna(prop.PropertyType.ToString(), 0));
 				}
 			larghezze["numero"].larghezzaColonna = 50;
-			larghezze["descrizione"].larghezzaColonna = 130;
-			larghezze["nota"].larghezzaColonna = 130;
+			larghezze["descrizione"].larghezzaColonna = 150;
+			larghezze["nota"].larghezzaColonna = 200;
 			}
 		public Conto()
 			{

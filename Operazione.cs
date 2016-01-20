@@ -103,11 +103,10 @@ namespace WPF02
 				{
 				Operazione tmp = new Operazione();
 				tmp.nota = cmp[0];
-				string strtmp = cmp[1];
+				//string strtmp = cmp[1];
 				tmp.data = cmp[1];
 				tmp.descrizione = cmp[2];
 				tmp.importo = Operazione.String2DecimalOrZero(cmp[3], out conv[3]);
-				#warning DA VERIFICARE
 				tmp.consuntivo = ((cmp[4] == Operazione.strTrue.ToString()) ? true : false);
 				tmp.verificato = ((cmp[5] == Operazione.strTrue.ToString()) ? true : false);
 				foreach (Operazione.Tipo tp in Enum.GetValues(typeof(Operazione.Tipo)))
@@ -126,8 +125,6 @@ namespace WPF02
 				if (Array.Exists(conv, el => el == false))
 					{
 					ok = false;
-					#warning DA VERIFICARE
-				
 					}
 				if (ok)
 					{
@@ -205,7 +202,12 @@ namespace WPF02
 				}
 			yield break;
 			}
-
+		public IEnumerable<int> Conti()				// Restituisce i numeri dei conti
+			{
+			foreach (int c in cnt)
+				yield return c;
+			yield break;
+			}
 
 		string getConti()							// Ottiene la string con la lista dei conti
             {

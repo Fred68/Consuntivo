@@ -10,15 +10,28 @@ using System.IO;                            // Per operazioni su stream
 
 namespace WPF02
 	{
-
+	public delegate void StatusChangedHandler();
 	class Operazioni
 		{
 		ObservableCollection<Operazione> opVisibili { get; set; }
 		ObservableCollection<Operazione> opTotali { get; set; }
 		ObservableCollection<Conto> cntTotali { get; set; }
 		ObservableCollection<OpStandard> opStdTotali { get; set; }
+		ObservableCollection<Consuntivo> consTotali { get; set; }
+
+		bool comboContiUpdated = false;
+		public bool contiUpdated
+			{
+			get { return comboContiUpdated; }
+			set { comboContiUpdated = value; }
+			}
+
+		StatusChangedHandler statHandler = null; 
+		bool bStatusOk = true;
+
 		string filename;
-		enum readStat {Indefinito, Operazioni, Conti, OpStandard};
+		enum readStat	{Indefinito, Operazioni, Conti, OpStandard};
+		enum checkType	{Conti_Unique, OpStandard_Unique, Op_ContiValid, Op_OpStdValid, OpStd_ContiValid };
 
 		public string Filename
 			{
@@ -27,8 +40,10 @@ namespace WPF02
 			}
 
 		List<string> lstLog;
-		public bool LogAbilitato { get; set; }
+		List<string> lstErr;
 
+		#region PROPRIETA
+		public bool LogAbilitato { get; set; }
 		public ObservableCollection<Operazione> operazioni
 			{
 			get { return opVisibili; }
@@ -44,35 +59,36 @@ namespace WPF02
 			get { return opStdTotali; }
 			set { opStdTotali = value; }
 			}
+		public ObservableCollection<Consuntivo> consuntivi
+			{
+			get { return consTotali; }
+			set { consTotali = value; }
+			}
+		public bool status
+			{
+			get { return bStatusOk; }
+			set
+				{
+				bStatusOk = value;
+				if (statHandler != null)
+					statHandler();
+				}
+			}
+		public StatusChangedHandler azioneStatus
+			{
+			get { return statHandler; }
+			set { statHandler = value; }
+			}
+		#endregion
 
-		public Operazioni()
-			{
-			opTotali = new ObservableCollection<Operazione>();
-			opVisibili = new ObservableCollection<Operazione>();
-			opVisibili.CollectionChanged += opChanged;
-			cntTotali = new ObservableCollection<Conto>();
-			opStdTotali = new ObservableCollection<OpStandard>();
-			filename = "";
-			lstLog = new List<string>();
-			LogAbilitato = true;
-			}
-		public void setDatiGrid(DataGrid dgOperazioni, DataGrid dgConti, DataGrid dgOpStandard)
-			{
-			dgOperazioni.AutoGenerateColumns = true;
-			dgOperazioni.ItemsSource = this.opVisibili;
-			dgConti.AutoGenerateColumns = true;
-			dgConti.ItemsSource = this.cntTotali;
-			dgOpStandard.AutoGenerateColumns = true;
-			dgOpStandard.ItemsSource = this.opStdTotali;
-			}
 		void opChanged(object sender, NotifyCollectionChangedEventArgs e)
 			{
 			StringBuilder strb = new StringBuilder();
-			if(e.NewItems != null)
+			if (e.NewItems != null)
 				{
-				if(LogAbilitato)
+				if (LogAbilitato)
 					strb.Append("Aggiunti " + e.NewItems.Count + " elementi");
-				foreach(Operazione op in e.NewItems)
+				foreach (Operazione op in e.NewItems)
 					{
 					opTotali.Add(op);
 					}
@@ -89,6 +105,45 @@ namespace WPF02
 			if (LogAbilitato)
 				lstLog.Add(strb.ToString()/*+"\t"+sender.ToString()*/);
 			}
+		void cntChanged(object sender, NotifyCollectionChangedEventArgs e)
+			{
+			comboContiUpdated = false;
+			}
+		void opsChanged(object sender, NotifyCollectionChangedEventArgs e)
+			{
+			#warning DA SCRIVERE...
+			}
+
+		public Operazioni()
+			{
+			opTotali = new ObservableCollection<Operazione>();
+			opVisibili = new ObservableCollection<Operazione>();
+			opVisibili.CollectionChanged += opChanged;
+			cntTotali = new ObservableCollection<Conto>();
+			cntTotali.CollectionChanged += cntChanged;
+			opStdTotali = new ObservableCollection<OpStandard>();
+			opStdTotali.CollectionChanged += opsChanged;
+			consTotali = new ObservableCollection<Consuntivo>();
+
+			filename = "";
+			lstLog = new List<string>();
+			lstErr = new List<string>();
+			LogAbilitato = false;
+			}
+		public void setDatiGrid(DataGrid dgOperazioni, DataGrid dgConti, DataGrid dgOpStandard, DataGrid dgConsuntivi)
+			{
+			dgOperazioni.AutoGenerateColumns = true;
+			dgOperazioni.ItemsSource = this.opVisibili;
+			dgConti.AutoGenerateColumns = true;
+			dgConti.ItemsSource = this.cntTotali;
+			dgOpStandard.AutoGenerateColumns = true;
+			dgOpStandard.ItemsSource = this.opStdTotali;
+			dgConsuntivi.AutoGenerateColumns = true;
+			dgConsuntivi.ItemsSource = this.consTotali;
+			dgConsuntivi.AutoGenerateColumns = true;
+			dgConsuntivi.ItemsSource = this.consTotali;
+			dgConsuntivi.IsReadOnly = true;
+			}
 		public string MsgList()
 			{
 			StringBuilder strb = new StringBuilder();
@@ -99,6 +154,19 @@ namespace WPF02
 				}
 			return strb.ToString();
 			}
+		public IEnumerable<string> Messaggi()
+			{
+			foreach (string str in lstLog)
+				yield return str;
+			yield break;
+			}
+		public IEnumerable<string> Errori()
+			{
+			foreach (string str in lstErr)
+				yield return str;
+			yield break;
+			}
+
 		public void CancellaLog()
 			{
 			lstLog.Clear();
@@ -148,6 +216,22 @@ namespace WPF02
 			foreach (OpStandard ops in opStdTotali)
 				{
 				strb.Append(ops.ToString() + Riga.Separatore.line);
+				}
+			return strb.ToString();
+			}
+		public string ListaConsuntivi()
+			{
+			StringBuilder strb = new StringBuilder();
+			int n = consTotali.Count;
+			if (n > 0)
+				{
+				strb.Append("CONSUNTIVI [" + n.ToString() + "]\n");
+				}
+			else
+				strb.Append("NESSUN CONSUNTIVO\n");
+			foreach (Consuntivo cns in consTotali)
+				{
+				strb.Append(cns.ToString() + Riga.Separatore.line);
 				}
 			return strb.ToString();
 			}
@@ -214,11 +298,13 @@ namespace WPF02
 			cntTotali.Clear();
 			opStdTotali.Clear();
 			filename = "";
+			status = true;
 			}
 		public bool Open(string fullfilename)
 			{
 			bool ret = true;
 			readStat rstat = readStat.Indefinito;
+			status = true;
 			try
 				{
 				using (StreamReader sr = new StreamReader(fullfilename, Encoding.UTF8))
@@ -273,13 +359,12 @@ namespace WPF02
 											}
 										else
 											{
-												throw new Exception("Errore analisi linea: " + rline, new Exception("Errore analisi linea"));
-												}
+											throw new Exception("Errore analisi linea: " + rline, new Exception("Errore analisi linea"));
+											}
 										}
 										break;
 									case readStat.Indefinito:
 										throw new Exception("Errore sintattico nel file" + rline, new Exception("Errore sintattico nel file"));
-										break;
 									}
 								}
 							ret = true;
@@ -289,6 +374,7 @@ namespace WPF02
 							if (LogAbilitato)
 								lstLog.Add("Errore in importazione dati:\n" + ex.ToString());
 							ret = false;
+							status = false;
 							}
 						}
 					}
@@ -298,10 +384,108 @@ namespace WPF02
 				if (LogAbilitato)
 					lstLog.Add("Errore in lettura file:\n" + ex.ToString());
 				ret = false;
+				status = false;
 				}
 			if(ret)
 				this.filename = fullfilename;
 			return ret;
 			}
+		public bool Check()							// Verifica ed imposta lo stato
+			{
+			bool ok = true;
+			lstErr.Clear();
+			List<bool> oki = new List<bool>(); 
+			oki.Add(Check(checkType.Conti_Unique));
+			oki.Add(Check(checkType.OpStandard_Unique));
+			oki.Add(Check(checkType.OpStd_ContiValid));
+			oki.Add(Check(checkType.Op_ContiValid));
+			oki.Add(Check(checkType.Op_OpStdValid));
+			foreach (bool x in oki)
+				ok = ok && x;
+			this.status = ok;	// Usa la proprietà, per attivare l'handler
+			return ok;
+			}
+		#region INTERNAL CHECK
+		bool Check(checkType typ)
+			{
+			bool ok = false;
+			switch(typ)
+				{
+				case checkType.Conti_Unique:
+					ok = Riga.CheckUnique(this.conti);      // verifica unicità dei numeri dei conti 
+					if (!ok) lstErr.Add("\nConti duplicati");
+					break;
+				case checkType.OpStandard_Unique:			// Verifica unicità dei numeri dei conti 
+					ok = Riga.CheckUnique(this.opStandard);
+					if (!ok) lstErr.Add("\nOperazioni standard duplicate");
+					break;
+				case checkType.OpStd_ContiValid:			// Verifica che i conti delle opStandard esistano
+					ok = true;
+					foreach(OpStandard os in this.opStandard)
+						{
+						foreach(int nc in os.Conti())
+							{
+							bool found = false;
+							foreach(Conto c in this.cntTotali)
+								{
+								if (c.numero == Math.Abs(nc))
+									found = true;
+								}
+							if(!found)
+								{
+								ok = false;
+								lstErr.Add("\nOperazione standard <" + os.numero + "> con numero di conto non valido");
+								}
+							}
+						}
+					break;
+				case checkType.Op_ContiValid:				// Verifica che i conti delle Operazioni esistano
+					ok = true;
+					foreach (Operazione op in this.operazioni)
+						{
+						foreach (int nc in op.Conti())
+							{
+							bool found = false;
+							foreach (Conto c in this.cntTotali)
+								{
+								if (c.numero == Math.Abs(nc))
+									found = true;
+								}
+							if (!found)
+								{
+								ok = false;
+								lstErr.Add("\nOperazione <" + op.descrizione + "> del <" + op.data + "> con numero di conto non valido");
+								}
+							}
+						}
+					break;
+				case checkType.Op_OpStdValid:				// Verifica che le opStandard delle Operazioni esistano
+					ok = true;
+					foreach(Operazione op in this.operazioni)
+						{
+						bool found = false;
+						if(op.tipostd == 0)
+							{
+							found = true;
+							}
+						else
+							{
+							foreach (OpStandard os in this.opStandard)
+								{
+								if (os.numero == op.tipostd)
+									found = true;
+								}
+							}
+						if (!found)
+							{
+							ok = false;
+							lstErr.Add("\nOperazione <" + op.descrizione + "> del <" + op.data + "> con numero di operazione standard non valido");
+							}
+						}
+					break;
+				}
+			return ok;
+			}
+		#endregion
 		}
 	}
