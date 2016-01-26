@@ -52,13 +52,15 @@ namespace WPF02
 			totale = 0;
 			tipo = Tipo.P;
 			}
-		public Consuntivo(DateTime data, string descrizione, decimal importo, Tipo tipo, decimal totale)
+		public Consuntivo(DateTime data, string descrizione, decimal importo, Tipo tipo, decimal totale, bool consuntivo, bool verificato)
 			{
 			this.dt = data;
 			this.descrizione = descrizione;
 			this.importo = importo;
 			this.tipo = tipo;
 			this.totale = totale;
+			this.consuntivo = consuntivo;
+			this.verificato = verificato;
 			}
 		public override string Intestazione()
 			{

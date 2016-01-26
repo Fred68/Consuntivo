@@ -27,7 +27,7 @@ namespace WPF02
 												Separatore.line,
 												Separatore.header};
 			}
-		public enum Tipo { P, A, N };
+		public enum Tipo { P, A, N };		// Operazione. A:imposta il conto. P:somma o sottrae, N:non fa nulla
 
 		public const string strTrue =  "v";
 		public const string strFalse = "x";
@@ -48,9 +48,14 @@ namespace WPF02
 		public static string DateTime2String(DateTime dt)
 			{
 			StringBuilder strb = new StringBuilder();
-			strb.Append(dt.Year.ToString() + Separatore.datetime);
-			strb.Append(dt.Month.ToString() + Separatore.datetime);
-			strb.Append(dt.Day.ToString());
+			string yyyy = dt.Year.ToString().Substring(0,4);
+			string mm = dt.Month.ToString();
+			string dd = dt.Day.ToString();
+			if (mm.Length == 1)	mm = "0" + mm;
+			if (dd.Length == 1) dd = "0" + dd;
+			strb.Append(yyyy + Separatore.datetime);
+			strb.Append(mm + Separatore.datetime);
+			strb.Append(dd);
 			return strb.ToString();
 			}
 		public static DateTime String2DateTime(string d)

@@ -131,12 +131,14 @@ namespace WPF02
 			Operazione nouse = new Operazione();
 			Table tOp = new Table();
 			int ncol = nouse.Count();
+			
 			foreach (TipoColonna str in nouse.Tipi())
 				{
 				TableColumn tc = new TableColumn();
 				tc.Width = new GridLength(str.larghezzaColonna, GridUnitType.Pixel);
 				tOp.Columns.Add(tc);
 				}
+
 			var rg = new TableRowGroup();
 			
 			TableRow rowint = new TableRow();
@@ -156,6 +158,7 @@ namespace WPF02
 			rowtyp.Background = Brushes.Transparent;
 			rowtyp.FontSize = 12;
 			rowtyp.FontWeight = FontWeights.Bold;
+			#if false
 			foreach (TipoColonna str in nouse.Tipi())
 				{
 				TableCell tc = new TableCell(new Paragraph(new Run(str.tipo)));
@@ -163,6 +166,8 @@ namespace WPF02
 				tc.BorderThickness = new Thickness(0, 1, 0, 1);
 				rowtyp.Cells.Add(tc);
 				}
+			#endif
+
 			rg.Rows.Add(rowtyp);
 
 			foreach (Operazione op in operazioni.operazioni)
@@ -218,6 +223,7 @@ namespace WPF02
 			rowtypC.Background = Brushes.Transparent;
 			rowtypC.FontSize = 12;
 			rowtypC.FontWeight = FontWeights.Bold;
+			#if false
 			foreach (TipoColonna str in nouseC.Tipi())
 				{
 				TableCell tc = new TableCell(new Paragraph(new Run(str.tipo)));
@@ -225,6 +231,7 @@ namespace WPF02
 				tc.BorderThickness = new Thickness(0, 1, 0, 1);
 				rowtypC.Cells.Add(tc);
 				}
+			#endif
 			rgC.Rows.Add(rowtypC);
 
 			foreach (Conto op in operazioni.conti)
@@ -280,6 +287,7 @@ namespace WPF02
 			rowtypS.Background = Brushes.Transparent;
 			rowtypS.FontSize = 12;
 			rowtypS.FontWeight = FontWeights.Bold;
+			#if false
 			foreach (TipoColonna str in nouseS.Tipi())
 				{
 				TableCell tc = new TableCell(new Paragraph(new Run(str.tipo)));
@@ -287,6 +295,7 @@ namespace WPF02
 				tc.BorderThickness = new Thickness(0, 1, 0, 1);
 				rowtypS.Cells.Add(tc);
 				}
+			#endif
 			rgS.Rows.Add(rowtypS);
 
 			foreach (OpStandard op in operazioni.opStandard)
@@ -592,7 +601,35 @@ namespace WPF02
 			}
 		private void lstConti_SelectionChanged(object sender, SelectionChangedEventArgs e)
 			{
-			#warning FUNZIONE VUOTA
+#warning FUNZIONE VUOTA
+			string msg = "";
+			int contosel = FindContoConsSelezionato();
+			if (contosel != -1)
+				{
+				if (operazioni.Check())
+					{
+					// msg = "Conto selezionato: " + contosel.ToString();
+					Conto tmp = this.operazioni.FindConto(contosel);
+					// tmp = this.operazioni.
+					// string tmp = contosel.ToString + MainWindow.SepNomiConti + 
+					lblContoCons.Content = tmp.numero.ToString() + MainWindow.SepNomiConti + tmp.descrizione;
+
+					operazioni.setConsuntivoGrid(dgConsuntivi, contosel);
+
+					}
+				else
+					{
+					msg = ("Impossibile generare il consuntivo.\nCorreggere gli errori.");
+					}
+				}
+			else
+				{
+				msg = "Nessun conto selezionato.";
+				}
+			dgOperazioni.CommitEdit();
+			dgOperazioni.CancelEdit();
+			dgOperazioni.Items.Refresh();
+			if (msg.Length > 0) MessageBox.Show(msg);
 			}
 		private void Check_Click(object sender, RoutedEventArgs e)
 			{

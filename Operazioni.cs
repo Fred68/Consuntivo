@@ -615,15 +615,13 @@ namespace WPF02
 					try
 						{
 						foreach (Operazione op in opOrdinata)       // Percorre le operazioni
-						//for(int indx=0; indx < opOrdinata.Count; indx++)
 							{
-							//Operazione op = operazioni[indx];
 							foreach (int nc in op.Conti())          // Percorre i conti dell'operazione
 								{
 								int nca = Math.Abs(nc);             // Estrae il conto
 								int ncs = Math.Sign(nc);
 								// Crea nuova voce di consuntivo, copiando i dati dell'operazione
-								Consuntivo cns = new Consuntivo(Riga.String2DateTime(op.data), op.descrizione, (op.importo) * ncs, op.tipo, 0);
+								Consuntivo cns = new Consuntivo(Riga.String2DateTime(op.data), op.descrizione, (op.importo) * ncs, op.tipo, 0, op.consuntivo, op.verificato);
 								dicConsuntivi[nca].Add(cns);            // E la aggiunge alla lista del conto rispettivo
 								}
 							}
@@ -637,6 +635,27 @@ namespace WPF02
 						}
 					// Calcola i totali dei consuntivi
 					#warning DA SCRIVERE
+					foreach(List<Consuntivo> lcons in dicConsuntivi.Values)
+						{
+						decimal totale = 0;
+						decimal x;
+						foreach (Consuntivo cons in lcons)
+							{
+							x = cons.importo;
+							switch(cons.tipo)
+								{
+								case Riga.Tipo.A:       // Azzera e reimposta al valore
+									totale = x;
+									break;
+								case Riga.Tipo.P:       // Somma o sottrae
+									totale += x;
+									break;
+								case Riga.Tipo.N:		// Non fa nulla
+									break;
+								}
+							cons.totale = totale;
+							}
+						}
 					}
 				}
 			catch(Exception e)

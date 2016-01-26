@@ -15,6 +15,7 @@ x							Aggiungere Return e Tab per input operazione
 v							Identificare il numero di conto selezionato nella combobox
 v							Creare le funzioni di calcolo principali
 v							Ordinamento per data, per generare i consuntivi, su List<>, non su ObservableCollection<>
+v							Aggiungere calcolo dei residui dei consuntivi.
 _______________________________________________________________________________________________________________________________
 -	+						Completare print delle operazioni standard (mettere tra #if la stampa dei tipi)
 -	+						Completare print dei consuntivi
@@ -36,8 +37,9 @@ v							Aggiungere lista di consuntivo (oppure lista di liste)
 -	+						Completare i controlli di errore con eventuali altre verifiche
 -							Permettere la visualizzazione della lista degli errori in un'altra finestra
 -	+						Eseguire il check dopo ogni inserimento (o almeno i controlli specifici)
--							Aggiungere flag 3 stati sui conti per segnalare quando negativo, positivo (o disattivato)
--	++						Aggiungere calcolo dei residui dei consuntivi
+-							Aggiungere flag 3 stati sui conti per segnalare superamento soglia (negativo, positivo o disattivato)
+-							Completare calcolo dei residui dei consuntivi con verifica se superamento soglia
 -	+						Provare dopo completamento funzioni di calcolo
 -							Dopo modifica dataGrid, cliccando su X, check su dati non aggiornati.
 -							Aggiungere un Undo, almeno per l'ultima operazione
+-	++++					Correggere ordinamento nelle grid per data. Formato data xxxx/yy/zz, sempre due cifre !
