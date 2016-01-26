@@ -3,29 +3,41 @@ DA FARE
 
 ok	priorità	in corso	Descrizione
 _	____		_			___________________________________________________________________________________________________
-v	++++					Errore se Save con Editing in corso in datagrid. Chiudere prima di save (CommitEdit e CancelEdit)
-v	+++						Creare prima versione incompleta su GitHub
--	+++						Completare print delle operazioni standard (mettere tra #if la stampa dei tipi)
+v		 					Errore se Save con Editing in corso in datagrid. Chiudere prima di save (CommitEdit e CancelEdit)
+v							Creare prima versione incompleta su GitHub
+v							Aggiungere una voce di menù per il check
+v							Aggiungere un'icona per indicare se ci sono degli errori.
+v							Usare puntatore a funzione chiamato ogni volta che la proprietà status è modificata
+v							Aggiungere datagrid readonly
+v							Disabilitare il log dei messaggi, di default
+v							Mettere i risultati dei controlli di errore in una lista, non in un messaggio
+x							Aggiungere Return e Tab per input operazione
+v							Identificare il numero di conto selezionato nella combobox
+v							Creare le funzioni di calcolo principali
+v							Ordinamento per data, per generare i consuntivi, su List<>, non su ObservableCollection<>
+_______________________________________________________________________________________________________________________________
+-	+						Completare print delle operazioni standard (mettere tra #if la stampa dei tipi)
+-	+						Completare print dei consuntivi
 -							Dopo l'edit con finestra, la visualizzazione del datagrid non viene aggiornata subito
+-							Verificare le larghezze delle colonne (solo per print ?)
 -							Print preview			
--	+						Verificare salvataggio e caricamento file
--							Aggiungere salvataggio criptato (creare classe AES)
+-	+						Verificare salvataggio e caricamento file, se tutto ok
+-							Aggiungere salvataggio criptato (creare classe AES) e opzione
+-							Aggiungere secondo salvataggio (criptato o no) in locazione nota, configurabile (es.: dropbox)
 -	+						Aggiungere finestra dinamica per l'input di conti, operazioni standard
 -	++						Riordinare finestra di input di un'operazione e aggiungere descrizioni
-x							Aggiungere Return e Tab per input operazione
+
 -							Aggiungere filtro (modificare finestra di input di un'operazione, unica con elementi attivi e non)
 -							Permettere più finestre con windows.show(), lista Opvisibili, handler con lista finestre aperte
--	+++			x			Aggiungere nuovo tipo di dato (derivato da riga) per i conti parziali (data, conto, residuo...)
--	+++						Aggiungere lista di consuntivo (oppure lista di liste)
-v							Aggiungere datagrid readonly
+v							Aggiungere nuovo tipo di dato (derivato da riga) per i conti parziali (data, conto, residuo...)
+v							Aggiungere lista di consuntivo (oppure lista di liste)
 -	+						Aggiungere stampa dei conti parziali
-v							Disabilitare il log dei messaggi di default
 -							Dare feedback se il log dei messaggi è attivo
--	+++			x			Completare i controlli di errore
-v							Mettere i risultati dei controlli di errore in una lista, non in un messaggio
--	+			x			Permetterne la visualizzazione della lista degli errori in un'altra finestra
-v							Aggiungere una voce di menù per il check
--	+						Aggiungere un'icona per indicare se ci sono degli errori.
-v							Usare puntatore a funzione chiamato ogni volta che la proprietà status è modificata
--	++						Eseguire il check dopo ogni inserimento (o almeno i controlli specifici)
+-	+						Completare i controlli di errore con eventuali altre verifiche
+-							Permettere la visualizzazione della lista degli errori in un'altra finestra
+-	+						Eseguire il check dopo ogni inserimento (o almeno i controlli specifici)
 -							Aggiungere flag 3 stati sui conti per segnalare quando negativo, positivo (o disattivato)
+-	++						Aggiungere calcolo dei residui dei consuntivi
+-	+						Provare dopo completamento funzioni di calcolo
+-							Dopo modifica dataGrid, cliccando su X, check su dati non aggiornati.
+-							Aggiungere un Undo, almeno per l'ultima operazione

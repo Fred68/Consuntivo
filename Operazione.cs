@@ -6,9 +6,9 @@ using System.Reflection;            // Per property info
 namespace WPF02
     {
 #warning VEDERE SE IMPOSTARE IL FLAG modificato=true AD OGNI SET
-	public class Operazione : Riga
+	public class Operazione : Riga, IComparable
         {
-		public enum Tipo { P, A, N };
+		// public enum Tipo { P, A, N };
 		List<int> cnt;
 		DateTime dt;
 		public const int CAMPI = 9;
@@ -91,8 +91,6 @@ namespace WPF02
 			strb.Append(conti);
 			return strb.ToString();
 			}
-#warning OVERLOAD DI TOSTRING + FORMATO CON TABULAZIONI (O CARATTERI). MA FORSE NO, SE TABELLE IN PRINT FLOW DOCUMENT
-		//public string ToString		
 		public override bool FromString(string str)
 			{
 			bool ok = false;
@@ -208,7 +206,13 @@ namespace WPF02
 				yield return c;
 			yield break;
 			}
-
+		public int CompareTo(object obj)			// Per interfaccia IComparable
+			{
+			Operazione op = obj as Operazione;
+			if (op == null)
+				throw new ArgumentException("obj non è una Operazione");
+			return this.dt.CompareTo(op.dt);
+			}
 		string getConti()							// Ottiene la string con la lista dei conti
             {
 			return ListInt2String(cnt);
@@ -232,6 +236,19 @@ namespace WPF02
 		public void setData(DateTime dt)
 			{
 			this.dt = dt;
+			}
+		public bool ContieneConto(int nc)
+			{
+			bool found = false;
+			foreach(int c in cnt)
+				{
+				if(c == nc)
+					{
+					found = true;
+					break;
+					}
+				}
+			return found;
 			}
 		}
     

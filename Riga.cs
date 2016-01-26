@@ -27,6 +27,8 @@ namespace WPF02
 												Separatore.line,
 												Separatore.header};
 			}
+		public enum Tipo { P, A, N };
+
 		public const string strTrue =  "v";
 		public const string strFalse = "x";
 
@@ -40,7 +42,8 @@ namespace WPF02
 		public abstract IEnumerable<string> Valori();			// Enumeratore dei valori 
 		public abstract IEnumerable<string> Titoli();           // Enumeratore delle proprietà
 		public abstract IEnumerable<TipoColonna> Tipi();		// Enumeratore dei tipi
-		public abstract int Count();							// Numero delle proprietà
+		public abstract int Count();                            // Numero delle proprietà
+	
 		// Metodi statici
 		public static string DateTime2String(DateTime dt)
 			{

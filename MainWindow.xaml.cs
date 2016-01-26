@@ -26,6 +26,8 @@ namespace WPF02
     /// </summary>
     public partial class MainWindow : Window
         {
+		static string SepNomiConti = "- ";
+
 		Operazioni operazioni;
 
 		public MainWindow()
@@ -34,6 +36,7 @@ namespace WPF02
 			InitializeComponent();
 			operazioni = new Operazioni();
 			UpdateTitle();
+			UpdateLblStatus();
 			}
 
         void OpenWithDialog()
@@ -88,6 +91,8 @@ namespace WPF02
 				dgOpStandard.Items.Refresh();
 				UpdateLstConti();
 				UpdateTitle();
+				UpdateLblStatus();
+				operazioni.Check();
 				this.InvalidateVisual();
 				}
 			else
@@ -107,7 +112,7 @@ namespace WPF02
 			lstConti.Items.Clear();
 			foreach(Conto c in operazioni.conti)
 				{
-				lstConti.Items.Add(c.numero + " - " + c.descrizione);
+				lstConti.Items.Add(c.numero + MainWindow.SepNomiConti + c.descrizione);
 				}
 			}
 		void UpdateTitle()
@@ -328,7 +333,42 @@ namespace WPF02
 					}
 				}
 			}
-
+		string ViewErrors()
+			{
+			StringBuilder strb = new StringBuilder();
+			int n = operazioni.ErroriCount();
+			if (n > 0)
+				{
+				foreach (string str in operazioni.Errori())
+					{
+					strb.Append(str+"\n");
+					}
+				}
+			else
+				{
+				strb.Append("Nessun errore!");
+				}
+			return strb.ToString();
+			}
+		int FindContoConsSelezionato()
+			{
+			int nsel = -1;
+			if (lstConti.SelectedIndex != -1)
+				{
+				string str = lstConti.SelectedItem.ToString();
+				int i = str.IndexOf(MainWindow.SepNomiConti);
+				if(i!=-1)
+					{
+					int tmp;
+					string ns = str.Substring(0, i);
+					if(int.TryParse(ns, out tmp))
+						{
+						nsel = int.Parse(ns);
+						}
+					}
+				}
+			return nsel;
+			}
 		private void dgOperazioni_Loaded(object sender, RoutedEventArgs e)
             {
 			operazioni.setDatiGrid(this.dgOperazioni, this.dgConti, this.dgOpStandard, this.dgConsuntivi);
@@ -344,15 +384,21 @@ namespace WPF02
 			}
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 			{
-			operazioni.azioneStatus = AggiornaLblStatus;
+			operazioni.azioneStatus = UpdateLblStatus;
 			}
 		private void VediMsg_Click(object sender, RoutedEventArgs e)
 			{
-			MessageBox.Show(operazioni.MsgList());
+			StringBuilder strb = new StringBuilder();
+			strb.Append("Azioni eseguite:\n");
+			foreach (string str in operazioni.Messaggi())
+				{
+				strb.Append(str + '\n');
+				}
+			MessageBox.Show(strb.ToString());
 			}
 		private void Filtra_Click(object sender, RoutedEventArgs e)
 			{
-
+			#warning FUNZIONE VUOTA
 			}
 		private void editSelected_Click(object sender, RoutedEventArgs e)
 			{
@@ -378,6 +424,7 @@ namespace WPF02
 				{
 				operazioni.New();
 				UpdateTitle();
+				UpdateLblStatus();
 				}
 			}
 		private void Open_Click(object sender, RoutedEventArgs e)
@@ -512,53 +559,81 @@ namespace WPF02
 			{
 			UpdateLstConti();
 			}
-		private void btGeneraCons_Click(object sender, RoutedEventArgs e)
+		private void btVisualizzaCons_Click(object sender, RoutedEventArgs e)
 			{
-			#warning DA COMPLETARE
-			if (lstConti.SelectedIndex != -1)
+			string msg = "";
+			int contosel = FindContoConsSelezionato();
+			if(contosel != -1)
 				{
 				if (operazioni.Check())
 					{
-					MessageBox.Show("OK");
+					// msg = "Conto selezionato: " + contosel.ToString();
+					Conto tmp = this.operazioni.FindConto(contosel);
+					// tmp = this.operazioni.
+					// string tmp = contosel.ToString + MainWindow.SepNomiConti + 
+					lblContoCons.Content = tmp.numero.ToString() + MainWindow.SepNomiConti + tmp.descrizione;
+
+					operazioni.setConsuntivoGrid(dgConsuntivi, contosel);
+					
 					}
 				else
-					MessageBox.Show("ERRORI");
-				MessageBox.Show("Funzione da scrivere");
+					{
+					msg = ("Impossibile generare il consuntivo.\nCorreggere gli errori.");
+					}
 				}
 			else
-				MessageBox.Show("Nessun conto selezionato");
-
-			
-
+				{
+				msg = "Nessun conto selezionato.";
+				}
+			dgOperazioni.CommitEdit();
+			dgOperazioni.CancelEdit();
+			dgOperazioni.Items.Refresh();
+			if(msg.Length > 0)	MessageBox.Show(msg);
 			}
 		private void lstConti_SelectionChanged(object sender, SelectionChangedEventArgs e)
 			{
-			if(lstConti.SelectedIndex!=-1)
-				{
-				string str = lstConti.SelectedItem.ToString();
-				MessageBox.Show(str);
-				}
+			#warning FUNZIONE VUOTA
 			}
-
 		private void Check_Click(object sender, RoutedEventArgs e)
 			{
 			operazioni.Check();
 			}
 		private void ViewError_Click(object sender, RoutedEventArgs e)
 			{
-			StringBuilder strb = new StringBuilder();
-			foreach(string str in operazioni.Errori())
-				{
-				strb.Append(str);
-				}
-			MessageBox.Show(strb.ToString());
+			// operazioni.Check();
+			MessageBox.Show(ViewErrors());
 			}
-		public void AggiornaLblStatus()
+		public void UpdateLblStatus()
 			{
 			if (operazioni.status)
-				this.lblStatus.Content = "";
+				{
+				this.imageOk.Visibility = Visibility.Visible;
+				this.imageErr.Visibility = Visibility.Hidden;
+				this.lblStatus.Content = "ok";
+				}
 			else
+				{
+				this.imageOk.Visibility = Visibility.Hidden;
+				this.imageErr.Visibility = Visibility.Visible;
 				this.lblStatus.Content = "Errori";
+				}
+			}
+		private void imageErr_MouseDown(object sender, MouseButtonEventArgs e)
+			{
+			if((e.ChangedButton == MouseButton.Left)&&(e.ClickCount==2))
+				{
+				MessageBox.Show(ViewErrors());
+				}
+			}
+		private void Genera_Click(object sender, RoutedEventArgs e)
+			{
+			operazioni.EspandeOpStandard();
+			if (operazioni.GeneraConsuntivi() == true)
+				MessageBox.Show("Generati consuntivi");
+			dgOperazioni.CommitEdit();
+			dgOperazioni.CancelEdit();
+			dgOperazioni.Items.Refresh();
+			dgConsuntivi.Items.Refresh();
 			}
 		}
     }

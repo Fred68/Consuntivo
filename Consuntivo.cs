@@ -10,7 +10,7 @@ namespace WPF02
 	{
 	public class Consuntivo : Riga
 		{
-		public enum Tipo { P, A, N };
+		// public enum Tipo { P, A, N };
 		DateTime dt;
 		public const int CAMPI = 7;
 
@@ -52,7 +52,7 @@ namespace WPF02
 			totale = 0;
 			tipo = Tipo.P;
 			}
-		public Consuntivo(DateTime data, string descrizione, int importo, Tipo tipo, decimal totale)
+		public Consuntivo(DateTime data, string descrizione, decimal importo, Tipo tipo, decimal totale)
 			{
 			this.dt = data;
 			this.descrizione = descrizione;
