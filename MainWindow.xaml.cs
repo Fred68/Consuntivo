@@ -122,7 +122,7 @@ namespace WPF02
 			else
 				this.Title = "Consuntivo " + "<nessun file>";
 			}
-		FlowDocument FillFlowDocument(ref FlowDocument doc, Size pageSize)   // Prova
+		FlowDocument FillFlowDocument(ref FlowDocument doc, Size pageSize)   // Per stampa
 			{
 			doc.ColumnWidth = doc.MaxPageWidth = pageSize.Width;
 			doc.MaxPageHeight = pageSize.Height;
@@ -167,7 +167,6 @@ namespace WPF02
 				rowtyp.Cells.Add(tc);
 				}
 			#endif
-
 			rg.Rows.Add(rowtyp);
 
 			foreach (Operazione op in operazioni.operazioni)
@@ -318,6 +317,19 @@ namespace WPF02
 			doc.Blocks.Add(tSn);
 
 
+			StringBuilder strb = new StringBuilder();
+			 
+			foreach (List<Consuntivo> lc in operazioni.ListeConsuntivi())
+				{
+				strb.Append("---\n");
+				foreach (Consuntivo cons in lc)
+					{
+#warning da completare, previa verifica accessibilità 
+					strb.Append(cons.ToString() + '\n');
+					}
+				}
+			MessageBox.Show(strb.ToString());
+
 			return doc;
 			}
 		private void ModificaElementoSelezionato()
@@ -330,8 +342,16 @@ namespace WPF02
 					Operazione op = (Operazione)dgOperazioni.SelectedItem;
 					if (op != null)
 						{
-						OpEditWindow oped = new OpEditWindow(ref op);
-						oped.ShowDialog();
+						OpEditWindow oped = new OpEditWindow(ref op, ref operazioni);
+						bool? ret = oped.ShowDialog();
+							{
+							if((ret.HasValue) && (ret.Value== true))
+								{
+								dgOperazioni.CommitEdit();
+								dgOperazioni.CancelEdit();
+								dgOperazioni.Items.Refresh();
+								}
+							}
 						}
 					else
 						MessageBox.Show("selezione errata");
@@ -382,6 +402,7 @@ namespace WPF02
             {
 			operazioni.setDatiGrid(this.dgOperazioni, this.dgConti, this.dgOpStandard, this.dgConsuntivi);
 			this.lstConti.IsReadOnly = true;
+			Filtra.Content = "Applica filtro";
 			}
         private void buttonVediProprieta_Click(object sender, RoutedEventArgs e)
             {
@@ -407,7 +428,16 @@ namespace WPF02
 			}
 		private void Filtra_Click(object sender, RoutedEventArgs e)
 			{
-			#warning FUNZIONE VUOTA
+			if (!operazioni.filtro.IsAttivo)
+				{
+				operazioni.ApplicaFiltro();
+				Filtra.Content = "Annulla filtro";
+				}
+			else
+				{
+				operazioni.CancellaFiltro();
+				Filtra.Content = "Applica filtro";
+				}
 			}
 		private void editSelected_Click(object sender, RoutedEventArgs e)
 			{
@@ -601,7 +631,6 @@ namespace WPF02
 			}
 		private void lstConti_SelectionChanged(object sender, SelectionChangedEventArgs e)
 			{
-#warning FUNZIONE VUOTA
 			string msg = "";
 			int contosel = FindContoConsSelezionato();
 			if (contosel != -1)
@@ -671,6 +700,16 @@ namespace WPF02
 			dgOperazioni.CancelEdit();
 			dgOperazioni.Items.Refresh();
 			dgConsuntivi.Items.Refresh();
+			}
+
+		private void Set_Filter(object sender, RoutedEventArgs e)
+			{
+			FilterWindow w = new FilterWindow(ref operazioni.filtro);
+			if (w.ShowDialog() == true)
+				{
+				//MessageBox.Show("Impostato filtro");
+				}
+
 			}
 		}
     }

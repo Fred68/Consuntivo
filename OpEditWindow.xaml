@@ -5,20 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF02"
         mc:Ignorable="d"
-        Title="OpEditWindow" Height="317.032" Width="637.497" WindowStartupLocation="CenterScreen">
-	<Grid>
-		<Button x:Name="btCancel" Content="Cancel" HorizontalAlignment="Left" Margin="464,257,0,0" VerticalAlignment="Top" Width="75" Click="btCancel_Click"/>
-		<Button x:Name="btOk" Content="Ok" HorizontalAlignment="Left" Margin="544,257,0,0" VerticalAlignment="Top" Width="75" Click="btOk_Click"/>
-		<TextBox x:Name="tbTesto" HorizontalAlignment="Left" Height="241" Margin="18,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="136" AcceptsReturn="True"/>
-		<TextBox x:Name="tbNota" HorizontalAlignment="Left" Height="23" Margin="231,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-		<DatePicker x:Name="dpData" HorizontalAlignment="Left" Margin="231,38,0,0" VerticalAlignment="Top"/>
-		<TextBox x:Name="tbDescrizione" HorizontalAlignment="Left" Height="23" Margin="231,67,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="344"/>
-		<TextBox x:Name="tbImporto" HorizontalAlignment="Left" Height="23" Margin="231,95,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-		<CheckBox x:Name="chkConsuntivo" Content="CheckBox" HorizontalAlignment="Left" Margin="231,123,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.017,-0.608"/>
-		<CheckBox x:Name="chkVerificato" Content="CheckBox" HorizontalAlignment="Left" Margin="231,143,0,0" VerticalAlignment="Top"/>
-		<ComboBox x:Name="cbTipo" HorizontalAlignment="Left" Margin="231,163,0,0" VerticalAlignment="Top" Width="120"/>
-		<TextBox x:Name="tbOperazioneStandard" HorizontalAlignment="Left" Height="23" Margin="231,190,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-		<TextBox x:Name="tbConti" HorizontalAlignment="Left" Height="23" Margin="231,218,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        Title="OpEditWindow" Height="342.032" Width="671.497" WindowStartupLocation="CenterScreen">
+	<Grid Margin="0,0,2,0">
+		<Button x:Name="btCancel" Content="Cancel" HorizontalAlignment="Left" Margin="462,177,0,0" VerticalAlignment="Top" Width="75" Click="btCancel_Click"/>
+		<Button x:Name="btOk" Content="Ok" HorizontalAlignment="Left" Margin="553,177,0,0" VerticalAlignment="Top" Width="75" Click="btOk_Click"/>
+		<TextBox x:Name="tbNota" HorizontalAlignment="Left" Height="23" Margin="508,47,-14,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="144"/>
+		<DatePicker x:Name="dpData" HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top"/>
+		<TextBox x:Name="tbDescrizione" HorizontalAlignment="Left" Height="23" Margin="159,46,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="344"/>
+		<TextBox x:Name="tbImporto" HorizontalAlignment="Left" Height="23" Margin="10,123,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="144" RenderTransformOrigin="2.125,0.304"/>
+		<CheckBox x:Name="chkConsuntivo" Content="Consuntivo" HorizontalAlignment="Left" Margin="508,92,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.017,-0.608"/>
+		<CheckBox x:Name="chkVerificato" Content="Verificato" HorizontalAlignment="Left" Margin="508,123,0,0" VerticalAlignment="Top" />
+		<ComboBox x:Name="cbTipo" HorizontalAlignment="Left" Margin="159,124,0,0" VerticalAlignment="Top" Width="77"/>
+		<TextBox x:Name="tbConti" HorizontalAlignment="Left" Height="23" Margin="225,196,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="210" GotFocus="tbConti_GotFocus"/>
+		<Label x:Name="label" Content="Data operazione" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" Width="144"/>
+		<Label x:Name="label1" Content="Descrizione operazione" HorizontalAlignment="Left" Margin="159,15,0,0" VerticalAlignment="Top" Width="344"/>
+		<Label x:Name="label2" Content="Note" HorizontalAlignment="Left" Margin="508,15,0,0" VerticalAlignment="Top" Width="120"/>
+		<Label x:Name="label3" Content="Importo" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="144"/>
+		<Label x:Name="label3_Copy" Content="Tipo" HorizontalAlignment="Left" Margin="159,92,0,0" VerticalAlignment="Top" Width="77"/>
+		<Label x:Name="label3_Copy1" Content="Operazione&#xD;&#xA;standard" HorizontalAlignment="Left" Margin="241,76,0,0" VerticalAlignment="Top" Width="76"/>
+		<Label x:Name="label3_Copy2" Content="Conti&#xD;&#xA;(con segno)" HorizontalAlignment="Left" Margin="322,76,0,0" VerticalAlignment="Top" Width="76"/>
+		<ComboBox x:Name="cbOperazioniStandard" HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top" Width="210" Height="23"/>
 
 	</Grid>
 </Window>

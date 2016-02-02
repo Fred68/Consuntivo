@@ -15,7 +15,11 @@ namespace WPF02
 			get {return _id; }
 			set { _id = value; }
 			}
-		public string descrizione { get; set; }
+		public override string descrizione
+			{
+			get { return _des; }
+			set { _des = value; }
+			}
 		public string conti
 			{
 			get { return getConti(); }

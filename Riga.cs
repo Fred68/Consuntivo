@@ -27,12 +27,17 @@ namespace WPF02
 												Separatore.line,
 												Separatore.header};
 			}
-		public enum Tipo { P, A, N };		// Operazione. A:imposta il conto. P:somma o sottrae, N:non fa nulla
+		public enum Tipo { P, A, N };       // Operazione. A:imposta il conto. P:somma o sottrae, N:non fa nulla
 
-		public const string strTrue =  "v";
+		public const string strTrue = "v";
 		public const string strFalse = "x";
 
-		protected int _id;									// Numero identificativo unico
+		protected int _id;										// Numero identificativo unico
+			// Non implemente la proprietà astratta:
+			// public abstract int numero { get; set; }
+			// perchè non usata in alcune classi derivate
+		protected string _des;									// Descrizione
+		public abstract string descrizione { get; set;}			// Proprietà astratta
 
 		// Metodi da implementare nelle classi derivate
 		public abstract bool FromString(string str);			// Importa i dati da una stringa

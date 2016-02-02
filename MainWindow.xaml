@@ -23,6 +23,9 @@
 				<MenuItem Header="Disable log" Click="DisableLog_Click"/>
 				<MenuItem Header="Clear log" Click="ClearLog_Click"/>
 			</MenuItem>
+			<MenuItem Header="Filtra">
+				<MenuItem Header="Imposta filtro" Click="Set_Filter"/>
+			</MenuItem>
 			<MenuItem Header="Calcola">
 				<MenuItem Header="Check" Click="Check_Click"/>
 				<MenuItem Header="View error" Click="ViewError_Click"/>
@@ -37,10 +40,10 @@
 					<Button x:Name="pausa" Content="Pausa" HorizontalAlignment="Left" Height="24" Margin="10,26,0,0" VerticalAlignment="Top" Width="48" Click="buttonPausa_Click"/>
 					<Button x:Name="vediProprieta" Content="Vedi proprietà" HorizontalAlignment="Left" Height="24" Margin="63,26,0,0" VerticalAlignment="Top" Width="89" IsDefault="True" Click="buttonVediProprieta_Click"/>
 					<Button x:Name="listaOperazioni" Content="Lista Operazioni" HorizontalAlignment="Left" Height="24" Margin="157,26,0,0" VerticalAlignment="Top" Width="114" IsDefault="True" Click="listaOperazioni_Click"/>
-					<Button x:Name="Filtra" Content="Filtra" HorizontalAlignment="Left" Height="24" Margin="276,26,0,0" VerticalAlignment="Top" Width="55" IsDefault="True" Click="Filtra_Click"/>
-					<Button x:Name="VediMsg" Content="Vedi msg" HorizontalAlignment="Left" Height="24" Margin="336,26,0,0" VerticalAlignment="Top" Width="55" IsDefault="True" Click="VediMsg_Click"/>
-					<Button x:Name="editSelected" Content="Modifica" HorizontalAlignment="Left" Height="24" Margin="396,26,0,0" VerticalAlignment="Top" Width="62" Click="editSelected_Click"/>
-					<Button x:Name="Inserisci" Content="Inserisci" HorizontalAlignment="Left" Height="24" Margin="463,26,0,0" VerticalAlignment="Top" Width="77" Click="Inserisci_Click"/>
+					<Button x:Name="Filtra" Content="Applica filtro" HorizontalAlignment="Left" Height="24" Margin="276,26,0,0" VerticalAlignment="Top" Width="76" IsDefault="True" Click="Filtra_Click"/>
+					<Button x:Name="VediMsg" Content="Vedi msg" HorizontalAlignment="Left" Height="24" Margin="356,26,0,0" VerticalAlignment="Top" Width="56" IsDefault="True" Click="VediMsg_Click"/>
+					<Button x:Name="editSelected" Content="Modifica" HorizontalAlignment="Left" Height="24" Margin="416,26,0,0" VerticalAlignment="Top" Width="62" Click="editSelected_Click"/>
+					<Button x:Name="Inserisci" Content="Inserisci" HorizontalAlignment="Left" Height="24" Margin="484,26,0,0" VerticalAlignment="Top" Width="76" Click="Inserisci_Click"/>
 				</Grid>
 			</TabItem>
 			<TabItem Header="Conti">

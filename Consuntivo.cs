@@ -20,7 +20,11 @@ namespace WPF02
 			get { return getData(); }
 			set { setData(value); }
 			}
-		public string descrizione { get; set; }
+		public override string descrizione
+			{
+			get { return _des; }
+			set { _des = value; }
+			}
 		public decimal importo { get; set; }
 		public bool consuntivo { get; set; }
 		public bool verificato { get; set; }

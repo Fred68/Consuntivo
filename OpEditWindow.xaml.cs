@@ -23,11 +23,15 @@ namespace WPF02
 	public partial class OpEditWindow : Window
 		{
 		Operazione op;
+		Operazioni ops;
 
-		public OpEditWindow(ref Operazione op)
+		static string SepNomiOps = "- ";
+
+		public OpEditWindow(ref Operazione op, ref Operazioni ops)
 			{
 			InitializeComponent();
 			this.op = op;
+			this.ops = ops;
 			setText();
 			}
 		public void setText()
@@ -44,7 +48,6 @@ namespace WPF02
 				}
 			tbTesto.Text = strb.ToString();
 			#endif
-
 			tbNota.Text = op.nota;
 			dpData.SelectedDate = op.getData(true);
 			tbDescrizione.Text = op.descrizione;
@@ -56,8 +59,45 @@ namespace WPF02
 				cbTipo.Items.Add(tp);
 				}
 			cbTipo.SelectedValue = op.tipo;
-			tbOperazioneStandard.Text = op.tipostd.ToString();
+			FillListOpStandard();
 			tbConti.Text = op.conti;
+			
+			tbConti.IsReadOnly = true;
+			cbOperazioniStandard.IsReadOnly = true;
+
+			}
+		void FillListOpStandard()
+			{
+			cbOperazioniStandard.Items.Clear();
+			object selectedItem = null;
+			foreach(OpStandard x in ops.OpStandard())
+				{
+				string item = x.numero + OpEditWindow.SepNomiOps + x.descrizione;
+				cbOperazioniStandard.Items.Add(item);
+				if (x.numero == op.tipostd)
+					selectedItem = item;
+				}
+			if(selectedItem != null)
+				cbOperazioniStandard.SelectedItem = selectedItem;
+			}
+		int FindOpStandardSelezionata()
+			{
+			int nsel = -1;
+			if (cbOperazioniStandard.SelectedIndex != -1)
+				{
+				string str = cbOperazioniStandard.SelectedItem.ToString();
+				int i = str.IndexOf(OpEditWindow.SepNomiOps);
+				if (i != -1)
+					{
+					int tmp;
+					string ns = str.Substring(0, i);
+					if (int.TryParse(ns, out tmp))
+						{
+						nsel = int.Parse(ns);
+						}
+					}
+				}
+			return nsel;
 			}
 		private void btCancel_Click(object sender, RoutedEventArgs e)
 			{
@@ -67,15 +107,54 @@ namespace WPF02
 		private void btOk_Click(object sender, RoutedEventArgs e)
 			{
 			op.nota = tbNota.Text;
-			op.setData(dpData.DisplayDate);
+			DateTime tmp;
+			if (dpData.SelectedDate != null)
+				{
+				tmp = (DateTime)dpData.SelectedDate;
+				op.setData(tmp);
+				}
 			op.descrizione = tbDescrizione.Text;
 			op.importo = Riga.String2DecimalOrZero(tbImporto.Text);
 			op.consuntivo = ((bool)chkConsuntivo.IsChecked) ? true : false;
 			op.verificato = ((bool)chkVerificato.IsChecked) ? true : false;
 			op.tipo = (Operazione.Tipo)cbTipo.SelectedIndex;
-			op.tipostd = Riga.String2IntOrZero(tbOperazioneStandard.Text);
+			int opsSel = FindOpStandardSelezionata();
+			if(opsSel != -1)
+				op.tipostd = opsSel;
 			op.conti = tbConti.Text;
-		   Close();
+			Close();
+			}
+
+		private void tbConti_GotFocus(object sender, RoutedEventArgs e)
+			{
+			List<CheckItem> lchk;
+			ListWindow w = new ListWindow(ops, out lchk, op);
+			bool? res = w.ShowDialog();
+			if (res.HasValue && res.Value == true)
+				{
+				StringBuilder strb = new StringBuilder();
+				bool first = true;
+				foreach (CheckItem it in lchk)
+					{
+					if(it.check == true)
+						{
+						if (!first)
+							{
+							strb.Append(" ");
+							}
+						else
+							{
+							first = false;
+							}
+						if (it.sottrai == true)
+							strb.Append("-");
+						strb.Append(it.number.ToString());
+						}
+					}
+				tbConti.Text = strb.ToString();
+				//MessageBox.Show(strb.ToString());
+				}
+			Keyboard.ClearFocus();          // Toglie la selezione della casella
 			}
 		}
 	}

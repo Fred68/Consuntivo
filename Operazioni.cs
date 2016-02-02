@@ -12,7 +12,7 @@ using System.Linq;							// Per Collection<>.OrderBy
 namespace WPF02
 	{
 	public delegate void StatusChangedHandler();
-	class Operazioni
+	public class Operazioni
 		{
 		enum readStat { Indefinito, Operazioni, Conti, OpStandard };
 		enum checkType { Conti_Unique, OpStandard_Unique, Op_ContiValid, Op_OpStdValid, OpStd_ContiValid };
@@ -25,12 +25,7 @@ namespace WPF02
 			{ get; set; }
 		ObservableCollection<OpStandard> opStdTotali					// Tutte le operazioni standard
 			{ get; set; }
-
-		//Dictionary<int, ObservableCollection<Consuntivo>> dicConsuntivi	// Tutti i consuntivi
-		//	{ get; set; }
-		//ObservableCollection<Consuntivo> consTotali                     // Solo i consuntivi del conto scelto
-		//	{ get; set; }
-		//ObservableCollection<Consuntivo> empty;
+		
 
 		Dictionary<int, List<Consuntivo>> dicConsuntivi	// Tutti i consuntivi
 			{ get; set; }
@@ -49,6 +44,8 @@ namespace WPF02
 		List<string> lstLog;
 		List<string> lstErr;
 
+		public Filtro filtro;
+
 		#region PROPRIETA
 		public bool LogAbilitato { get; set; }
 		public ObservableCollection<Operazione> operazioni
@@ -66,11 +63,11 @@ namespace WPF02
 			get { return opStdTotali; }
 			set { opStdTotali = value; }
 			}
-		public List<Consuntivo> consuntivi
-			{
-			get { return consTotali; }
-			set { consTotali = value; }
-			}
+		//public List<Consuntivo> consuntivi
+		//	{
+		//	get { return consTotali; }
+		//	set { consTotali = value; }
+		//	}
 		public bool status
 			{
 			get { return bStatusOk; }
@@ -100,27 +97,30 @@ namespace WPF02
 
 		void opChanged(object sender, NotifyCollectionChangedEventArgs e)
 			{
-			StringBuilder strb = new StringBuilder();
-			if (e.NewItems != null)
+			if(opVisibiliChangedEventEnabled)
 				{
-				if (LogAbilitato)
-					strb.Append("Aggiunti " + e.NewItems.Count + " elementi");
-				foreach (Operazione op in e.NewItems)
+				StringBuilder strb = new StringBuilder();
+				if (e.NewItems != null)
 					{
-					opTotali.Add(op);
+					if (LogAbilitato)
+						strb.Append("Aggiunti " + e.NewItems.Count + " elementi");
+					foreach (Operazione op in e.NewItems)
+						{
+						opTotali.Add(op);
+						}
 					}
-				}
-			if (e.OldItems != null)
-				{
-				if (LogAbilitato)
-					strb.Append("Rimossi " + e.OldItems.Count + " elementi");
-				foreach (Operazione op in e.OldItems)
+				if (e.OldItems != null)
 					{
-					opTotali.Remove(op);
+					if (LogAbilitato)
+						strb.Append("Rimossi " + e.OldItems.Count + " elementi");
+					foreach (Operazione op in e.OldItems)
+						{
+						opTotali.Remove(op);
+						}
 					}
+				if (LogAbilitato)
+					lstLog.Add(strb.ToString());
 				}
-			if (LogAbilitato)
-				lstLog.Add(strb.ToString()/*+"\t"+sender.ToString()*/);
 			}
 		void cntChanged(object sender, NotifyCollectionChangedEventArgs e)
 			{
@@ -130,11 +130,13 @@ namespace WPF02
 			{
 			#warning DA SCRIVERE...
 			}
+		bool opVisibiliChangedEventEnabled;
 
 		public Operazioni()
 			{
 			opTotali = new ObservableCollection<Operazione>();
 			opVisibili = new ObservableCollection<Operazione>();
+			opVisibiliChangedEventEnabled = true;
 			opVisibili.CollectionChanged += opChanged;
 			cntTotali = new ObservableCollection<Conto>();
 			cntTotali.CollectionChanged += cntChanged;
@@ -152,6 +154,8 @@ namespace WPF02
 			lstLog = new List<string>();
 			lstErr = new List<string>();
 			LogAbilitato = false;
+
+			filtro = new Filtro();
 			}
 
 		public void setDatiGrid(DataGrid dgOperazioni, DataGrid dgConti, DataGrid dgOpStandard, DataGrid dgConsuntivi)
@@ -206,7 +210,24 @@ namespace WPF02
 			{
 			return lstErr.Count;
 			}
-
+		public IEnumerable<List<Consuntivo>> ListeConsuntivi()
+			{
+			foreach (List<Consuntivo> lc in dicConsuntivi.Values)
+				yield return lc;
+			yield break;
+			}
+		public IEnumerable<OpStandard> OpStandard()
+			{
+			foreach (OpStandard ops in opStandard)
+				yield return ops;
+			yield break;
+			}
+		public IEnumerable<Conto> Conti()
+			{
+			foreach (Conto cnt in cntTotali)
+				yield return cnt;
+			yield break;
+			}
 		public void CancellaLog()
 			{
 			lstLog.Clear();
@@ -431,7 +452,7 @@ namespace WPF02
 			return ret;
 			}
 
-		#region RICERCA
+		#region RICERCA e FILTRO
 		public OpStandard FindOpStandard(int numero)	// Cerca OpStandard, null se non trovata
 			{
 			OpStandard found = null;
@@ -457,6 +478,27 @@ namespace WPF02
 					}
 				}
 			return found;
+			}
+		public void ApplicaFiltro()
+			{
+			opVisibiliChangedEventEnabled = false;
+			opVisibili.Clear();
+			foreach(Operazione op in opTotali)
+				{
+				if (filtro.Check(op))
+					opVisibili.Add(op);
+				}
+			opVisibiliChangedEventEnabled = true;
+			filtro.IsAttivo = true;
+			}
+		public void CancellaFiltro()
+			{
+			opVisibiliChangedEventEnabled = false;
+			opVisibili.Clear();
+			foreach (Operazione op in opTotali)
+				opVisibili.Add(op);
+			opVisibiliChangedEventEnabled = true;
+			filtro.IsAttivo = false;
 			}
 		#endregion
 
@@ -634,7 +676,6 @@ namespace WPF02
 						throw new Exception("Fallita generazione consuntivi");
 						}
 					// Calcola i totali dei consuntivi
-					#warning DA SCRIVERE
 					foreach(List<Consuntivo> lcons in dicConsuntivi.Values)
 						{
 						decimal totale = 0;

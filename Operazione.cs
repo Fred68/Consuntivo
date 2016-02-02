@@ -8,7 +8,6 @@ namespace WPF02
 #warning VEDERE SE IMPOSTARE IL FLAG modificato=true AD OGNI SET
 	public class Operazione : Riga, IComparable
         {
-		// public enum Tipo { P, A, N };
 		List<int> cnt;
 		DateTime dt;
 		public const int CAMPI = 9;
@@ -20,8 +19,12 @@ namespace WPF02
 			get { return getData(); }
 			set { setData(value); }
 			}
-		public string descrizione { get; set; }
-        public decimal importo { get; set; }
+		public override string descrizione
+			{
+			get { return _des; }
+			set { _des = value; }
+			}
+		public decimal importo { get; set; }
         public bool consuntivo { get; set; }
         public bool verificato { get; set; }
         public Tipo tipo { get; set; }
@@ -213,7 +216,9 @@ namespace WPF02
 				throw new ArgumentException("obj non è una Operazione");
 			return this.dt.CompareTo(op.dt);
 			}
-		string getConti()							// Ottiene la string con la lista dei conti
+		
+			
+			string getConti()							// Ottiene la string con la lista dei conti
             {
 			return ListInt2String(cnt);
             }

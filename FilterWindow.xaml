@@ -1,0 +1,40 @@
+﻿<Window x:Class="WPF02.FilterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF02"
+        mc:Ignorable="d"
+        Title="FilterWindow" Height="291.894" Width="527.34">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="27*"/>
+			<ColumnDefinition Width="139*"/>
+		</Grid.ColumnDefinitions>
+		<Label x:Name="label" Content="Nota" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="85" Height="26"/>
+		<Label x:Name="label_Copy" Content="Data" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="85" Height="26"/>
+		<Label x:Name="label_Copy1" Content="Descrizione" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="85" Height="26"/>
+		<Label x:Name="label_Copy2" Content="Importo" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Width="85" Height="26"/>
+		<Label x:Name="label_Copy3" Content="Consuntivo" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Width="85" Height="26"/>
+		<Label x:Name="label_Copy4" Content="Verificato" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="85" Height="26"/>
+		<Label x:Name="label_Copy5" Content="Tipo" HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top" Width="85" Height="26"/>
+		<Label x:Name="label_Copy6" Content="da:" HorizontalAlignment="Left" Margin="10,39,0,0" VerticalAlignment="Top" Width="26" Grid.Column="1" Height="26"/>
+		<DatePicker x:Name="dtFrom" HorizontalAlignment="Left" Margin="41,40,0,0" VerticalAlignment="Top" Grid.Column="1" Height="24" Width="144"/>
+		<DatePicker x:Name="dtTo" HorizontalAlignment="Left" Margin="240,41,0,0" VerticalAlignment="Top" Grid.Column="1" Height="24" Width="144"/>
+		<Label x:Name="label_Copy7" Content="a:" HorizontalAlignment="Left" Margin="209,40,0,0" VerticalAlignment="Top" Width="26" Grid.Column="1" Height="26"/>
+		<Label x:Name="label_Copy8" Content="da:" HorizontalAlignment="Left" Margin="10,102,0,0" VerticalAlignment="Top" Width="26" Grid.Column="1" Height="26"/>
+		<Label x:Name="label_Copy9" Content="a:" HorizontalAlignment="Left" Margin="209,103,0,0" VerticalAlignment="Top" Width="26" Grid.Column="1" Height="26"/>
+		<TextBox x:Name="tbNota" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="41,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="343"/>
+		<TextBox x:Name="tbDescrizione" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="41,72,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="343"/>
+		<TextBox x:Name="tbImportoMin" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="41,107,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="144"/>
+		<TextBox x:Name="tbImportoMax" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="240,107,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="144"/>
+		<CheckBox x:Name="chkConsuntivo" Grid.Column="1" HorizontalAlignment="Left" Margin="41,140,0,0" VerticalAlignment="Top" Width="71"/>
+		<CheckBox x:Name="chkVerificato" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="41,171,0,0" VerticalAlignment="Top" Width="71"/>
+		<ComboBox x:Name="cbTipo" Grid.Column="1" HorizontalAlignment="Left" Margin="41,200,0,0" VerticalAlignment="Top" Width="52"/>
+		<ComboBox x:Name="cbCondizione" Grid.Column="1" HorizontalAlignment="Left" Margin="209,164,0,0" VerticalAlignment="Top" Width="175"/>
+		<Button x:Name="btOK" Content="OK" Grid.Column="1" HorizontalAlignment="Left" Margin="304,200,0,0" VerticalAlignment="Top" Width="80" Click="btOK_Click"/>
+		<Button x:Name="btReset" Content="Reset" Grid.Column="1" HorizontalAlignment="Left" Margin="219,200,0,0" VerticalAlignment="Top" Width="80" Click="btReset_Click"/>
+		<Button x:Name="btAnnulla" Content="Annulla" Grid.Column="1" HorizontalAlignment="Left" Margin="134,200,0,0" VerticalAlignment="Top" Width="80" Click="btAnnulla_Click"/>
+
+	</Grid>
+</Window>

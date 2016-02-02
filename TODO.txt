@@ -2,7 +2,9 @@
 DA FARE
 
 ok	priorità	in corso	Descrizione
-_	____		_			___________________________________________________________________________________________________
+_______________________________________________________________________________________________________________________________
+ COMPLETATO
+_______________________________________________________________________________________________________________________________
 v		 					Errore se Save con Editing in corso in datagrid. Chiudere prima di save (CommitEdit e CancelEdit)
 v							Creare prima versione incompleta su GitHub
 v							Aggiungere una voce di menù per il check
@@ -16,30 +18,45 @@ v							Identificare il numero di conto selezionato nella combobox
 v							Creare le funzioni di calcolo principali
 v							Ordinamento per data, per generare i consuntivi, su List<>, non su ObservableCollection<>
 v							Aggiungere calcolo dei residui dei consuntivi.
+v							Correggere ordinamento nelle grid per data. Formato data xxxx/yy/zz, con due cifre sembra ok.
+v							Errata lettura da datePicker (giorni)
+v							Aggiungere nuovo tipo di dato (derivato da riga) per i conti parziali (data, conto, residuo...)
+v							Aggiungere lista di consuntivo (oppure lista di liste)
+v							Aggiungere finestra dinamica per l'input di conti e operazioni standard. Aggiungere i segni dei conti !
+
+_______________________________________________________________________________________________________________________________
+ VERIFICHE
+_______________________________________________________________________________________________________________________________
+-	v						Verificare le larghezze delle colonne (solo per print ?)
+-	v						Verificare salvataggio e caricamento file, se tutto ok
+-	v						Verificare funzionalità delle varie finestre
+-	v						Dopo modifica dataGrid, cliccando su X, check su dati non aggiornati. Verificare
+-	v						Verificare layout e grafica, migliorare dove è necessario
+-	v						Verificare le funzioni di calcolo
+
+_______________________________________________________________________________________________________________________________
+ DA FARE
 _______________________________________________________________________________________________________________________________
 -	+						Completare print delle operazioni standard (mettere tra #if la stampa dei tipi)
 -	+						Completare print dei consuntivi
 -							Dopo l'edit con finestra, la visualizzazione del datagrid non viene aggiornata subito
--							Verificare le larghezze delle colonne (solo per print ?)
 -							Print preview			
--	+						Verificare salvataggio e caricamento file, se tutto ok
--							Aggiungere salvataggio criptato (creare classe AES) e opzione
--							Aggiungere secondo salvataggio (criptato o no) in locazione nota, configurabile (es.: dropbox)
--	+						Aggiungere finestra dinamica per l'input di conti, operazioni standard
--	++						Riordinare finestra di input di un'operazione e aggiungere descrizioni
-
--							Aggiungere filtro (modificare finestra di input di un'operazione, unica con elementi attivi e non)
--							Permettere più finestre con windows.show(), lista Opvisibili, handler con lista finestre aperte
-v							Aggiungere nuovo tipo di dato (derivato da riga) per i conti parziali (data, conto, residuo...)
-v							Aggiungere lista di consuntivo (oppure lista di liste)
--	+						Aggiungere stampa dei conti parziali
+-	++++					Scrivere classe o estendere string per ricerca testo con wildcard usando probabilmente Regex
+-	+++						Aggiungere classe Filtro per creare una lista di filtri (con && e ||)
+-	++						Creare la dialog di input dei filtri
+-	+						Aggiungere filtro
+-							Aggiungere stampa dei conti parziali
 -							Dare feedback se il log dei messaggi è attivo
--	+						Completare i controlli di errore con eventuali altre verifiche
+-							Completare i controlli di errore con eventuali altre verifiche
 -							Permettere la visualizzazione della lista degli errori in un'altra finestra
--	+						Eseguire il check dopo ogni inserimento (o almeno i controlli specifici)
+-							Eseguire il check dopo ogni inserimento (o almeno i controlli specifici)
 -							Aggiungere flag 3 stati sui conti per segnalare superamento soglia (negativo, positivo o disattivato)
 -							Completare calcolo dei residui dei consuntivi con verifica se superamento soglia
--	+						Provare dopo completamento funzioni di calcolo
--							Dopo modifica dataGrid, cliccando su X, check su dati non aggiornati.
 -							Aggiungere un Undo, almeno per l'ultima operazione
--	++++					Correggere ordinamento nelle grid per data. Formato data xxxx/yy/zz, sempre due cifre !
+
+_______________________________________________________________________________________________________________________________
+MIGLIORIE FUTURE
+_______________________________________________________________________________________________________________________________
+-							Aggiungere salvataggio criptato (creare classe AES) e opzione
+-							Aggiungere secondo salvataggio (criptato o no) in locazione nota, configurabile (es.: dropbox)
+-							Permettere più finestre con windows.show(), lista Opvisibili, handler con lista finestre aperte

@@ -15,4 +15,7 @@ D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Release\Test.g.cs
 D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Release\Test.baml
 D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Release\OpEditWindow.g.cs
 D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Release\OpEditWindow.baml
-D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Release\WPF02.csprojResolveAssemblyReference.cache
+D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Release\ListWindow.g.cs
+D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Release\ListWindow.baml
+D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Release\FilterWindow.g.cs
+D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Release\FilterWindow.baml
