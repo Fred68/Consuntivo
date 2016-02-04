@@ -32,6 +32,8 @@ namespace WPF02
 			InitializeComponent();
 			this.op = op;
 			this.ops = ops;
+			this.btCancel.IsCancel = true;
+			this.btOk.IsDefault = true;
 			setText();
 			}
 		public void setText()

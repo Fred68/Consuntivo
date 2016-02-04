@@ -23,6 +23,13 @@ v							Errata lettura da datePicker (giorni)
 v							Aggiungere nuovo tipo di dato (derivato da riga) per i conti parziali (data, conto, residuo...)
 v							Aggiungere lista di consuntivo (oppure lista di liste)
 v							Aggiungere finestra dinamica per l'input di conti e operazioni standard. Aggiungere i segni dei conti !
+v							Scrivere classe o estendere string per ricerca testo con wildcard usando probabilmente Regex
+v							Aggiungere classe Filtro per creare una lista di filtri (con && e ||)
+v							Creare la dialog di input dei filtri
+v							Aggiungere filtro
+v							Aggiungere flag 3 stati sui conti per segnalare problemi (negativo, positivo o disattivato)
+v							Completare calcolo dei residui dei consuntivi con verifica se superamento soglia
+v							Permettere la visualizzazione della lista degli errori in un'altra finestra
 
 _______________________________________________________________________________________________________________________________
  VERIFICHE
@@ -37,22 +44,17 @@ ________________________________________________________________________________
 _______________________________________________________________________________________________________________________________
  DA FARE
 _______________________________________________________________________________________________________________________________
--	+						Completare print delle operazioni standard (mettere tra #if la stampa dei tipi)
+-	+						Completare print delle operazioni standard (mettere tra #if la stampa dei tipi).
+-	+						Correggere print delle operazioni standard, non stampa il numero.
 -	+						Completare print dei consuntivi
 -							Dopo l'edit con finestra, la visualizzazione del datagrid non viene aggiornata subito
 -							Print preview			
--	++++					Scrivere classe o estendere string per ricerca testo con wildcard usando probabilmente Regex
--	+++						Aggiungere classe Filtro per creare una lista di filtri (con && e ||)
--	++						Creare la dialog di input dei filtri
--	+						Aggiungere filtro
--							Aggiungere stampa dei conti parziali
+-							Aggiungere stampa dei consuntivi
 -							Dare feedback se il log dei messaggi è attivo
 -							Completare i controlli di errore con eventuali altre verifiche
--							Permettere la visualizzazione della lista degli errori in un'altra finestra
 -							Eseguire il check dopo ogni inserimento (o almeno i controlli specifici)
--							Aggiungere flag 3 stati sui conti per segnalare superamento soglia (negativo, positivo o disattivato)
--							Completare calcolo dei residui dei consuntivi con verifica se superamento soglia
 -							Aggiungere un Undo, almeno per l'ultima operazione
+-	+						Dopo un New o prima di un Open, cancellare gli item dei datagrid (in particolare dei consuntivi).
 
 _______________________________________________________________________________________________________________________________
 MIGLIORIE FUTURE

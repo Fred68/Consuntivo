@@ -10,11 +10,11 @@ namespace WPF02
 	{
 	public class Consuntivo : Riga
 		{
-		// public enum Tipo { P, A, N };
 		DateTime dt;
-		public const int CAMPI = 7;
+		public const int CAMPI = 8;
 
 		#region PROPERTIES
+		public bool err { get; set; }
 		public string data
 			{
 			get { return getData(); }
@@ -47,6 +47,7 @@ namespace WPF02
 			larghezze["verificato"].larghezzaColonna = 20;
 			larghezze["tipo"].larghezzaColonna = 20;
 			larghezze["totale"].larghezzaColonna = 100;
+			larghezze["err"].larghezzaColonna = 20;
 			}
 		public Consuntivo()
 			{
@@ -55,8 +56,9 @@ namespace WPF02
 			importo = 0;
 			totale = 0;
 			tipo = Tipo.P;
+			err = false;
 			}
-		public Consuntivo(DateTime data, string descrizione, decimal importo, Tipo tipo, decimal totale, bool consuntivo, bool verificato)
+		public Consuntivo(DateTime data, string descrizione, decimal importo, Tipo tipo, decimal totale, bool consuntivo, bool verificato, bool err)
 			{
 			this.dt = data;
 			this.descrizione = descrizione;
@@ -65,6 +67,7 @@ namespace WPF02
 			this.totale = totale;
 			this.consuntivo = consuntivo;
 			this.verificato = verificato;
+			this.err = err;
 			}
 		public override string Intestazione()
 			{
@@ -79,7 +82,8 @@ namespace WPF02
 			strb.Append((consuntivo ? Consuntivo.strTrue : Consuntivo.strFalse) + Separatore.field);
 			strb.Append((verificato ? Consuntivo.strTrue : Consuntivo.strFalse) + Separatore.field);
 			strb.Append(tipo.ToString() + Separatore.field);
-			strb.Append(totale.ToString(/*"C"*/));
+			strb.Append(totale.ToString(/*"C"*/) + Separatore.field);
+			strb.Append((err ? Consuntivo.strTrue : Consuntivo.strFalse));
 			return strb.ToString();
 			}
 		public override bool FromString(string str)
@@ -107,6 +111,7 @@ namespace WPF02
 					conv[5] = false;
 					}
 				tmp.totale = Consuntivo.String2DecimalOrZero(cmp[6], out conv[6]);
+				tmp.err = ((cmp[7] == Consuntivo.strTrue.ToString()) ? true : false);
 				ok = true;
 				if (Array.Exists(conv, el => el == false))
 					{
@@ -121,6 +126,7 @@ namespace WPF02
 					this.verificato = tmp.verificato;
 					this.tipo = tmp.tipo;
 					this.totale = tmp.totale;
+					this.err = tmp.err;
 					}
 				}
 			return ok;

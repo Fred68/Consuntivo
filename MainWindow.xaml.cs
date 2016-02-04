@@ -28,6 +28,9 @@ namespace WPF02
         {
 		static string SepNomiConti = "- ";
 
+		int headerSize = 10;
+		int textSize = 10;
+
 		Operazioni operazioni;
 
 		public MainWindow()
@@ -126,7 +129,7 @@ namespace WPF02
 			{
 			doc.ColumnWidth = doc.MaxPageWidth = pageSize.Width;
 			doc.MaxPageHeight = pageSize.Height;
-			
+
 			// Stampa le Operazioni
 			Operazione nouse = new Operazione();
 			Table tOp = new Table();
@@ -143,7 +146,7 @@ namespace WPF02
 			
 			TableRow rowint = new TableRow();
 			rowint.Background = Brushes.Transparent;
-			rowint.FontSize = 12;
+			rowint.FontSize = headerSize;
 			rowint.FontWeight = FontWeights.Bold;
 			foreach (string str in nouse.Titoli())
 				{
@@ -156,7 +159,7 @@ namespace WPF02
 
 			TableRow rowtyp = new TableRow();
 			rowtyp.Background = Brushes.Transparent;
-			rowtyp.FontSize = 12;
+			rowtyp.FontSize = headerSize;
 			rowtyp.FontWeight = FontWeights.Bold;
 			#if false
 			foreach (TipoColonna str in nouse.Tipi())
@@ -173,7 +176,7 @@ namespace WPF02
 				{
 				TableRow row = new TableRow();
 				row.Background = Brushes.Transparent;
-				row.FontSize = 10;
+				row.FontSize = textSize;
 				row.FontWeight = FontWeights.Normal;
 				foreach (string str in op.Valori())
 					{
@@ -207,7 +210,7 @@ namespace WPF02
 
 			TableRow rowintC = new TableRow();
 			rowintC.Background = Brushes.Transparent;
-			rowintC.FontSize = 12;
+			rowintC.FontSize = headerSize;
 			rowintC.FontWeight = FontWeights.Bold;
 			foreach (string str in nouseC.Titoli())
 				{
@@ -220,7 +223,7 @@ namespace WPF02
 
 			TableRow rowtypC = new TableRow();
 			rowtypC.Background = Brushes.Transparent;
-			rowtypC.FontSize = 12;
+			rowtypC.FontSize = headerSize;
 			rowtypC.FontWeight = FontWeights.Bold;
 			#if false
 			foreach (TipoColonna str in nouseC.Tipi())
@@ -237,7 +240,7 @@ namespace WPF02
 				{
 				TableRow row = new TableRow();
 				row.Background = Brushes.Transparent;
-				row.FontSize = 10;
+				row.FontSize = textSize;
 				row.FontWeight = FontWeights.Normal;
 				foreach (string str in op.Valori())
 					{
@@ -271,7 +274,7 @@ namespace WPF02
 
 			TableRow rowintS = new TableRow();
 			rowintS.Background = Brushes.Transparent;
-			rowintS.FontSize = 12;
+			rowintS.FontSize = headerSize;
 			rowintS.FontWeight = FontWeights.Bold;
 			foreach (string str in nouseS.Titoli())
 				{
@@ -284,7 +287,7 @@ namespace WPF02
 
 			TableRow rowtypS = new TableRow();
 			rowtypS.Background = Brushes.Transparent;
-			rowtypS.FontSize = 12;
+			rowtypS.FontSize = headerSize;
 			rowtypS.FontWeight = FontWeights.Bold;
 			#if false
 			foreach (TipoColonna str in nouseS.Tipi())
@@ -301,7 +304,7 @@ namespace WPF02
 				{
 				TableRow row = new TableRow();
 				row.Background = Brushes.Transparent;
-				row.FontSize = 10;
+				row.FontSize = textSize;
 				row.FontWeight = FontWeights.Normal;
 				foreach (string str in op.Valori())
 					{
@@ -449,7 +452,9 @@ namespace WPF02
 		private void dgOperazioni_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 			{
 			ModificaElementoSelezionato();
-			dgOperazioni.CancelEdit();
+			dgOperazioni.CommitEdit();
+			// dgOperazioni.Items.Refresh();
+			dgOperazioni.InvalidateVisual();
 			}
 		private void Inserisci_Click(object sender, RoutedEventArgs e)
 			{
@@ -663,11 +668,13 @@ namespace WPF02
 		private void Check_Click(object sender, RoutedEventArgs e)
 			{
 			operazioni.Check();
+			txtErrori.Text = ViewErrors();
 			}
 		private void ViewError_Click(object sender, RoutedEventArgs e)
 			{
 			// operazioni.Check();
 			MessageBox.Show(ViewErrors());
+			
 			}
 		public void UpdateLblStatus()
 			{

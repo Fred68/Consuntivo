@@ -19,3 +19,4 @@ D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Release\ListWindow.g.cs
 D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Release\ListWindow.baml
 D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Release\FilterWindow.g.cs
 D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Release\FilterWindow.baml
+D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Release\WPF02.csprojResolveAssemblyReference.cache

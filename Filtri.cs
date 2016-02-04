@@ -23,6 +23,8 @@ namespace WPF02
 		bool? verificato;
 		Riga.Tipo? tipo;
 
+		Condizione operatoreLogico;
+
 		List<bool> test;
 
 		#region PROPRIETA
@@ -82,6 +84,11 @@ namespace WPF02
 			set { tipo = value; }
 			}
 
+		public Condizione OperatoreLogico
+			{
+			get { return operatoreLogico; }
+			set { operatoreLogico = value; }
+			}
 		public bool IsAttivo;
 		#endregion
 
@@ -122,9 +129,10 @@ namespace WPF02
 			consuntivo = verificato = null;
 			tipo = null;
 			IsAttivo = false;
+			operatoreLogico = Condizione.AND;
 			ClearTest();
 			}
-		public bool Check(Operazione op, Condizione condizione = Condizione.AND)
+		public bool Check(Operazione op)
 			{
 			bool ok = false;
 			ClearTest();
@@ -132,13 +140,13 @@ namespace WPF02
 			if (DataDa != null)			test.Add((op.getData(true) >= data[0]));
 			if (DataA != null)			test.Add((op.getData(true) <= data[1]));
 			if (descrizione != "")		test.Add(op.descrizione.ContainsWithWildcards(descrizione));
-			if (ImportoMin != null)		test.Add((op.importo >= importo[0]));
-			if (ImportoMax != null)		test.Add((op.importo <= importo[1]));
+			if (ImportoMin != null)		test.Add((Math.Abs(op.importo) >= importo[0]));
+			if (ImportoMax != null)		test.Add((Math.Abs(op.importo) <= importo[1]));
 			if (Consuntivo != null)		test.Add((op.consuntivo == consuntivo));
 			if (Verificato != null)		test.Add((op.verificato == verificato));
 			if (Tipo != null)			test.Add((op.tipo == tipo));
 
-			switch(condizione)
+			switch(OperatoreLogico)
 				{
 				case Condizione.AND:
 					ok = true;

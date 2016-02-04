@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF02"
         mc:Ignorable="d"
-        Title="OpEditWindow" Height="342.032" Width="671.497" WindowStartupLocation="CenterScreen">
-	<Grid Margin="0,0,2,0">
-		<Button x:Name="btCancel" Content="Cancel" HorizontalAlignment="Left" Margin="462,177,0,0" VerticalAlignment="Top" Width="75" Click="btCancel_Click"/>
-		<Button x:Name="btOk" Content="Ok" HorizontalAlignment="Left" Margin="553,177,0,0" VerticalAlignment="Top" Width="75" Click="btOk_Click"/>
+        Title="OpEditWindow" Height="296.032" Width="678.497" WindowStartupLocation="CenterScreen">
+	<Grid Margin="0,0,0,0">
+		<Button x:Name="btCancel" Content="Cancel" HorizontalAlignment="Left" Margin="496,181,0,0" VerticalAlignment="Top" Width="75" Click="btCancel_Click" Height="35"/>
+		<Button x:Name="btOk" Content="Ok" HorizontalAlignment="Left" Margin="576,181,0,0" VerticalAlignment="Top" Width="75" Click="btOk_Click" Height="35"/>
 		<TextBox x:Name="tbNota" HorizontalAlignment="Left" Height="23" Margin="508,47,-14,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="144"/>
 		<DatePicker x:Name="dpData" HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top"/>
 		<TextBox x:Name="tbDescrizione" HorizontalAlignment="Left" Height="23" Margin="159,46,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="344"/>
@@ -22,8 +22,8 @@
 		<Label x:Name="label2" Content="Note" HorizontalAlignment="Left" Margin="508,15,0,0" VerticalAlignment="Top" Width="120"/>
 		<Label x:Name="label3" Content="Importo" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="144"/>
 		<Label x:Name="label3_Copy" Content="Tipo" HorizontalAlignment="Left" Margin="159,92,0,0" VerticalAlignment="Top" Width="77"/>
-		<Label x:Name="label3_Copy1" Content="Operazione&#xD;&#xA;standard" HorizontalAlignment="Left" Margin="241,76,0,0" VerticalAlignment="Top" Width="76"/>
-		<Label x:Name="label3_Copy2" Content="Conti&#xD;&#xA;(con segno)" HorizontalAlignment="Left" Margin="322,76,0,0" VerticalAlignment="Top" Width="76"/>
+		<Label x:Name="label3_Copy1" Content="Operazione standard" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="210"/>
+		<Label x:Name="label3_Copy2" Content="Conti (con segno)" HorizontalAlignment="Left" Margin="225,165,0,0" VerticalAlignment="Top" Width="210" Height="26"/>
 		<ComboBox x:Name="cbOperazioniStandard" HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top" Width="210" Height="23"/>
 
 	</Grid>

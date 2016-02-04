@@ -104,7 +104,6 @@ namespace WPF02
 				{
 				Operazione tmp = new Operazione();
 				tmp.nota = cmp[0];
-				//string strtmp = cmp[1];
 				tmp.data = cmp[1];
 				tmp.descrizione = cmp[2];
 				tmp.importo = Operazione.String2DecimalOrZero(cmp[3], out conv[3]);
@@ -218,7 +217,7 @@ namespace WPF02
 			}
 		
 			
-			string getConti()							// Ottiene la string con la lista dei conti
+		string getConti()							// Ottiene la string con la lista dei conti
             {
 			return ListInt2String(cnt);
             }

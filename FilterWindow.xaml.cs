@@ -24,7 +24,6 @@ namespace WPF02
 
 		public FilterWindow(ref Filtro filtro)
 			{
-			
 			InitializeComponent();
 			
 			this.filtro = filtro;
@@ -39,6 +38,10 @@ namespace WPF02
 				}
 			cbCondizione.SelectedItem = Filtro.Condizione.AND;
 			cbTipo.SelectedItem = Riga.Tipo.P;
+			chkVerificato.IsThreeState = true;
+			chkConsuntivo.IsThreeState = true;
+			btAnnulla.IsCancel = true;
+			btOK.IsDefault = true;
 
 			ClearWindow();
 
@@ -57,11 +60,23 @@ namespace WPF02
 				tbDescrizione.Text = filtro.Descrizione;
 			if (filtro.ImportoMin != null)
 				tbImportoMin.Text = ((decimal)filtro.ImportoMin).ToString();
-			//if(filtro.Consuntivo != null)
-			//	chkConsuntivo.S
+			if (filtro.Consuntivo != null)
+				chkConsuntivo.IsChecked = filtro.Consuntivo;
+			else
+				chkConsuntivo.IsChecked = null;
+			
+			if (filtro.Verificato != null)
+				chkVerificato.IsChecked = filtro.Verificato;
+			else
+				chkVerificato.IsChecked = null;
 
-#warning COMPLETARE !!!
+#warning COMPLETARE con condizione AND / OR da aggiungere in Filtro !
 
+			if (filtro.OperatoreLogico == Filtro.Condizione.AND)
+				cbCondizione.SelectedItem = Filtro.Condizione.AND;
+			else
+				cbCondizione.SelectedItem = Filtro.Condizione.OR;
+			
 			}
 		public void ClearWindow()
 			{
@@ -77,12 +92,67 @@ namespace WPF02
 			}
 		public void SetFilter()
 			{
+			if (tbNota.Text.Length > 0)
+				filtro.Nota = tbNota.Text;
+			else
+				filtro.Nota = "";
+
+			if (dtFrom.SelectedDate != null)
+				filtro.DataDa = dtFrom.SelectedDate;
+			else
+				filtro.DataDa = null;
+
+			if (dtTo.SelectedDate != null)
+				filtro.DataA = dtTo.SelectedDate;
+			else
+				filtro.DataA = null;
+
 			if (tbDescrizione.Text.Length > 0)
 				filtro.Descrizione = tbDescrizione.Text;
 			else
 				filtro.Descrizione = "";
+
+			if (tbImportoMin.Text.Length > 0)
+				{
+				filtro.ImportoMin = Math.Abs(Riga.String2DecimalOrZero(tbImportoMin.Text));
+				}
+			else
+				filtro.ImportoMin = null;
+
+			if (tbImportoMax.Text.Length > 0)
+				{
+				filtro.ImportoMax = Math.Abs(Riga.String2DecimalOrZero(tbImportoMax.Text));
+				}
+			else
+				filtro.ImportoMax = null;
+
+
+			if (chkConsuntivo.IsChecked.HasValue)
+				{
+				if (chkConsuntivo.IsChecked == true)
+					filtro.Consuntivo = true;
+				else
+					filtro.Consuntivo = false;
+				}
+			else
+				filtro.Consuntivo = null;
+
+			if (chkVerificato.IsChecked.HasValue)
+				{
+				if (chkVerificato.IsChecked == true)
+					filtro.Verificato = true;
+				else
+					filtro.Verificato = false;
+				}
+			else
+				filtro.Verificato = null;
+
+
+
+#warning COMPLETARE con condizione AND / OR da aggiungere in Filtro
+
+			filtro.OperatoreLogico = (Filtro.Condizione)cbCondizione.SelectedIndex;
 			
-			#warning COMPLETARE !!!
 			}
 
 		private void btOK_Click(object sender, RoutedEventArgs e)

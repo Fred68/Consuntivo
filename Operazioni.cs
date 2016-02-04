@@ -663,7 +663,7 @@ namespace WPF02
 								int nca = Math.Abs(nc);             // Estrae il conto
 								int ncs = Math.Sign(nc);
 								// Crea nuova voce di consuntivo, copiando i dati dell'operazione
-								Consuntivo cns = new Consuntivo(Riga.String2DateTime(op.data), op.descrizione, (op.importo) * ncs, op.tipo, 0, op.consuntivo, op.verificato);
+								Consuntivo cns = new Consuntivo(Riga.String2DateTime(op.data), op.descrizione, (op.importo) * ncs, op.tipo, 0, op.consuntivo, op.verificato,false);
 								dicConsuntivi[nca].Add(cns);            // E la aggiunge alla lista del conto rispettivo
 								}
 							}
@@ -675,11 +675,19 @@ namespace WPF02
 						this.status = false;
 						throw new Exception("Fallita generazione consuntivi");
 						}
-					// Calcola i totali dei consuntivi
-					foreach(List<Consuntivo> lcons in dicConsuntivi.Values)
+					// Calcola i totali dei consuntivi, percorrendo, per ogni conto, la lista dei consuntivi
+					// foreach(List<Consuntivo> lcons in dicConsuntivi.Values)
+					foreach(int nc_key in dicConsuntivi.Keys)
 						{
+						List<Consuntivo> lcons = dicConsuntivi[nc_key];
 						decimal totale = 0;
 						decimal x;
+
+						Consuntivo.AlertConto alert = Consuntivo.AlertConto.Disattivo;
+						Conto tmp = FindConto(nc_key);
+						if (tmp != null)
+							alert = tmp.alert;
+
 						foreach (Consuntivo cons in lcons)
 							{
 							x = cons.importo;
@@ -695,6 +703,20 @@ namespace WPF02
 									break;
 								}
 							cons.totale = totale;
+
+							switch(alert)
+								{
+								case Consuntivo.AlertConto.Negativo:
+									if (cons.totale < 0)
+										cons.err = true;
+									break;
+								case Consuntivo.AlertConto.Positivo:
+									if (cons.totale > 0)
+										cons.err = true;
+									break;
+								default:
+									break;
+								}
 							}
 						}
 					}

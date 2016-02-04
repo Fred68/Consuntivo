@@ -28,8 +28,8 @@
 		<TextBox x:Name="tbDescrizione" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="41,72,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="343"/>
 		<TextBox x:Name="tbImportoMin" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="41,107,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="144"/>
 		<TextBox x:Name="tbImportoMax" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="240,107,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="144"/>
-		<CheckBox x:Name="chkConsuntivo" Grid.Column="1" HorizontalAlignment="Left" Margin="41,140,0,0" VerticalAlignment="Top" Width="71"/>
-		<CheckBox x:Name="chkVerificato" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="41,171,0,0" VerticalAlignment="Top" Width="71"/>
+		<CheckBox x:Name="chkConsuntivo" Grid.Column="1" HorizontalAlignment="Left" Margin="41,140,0,0" VerticalAlignment="Top" Width="71" IsThreeState="True"/>
+		<CheckBox x:Name="chkVerificato" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="41,171,0,0" VerticalAlignment="Top" Width="71" IsThreeState="True"/>
 		<ComboBox x:Name="cbTipo" Grid.Column="1" HorizontalAlignment="Left" Margin="41,200,0,0" VerticalAlignment="Top" Width="52"/>
 		<ComboBox x:Name="cbCondizione" Grid.Column="1" HorizontalAlignment="Left" Margin="209,164,0,0" VerticalAlignment="Top" Width="175"/>
 		<Button x:Name="btOK" Content="OK" Grid.Column="1" HorizontalAlignment="Left" Margin="304,200,0,0" VerticalAlignment="Top" Width="80" Click="btOK_Click"/>

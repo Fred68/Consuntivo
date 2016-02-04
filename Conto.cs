@@ -7,7 +7,8 @@ namespace WPF02
 	{
 	public class Conto : Riga
 		{
-		public const int CAMPI = 3;
+		public const int CAMPI = 4;
+
 
 		#region PROPERTIES
 		public int numero
@@ -21,6 +22,7 @@ namespace WPF02
 			set { _des = value; }
 			}
 		public string nota { get; set; }
+		public AlertConto alert { get; set; }
 		#endregion
 		public static Dictionary<string, TipoColonna> larghezze;
 
@@ -34,24 +36,29 @@ namespace WPF02
 			larghezze["numero"].larghezzaColonna = 50;
 			larghezze["descrizione"].larghezzaColonna = 150;
 			larghezze["nota"].larghezzaColonna = 200;
+			larghezze["alert"].larghezzaColonna = 50;
 			}
 		public Conto()
 			{
 			numero = 0;
 			descrizione = "-";
+			nota = "";
+			alert = AlertConto.Disattivo;
 			}
-		public Conto(int numero, string descrizione, string nota)
+		public Conto(int numero, string descrizione, string nota, AlertConto alert)
 			{
 			this.numero = numero;
 			this.descrizione = descrizione;
 			this.nota = nota;
+			this.alert = alert;
 			}
 		public override string ToString()
 			{
 			StringBuilder strb = new StringBuilder();
 			strb.Append(numero.ToString() + Separatore.field);
 			strb.Append(Conto.CleanString(descrizione) + Separatore.field);
-			strb.Append(Conto.CleanString(nota));
+			strb.Append(Conto.CleanString(nota) + Separatore.field);
+			strb.Append(alert.ToString());
 			return strb.ToString();
 			}
 		public override bool FromString(string str)
@@ -64,12 +71,24 @@ namespace WPF02
 				tmp.numero = Conto.String2IntOrZero(cmp[0]);
 				tmp.descrizione = cmp[1];
 				tmp.nota = cmp[2];
-				ok = true;
+
+				foreach (AlertConto ta in Enum.GetValues(typeof(AlertConto)))
+					{
+					if (cmp[3] == ta.ToString())
+						{
+						tmp.alert = ta;
+						ok = true;
+						break;
+						}
+					ok = false;
+					}
+
 				if (ok)
 					{
 					this.numero = tmp.numero;
 					this.descrizione = tmp.descrizione;
 					this.nota = tmp.nota;
+					this.alert = tmp.alert;
 					}
 				}
 			return ok;

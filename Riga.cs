@@ -28,6 +28,7 @@ namespace WPF02
 												Separatore.header};
 			}
 		public enum Tipo { P, A, N };       // Operazione. A:imposta il conto. P:somma o sottrae, N:non fa nulla
+		public enum AlertConto { Disattivo, Negativo, Positivo };
 
 		public const string strTrue = "v";
 		public const string strFalse = "x";
