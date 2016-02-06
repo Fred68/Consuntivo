@@ -15,7 +15,6 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;       // Per Observable collection
 using System.Windows.Markup;                // Per XMLlanguage
 using System.Globalization;                 // Per Culture info
-// using System.Windows.Documents;
 
 
 
@@ -125,216 +124,197 @@ namespace WPF02
 			else
 				this.Title = "Consuntivo " + "<nessun file>";
 			}
+		#region PRINT
 		FlowDocument FillFlowDocument(ref FlowDocument doc, Size pageSize)   // Per stampa
 			{
 			doc.ColumnWidth = doc.MaxPageWidth = pageSize.Width;
 			doc.MaxPageHeight = pageSize.Height;
 
-			// Stampa le Operazioni
-			Operazione nouse = new Operazione();
+			Section[] sz = new Section[4];
+
+
+			sz[0] = CreateSectionWithPageBreak();
+			PrintTesto(ref sz[0], "OPERAZIONI");                              // Stampa le Operazioni (filtrate)
 			Table tOp = new Table();
-			int ncol = nouse.Count();
+			Operazione opEmpty = new Operazione();
+			TableRowGroup rgOp = new TableRowGroup();
+			PrintTitoliTabella(ref tOp, ref rgOp, opEmpty);
+			foreach (Operazione op in operazioni.operazioni)
+				{
+				PrintRigaTabella(ref tOp, ref rgOp, op);
+				}
+			tOp.RowGroups.Add(rgOp);
+			sz[0].Blocks.Add(tOp);
+			doc.Blocks.Add(sz[0]);
 			
-			foreach (TipoColonna str in nouse.Tipi())
+			sz[1] = CreateSectionWithPageBreak();
+			PrintTesto(ref sz[1], "CONTI");                                   // Stampa i Conti
+			Table tCn = new Table();
+			Conto cnEmpty = new Conto();
+			TableRowGroup rgCn = new TableRowGroup();
+			PrintTitoliTabella(ref tCn, ref rgCn, cnEmpty);
+			foreach (Conto cn in operazioni.conti)
+				{
+				PrintRigaTabella(ref tCn, ref rgCn, cn);
+				}
+			tCn.RowGroups.Add(rgCn);
+			sz[1].Blocks.Add(tCn);
+			doc.Blocks.Add(sz[1]);
+
+			sz[2] = CreateSectionWithPageBreak();
+			PrintTesto(ref sz[2], "OPERAZIONI STANDARD");                     // Stampa le Operazioni Standard
+			Table tOs = new Table();
+			OpStandard osEmpty = new OpStandard();
+			TableRowGroup rgOs = new TableRowGroup();
+			PrintTitoliTabella(ref tOs, ref rgOs, osEmpty);
+			foreach (OpStandard os in operazioni.opStandard)
+				{
+				PrintRigaTabella(ref tOs, ref rgOs, os);
+				}
+			tOs.RowGroups.Add(rgOs);
+			sz[2].Blocks.Add(tOs);
+			doc.Blocks.Add(sz[2]);
+
+			#region DA SCRIVERE
+
+			sz[3] = CreateSectionWithPageBreak(true);
+			foreach (Conto cnt in operazioni.Conti())
+				{
+				PrintTesto(ref sz[3], "CONSUNTIVO[" + cnt.numero.ToString() + "]: " + cnt.descrizione);
+				List<Consuntivo> lc = operazioni.FindListaConsuntivi(cnt.numero);
+				if (lc != null)
+					{
+					Table tCns = new Table();
+					Consuntivo cnsEmpty = new Consuntivo();
+					TableRowGroup rgCns = new TableRowGroup();
+					PrintTitoliTabella(ref tCns, ref rgCns, cnsEmpty);
+					foreach (Consuntivo cns in lc)
+						{
+						PrintRigaTabella(ref tCns, ref rgCns, cns);
+						}
+					tCns.RowGroups.Add(rgCns);
+					sz[3].Blocks.Add(tCns);
+					}
+				else
+					MessageBox.Show("Nessun consuntivo ["+cnt.numero.ToString()+"]");
+				}
+			doc.Blocks.Add(sz[3]);
+#if false
+			PrintPageBreak(ref doc);
+
+			foreach (Conto cnt in operazioni.Conti())
+				{
+				PrintTesto(ref doc, "CONSUNTIVO[" + cnt.numero + "]: " + cnt.descrizione);
+
+				List<Consuntivo> lc = operazioni.FindListaConsuntivi(cnt.numero);
+				if(lc != null)
+					{
+					Consuntivo nouseCn = new Consuntivo();
+					Table tCCn = new Table();
+					int ncolCn = nouseCn.Count();
+					for (int i = 0; i < ncolCn; i++)
+						{
+						TableColumn tc = new TableColumn();
+						tc.Width = new GridLength(70, GridUnitType.Pixel);
+						tCn.Columns.Add(tc);
+						}
+					var rgCn = new TableRowGroup();
+
+					TableRow rowintCn = new TableRow();
+					rowintCn.Background = Brushes.Transparent;
+					rowintCn.FontSize = headerSize;
+					rowintCn.FontWeight = FontWeights.Bold;
+					foreach (string str in nouseCn.Titoli())
+						{
+						TableCell tc = new TableCell(new Paragraph(new Run(str)));
+						tc.BorderBrush = Brushes.Black;
+						tc.BorderThickness = new Thickness(0, 1, 0, 1);
+						rowintC.Cells.Add(tc);
+						}
+					rgCn.Rows.Add(rowintCn);
+
+					TableRow rowtypCn = new TableRow();
+					rowtypCn.Background = Brushes.Transparent;
+					rowtypCn.FontSize = headerSize;
+					rowtypCn.FontWeight = FontWeights.Bold;
+
+					rgCn.Rows.Add(rowtypCn);
+					foreach (Consuntivo cons in lc)
+						{
+						TableRow row = new TableRow();
+						row.Background = Brushes.Transparent;
+						row.FontSize = textSize;
+						row.FontWeight = FontWeights.Normal;
+						foreach (string str in cons.Valori())
+							{
+							TableCell tc = new TableCell(new Paragraph(new Run(str)));
+							tc.BorderBrush = Brushes.Black;
+							tc.BorderThickness = new Thickness(0, 0, 0, 0.5);
+							row.Cells.Add(tc);
+							}
+						rgC.Rows.Add(row);
+						}
+					tCn.RowGroups.Add(rgC);
+
+					doc.Blocks.Add(tCn);
+					}
+				}
+#endif
+			#endregion
+
+
+			return doc;
+			}
+		Section CreateSectionWithPageBreak(bool pageBreak = false)
+			{
+			Section section = new Section();
+			section.BreakPageBefore = pageBreak;
+			return section;
+			}
+		void PrintTesto(ref Section sez, string testo)
+			{
+			Paragraph pr = new Paragraph(new Run(testo));
+			sez.Blocks.Add(pr);
+			}
+		void PrintTitoliTabella(ref Table table, ref TableRowGroup rowGroup, Riga empty)
+			{
+			int ncol = empty.Count();							// Colonne della tabella
+			foreach (TipoColonna str in empty.Tipi())
 				{
 				TableColumn tc = new TableColumn();
 				tc.Width = new GridLength(str.larghezzaColonna, GridUnitType.Pixel);
-				tOp.Columns.Add(tc);
+				table.Columns.Add(tc);
 				}
-
-			var rg = new TableRowGroup();
-			
-			TableRow rowint = new TableRow();
+			TableRow rowint = new TableRow();					// Riga di intestazione
 			rowint.Background = Brushes.Transparent;
 			rowint.FontSize = headerSize;
 			rowint.FontWeight = FontWeights.Bold;
-			foreach (string str in nouse.Titoli())
+			foreach (string str in empty.Titoli())
 				{
-				TableCell tc = new TableCell( new Paragraph(new Run(str)));
+				TableCell tc = new TableCell(new Paragraph(new Run(str)));
 				tc.BorderBrush = Brushes.Black;
 				tc.BorderThickness = new Thickness(0, 1, 0, 1);
 				rowint.Cells.Add(tc);
 				}
-			rg.Rows.Add(rowint);
-
-			TableRow rowtyp = new TableRow();
-			rowtyp.Background = Brushes.Transparent;
-			rowtyp.FontSize = headerSize;
-			rowtyp.FontWeight = FontWeights.Bold;
-			#if false
-			foreach (TipoColonna str in nouse.Tipi())
-				{
-				TableCell tc = new TableCell(new Paragraph(new Run(str.tipo)));
-				tc.BorderBrush = Brushes.Black;
-				tc.BorderThickness = new Thickness(0, 1, 0, 1);
-				rowtyp.Cells.Add(tc);
-				}
-			#endif
-			rg.Rows.Add(rowtyp);
-
-			foreach (Operazione op in operazioni.operazioni)
-				{
-				TableRow row = new TableRow();
-				row.Background = Brushes.Transparent;
-				row.FontSize = textSize;
-				row.FontWeight = FontWeights.Normal;
-				foreach (string str in op.Valori())
-					{
-					TableCell tc = new TableCell(new Paragraph(new Run(str)));
-					tc.BorderBrush = Brushes.Black;
-					tc.BorderThickness = new Thickness(0, 0, 0, 0.5);
-					row.Cells.Add(tc);
-					//row.Cells.Add(new TableCell(new Paragraph(new Run(str))));
-					}
-				rg.Rows.Add(row);
-				}
-			tOp.RowGroups.Add(rg);
-			doc.Blocks.Add(tOp);
-
-			// Interruzione di pagine
-			Section section = new Section();
-			section.BreakPageBefore = true;
-			doc.Blocks.Add(section);
-
-			// Conti
-			Conto nouseC = new Conto();
-			Table tCn = new Table();
-			int ncolC = nouseC.Count();
-			for (int i = 0; i < ncolC; i++)
-				{
-				TableColumn tc = new TableColumn();
-				tc.Width = new GridLength(70, GridUnitType.Pixel);
-				tCn.Columns.Add(tc);
-				}
-			var rgC = new TableRowGroup();
-
-			TableRow rowintC = new TableRow();
-			rowintC.Background = Brushes.Transparent;
-			rowintC.FontSize = headerSize;
-			rowintC.FontWeight = FontWeights.Bold;
-			foreach (string str in nouseC.Titoli())
-				{
-				TableCell tc = new TableCell(new Paragraph(new Run(str)));
-				tc.BorderBrush = Brushes.Black;
-				tc.BorderThickness = new Thickness(0, 1, 0, 1);
-				rowintC.Cells.Add(tc);
-				}
-			rgC.Rows.Add(rowintC);
-
-			TableRow rowtypC = new TableRow();
-			rowtypC.Background = Brushes.Transparent;
-			rowtypC.FontSize = headerSize;
-			rowtypC.FontWeight = FontWeights.Bold;
-			#if false
-			foreach (TipoColonna str in nouseC.Tipi())
-				{
-				TableCell tc = new TableCell(new Paragraph(new Run(str.tipo)));
-				tc.BorderBrush = Brushes.Black;
-				tc.BorderThickness = new Thickness(0, 1, 0, 1);
-				rowtypC.Cells.Add(tc);
-				}
-			#endif
-			rgC.Rows.Add(rowtypC);
-
-			foreach (Conto op in operazioni.conti)
-				{
-				TableRow row = new TableRow();
-				row.Background = Brushes.Transparent;
-				row.FontSize = textSize;
-				row.FontWeight = FontWeights.Normal;
-				foreach (string str in op.Valori())
-					{
-					TableCell tc = new TableCell(new Paragraph(new Run(str)));
-					tc.BorderBrush = Brushes.Black;
-					tc.BorderThickness = new Thickness(0, 0, 0, 0.5);
-					row.Cells.Add(tc);
-					}
-				rgC.Rows.Add(row);
-				}
-			tCn.RowGroups.Add(rgC);
-
-			doc.Blocks.Add(tCn);
-			
-			// Interruzione di pagina
-			Section section2 = new Section();
-			section2.BreakPageBefore = true;
-			doc.Blocks.Add(section2);
-
-			// Op standard
-			OpStandard nouseS = new OpStandard();
-			Table tSn = new Table();
-			int ncolS = nouseS.Count();
-			for (int i = 0; i < ncolS; i++)
-				{
-				TableColumn tc = new TableColumn();
-				tc.Width = new GridLength(70, GridUnitType.Pixel);
-				tSn.Columns.Add(tc);
-				}
-			var rgS = new TableRowGroup();
-
-			TableRow rowintS = new TableRow();
-			rowintS.Background = Brushes.Transparent;
-			rowintS.FontSize = headerSize;
-			rowintS.FontWeight = FontWeights.Bold;
-			foreach (string str in nouseS.Titoli())
-				{
-				TableCell tc = new TableCell(new Paragraph(new Run(str)));
-				tc.BorderBrush = Brushes.Black;
-				tc.BorderThickness = new Thickness(0, 1, 0, 1);
-				rowintS.Cells.Add(tc);
-				}
-			rgS.Rows.Add(rowintS);
-
-			TableRow rowtypS = new TableRow();
-			rowtypS.Background = Brushes.Transparent;
-			rowtypS.FontSize = headerSize;
-			rowtypS.FontWeight = FontWeights.Bold;
-			#if false
-			foreach (TipoColonna str in nouseS.Tipi())
-				{
-				TableCell tc = new TableCell(new Paragraph(new Run(str.tipo)));
-				tc.BorderBrush = Brushes.Black;
-				tc.BorderThickness = new Thickness(0, 1, 0, 1);
-				rowtypS.Cells.Add(tc);
-				}
-			#endif
-			rgS.Rows.Add(rowtypS);
-
-			foreach (OpStandard op in operazioni.opStandard)
-				{
-				TableRow row = new TableRow();
-				row.Background = Brushes.Transparent;
-				row.FontSize = textSize;
-				row.FontWeight = FontWeights.Normal;
-				foreach (string str in op.Valori())
-					{
-					TableCell tc = new TableCell(new Paragraph(new Run(str)));
-					tc.BorderBrush = Brushes.Black;
-					tc.BorderThickness = new Thickness(0, 0, 0, 0.5);
-					row.Cells.Add(tc);
-					}
-				rgS.Rows.Add(row);
-				}
-			tSn.RowGroups.Add(rgS);
-
-			doc.Blocks.Add(tSn);
-
-
-			StringBuilder strb = new StringBuilder();
-			 
-			foreach (List<Consuntivo> lc in operazioni.ListeConsuntivi())
-				{
-				strb.Append("---\n");
-				foreach (Consuntivo cons in lc)
-					{
-#warning da completare, previa verifica accessibilità 
-					strb.Append(cons.ToString() + '\n');
-					}
-				}
-			MessageBox.Show(strb.ToString());
-
-			return doc;
+			rowGroup.Rows.Add(rowint);
 			}
+		void PrintRigaTabella(ref Table table, ref TableRowGroup rowGroup, Riga dati)
+			{
+			TableRow row = new TableRow();
+			row.Background = Brushes.Transparent;
+			row.FontSize = textSize;
+			row.FontWeight = FontWeights.Normal;
+			foreach (string str in dati.Valori())
+				{
+				TableCell tc = new TableCell(new Paragraph(new Run(str)));
+				tc.BorderBrush = Brushes.Black;
+				tc.BorderThickness = new Thickness(0, 0, 0, 0.5);
+				row.Cells.Add(tc);
+				}
+			rowGroup.Rows.Add(row);
+			}
+
+		#endregion
 		private void ModificaElementoSelezionato()
 			{
 			int i = dgOperazioni.SelectedIndex;
@@ -555,49 +535,6 @@ namespace WPF02
 				string prName = "Consuntivo" + (operazioni.Filename.Length>0 ? " - "+ operazioni.Filename : "");
 				printDlg.PrintDocument(idpSource.DocumentPaginator, prName);
 				}
-
-			//Operazione op = new Operazione("nota..", DateTime.Now, "Nuova operazione", 1000, Operazione.Tipo.A, 1, "1,2,3");
-			//StringBuilder strb = new StringBuilder();
-			//foreach (string p in op.Titoli())
-			//	{
-			//	strb.Append(p + Operazione.Separatore.line);
-			//	}
-			//for(int x=0;x<2;x++)
-			//	foreach (string p in op.Valori())
-			//		{
-			//		strb.Append(p + Operazione.Separatore.line);
-			//		}
-			//MessageBox.Show(strb.ToString());
-
-
-			//MessageBoxResult mbr =	MessageBox.Show("Print semplice ?","Si`: semplice, no: complesso",MessageBoxButton.YesNoCancel);
-			//switch(mbr)
-			//	{
-			//	case MessageBoxResult.Yes:
-			//		{
-			//		PrintDialog printDlg = new PrintDialog();
-			//		if (printDlg.ShowDialog() == true)
-			//			{
-			//			printDlg.PrintVisual(dgOperazioni, "Operazioni");
-			//			}
-			//		}
-			//		break;
-			//	case MessageBoxResult.No:
-			//			{
-			//			PrintDialog printDlg = new PrintDialog();
-			//			if (printDlg.ShowDialog() == true)
-			//				{
-			//				FlowDocument doc = CreateFlowDocument();
-			//				doc.Name = "FlowDoc";
-			//				IDocumentPaginatorSource idpSource = doc;
-			//				printDlg.PrintDocument(idpSource.DocumentPaginator, "OperazioniComplesso");
-			//				}
-			//		}
-			//		break;
-			//	default:
-			//		break;
-			//	}
-			
 			}
 		private void lstConti_GotFocus(object sender, RoutedEventArgs e)
 			{
@@ -708,7 +645,6 @@ namespace WPF02
 			dgOperazioni.Items.Refresh();
 			dgConsuntivi.Items.Refresh();
 			}
-
 		private void Set_Filter(object sender, RoutedEventArgs e)
 			{
 			FilterWindow w = new FilterWindow(ref operazioni.filtro);
@@ -717,6 +653,26 @@ namespace WPF02
 				//MessageBox.Show("Impostato filtro");
 				}
 
+			}
+		private void CorreggiOpCons_Click(object sender, RoutedEventArgs e)
+			{
+			int n = operazioni.CorreggiOperazioniSenzaConsuntivo();
+			if(n > 0)
+				MessageBox.Show("Corrette "+n.ToString()+" operazioni non impostate come consuntivo");
+			dgOperazioni.CommitEdit();
+			dgOperazioni.CancelEdit();
+			dgOperazioni.Items.Refresh();
+			dgConsuntivi.Items.Refresh();
+			}
+		private void About_Click(object sender, RoutedEventArgs e)
+			{
+			StringBuilder strb = new StringBuilder();
+			strb.Append(Properties.Resources.Programma);
+			strb.Append("\nby " + Properties.Resources.Autore);
+			strb.Append("\nVersione " + Properties.Resources.Versione + " (" + Properties.Resources.Data+").");
+			strb.Append("\nWebsite: " + Properties.Resources.SitoWeb);
+			strb.Append("\nBlog (and program feedback): " + Properties.Resources.Blog);
+			MessageBox.Show(strb.ToString());
 			}
 		}
     }

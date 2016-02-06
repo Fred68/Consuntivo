@@ -27,11 +27,14 @@
 				<MenuItem Header="Imposta filtro" Click="Set_Filter"/>
 			</MenuItem>
 			<MenuItem Header="Calcola">
-				<MenuItem Header="Check" Click="Check_Click"/>
-				<MenuItem Header="View error" Click="ViewError_Click"/>
+				<MenuItem Header="Controlla" Click="Check_Click"/>
+				<MenuItem Header="Vedi errori" Click="ViewError_Click"/>
+				<MenuItem Header="Correggi operazioni senza consuntivo" Click="CorreggiOpCons_Click"/>
 				<MenuItem Header="Genera consuntivi" Click="Genera_Click"/>
 			</MenuItem>
-			<MenuItem Header="Help"/>
+			<MenuItem Header="Help">
+				<MenuItem Header="About..." Click="About_Click"/>
+			</MenuItem>
 		</Menu>
 		<TabControl x:Name="tabControl" Margin="10,30,10,10">
 			<TabItem Header="Operazioni">

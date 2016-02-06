@@ -101,10 +101,36 @@ namespace WPF02
 			}
 		public override IEnumerable<string> Valori()      // I valori (in stringhe)
 			{
+			//foreach (PropertyInfo prop in typeof(OpStandard).GetProperties())
+			//	{
+			//	yield return prop.GetValue(this) as string;
+			//	}
+
 			foreach (PropertyInfo prop in typeof(OpStandard).GetProperties())
 				{
-				yield return prop.GetValue(this) as string;
+				object obj = prop.GetValue(this);
+				string ret;
+				switch (prop.PropertyType.ToString())
+					{
+					case "System.Decimal":
+							{
+							ret = ((Decimal)obj).ToString("C");
+							}
+						break;
+					case "System.Boolean":
+							{
+							ret = ((bool)obj) ? "v" : "";
+							}
+						break;
+					default:
+							{
+							ret = obj.ToString();
+							}
+						break;
+					}
+				yield return ret as string;
 				}
+			yield break;
 			}
 		string getConti()                           // Ottiene la string con la lista dei conti
 			{

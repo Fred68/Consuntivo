@@ -9,7 +9,6 @@ namespace WPF02
 		{
 		public const int CAMPI = 4;
 
-
 		#region PROPERTIES
 		public int numero
 			{
@@ -43,7 +42,7 @@ namespace WPF02
 			numero = 0;
 			descrizione = "-";
 			nota = "";
-			alert = AlertConto.Disattivo;
+			alert = AlertConto.Negativo;
 			}
 		public Conto(int numero, string descrizione, string nota, AlertConto alert)
 			{
@@ -72,6 +71,7 @@ namespace WPF02
 				tmp.descrizione = cmp[1];
 				tmp.nota = cmp[2];
 
+
 				foreach (AlertConto ta in Enum.GetValues(typeof(AlertConto)))
 					{
 					if (cmp[3] == ta.ToString())
@@ -80,7 +80,7 @@ namespace WPF02
 						ok = true;
 						break;
 						}
-					ok = false;
+					
 					}
 
 				if (ok)

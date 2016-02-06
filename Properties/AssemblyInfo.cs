@@ -7,13 +7,13 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WPF02")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Consuntivo")]
+[assembly: AssemblyDescription("Programma per contabilità domestica")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WPF02")]
+[assembly: AssemblyCompany("FcSoft by Federico Cerutti")]
+[assembly: AssemblyProduct("Consuntivo")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("FcSoft")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

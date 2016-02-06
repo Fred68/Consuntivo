@@ -30,6 +30,12 @@ v							Aggiungere filtro
 v							Aggiungere flag 3 stati sui conti per segnalare problemi (negativo, positivo o disattivato)
 v							Completare calcolo dei residui dei consuntivi con verifica se superamento soglia
 v							Permettere la visualizzazione della lista degli errori in un'altra finestra
+v							Aggiungere controllo operazioni vecchie non consuntivate + correzione automatica in blocco
+v							Completare print delle operazioni standard (mettere tra #if la stampa dei tipi).
+v							Correggere print delle operazioni standard, non stampa il numero.
+v							Titoli delle pagine in print
+v							Completare print dei consuntivi
+
 
 _______________________________________________________________________________________________________________________________
  VERIFICHE
@@ -44,21 +50,23 @@ ________________________________________________________________________________
 _______________________________________________________________________________________________________________________________
  DA FARE
 _______________________________________________________________________________________________________________________________
--	+						Completare print delle operazioni standard (mettere tra #if la stampa dei tipi).
--	+						Correggere print delle operazioni standard, non stampa il numero.
--	+						Completare print dei consuntivi
--							Dopo l'edit con finestra, la visualizzazione del datagrid non viene aggiornata subito
--							Print preview			
--							Aggiungere stampa dei consuntivi
--							Dare feedback se il log dei messaggi è attivo
--							Completare i controlli di errore con eventuali altre verifiche
+-	+						Se documento vuoto, si genera un errore della stampante
+-	+						Dopo l'edit con finestra, la visualizzazione del datagrid non viene aggiornata subito
 -							Eseguire il check dopo ogni inserimento (o almeno i controlli specifici)
--							Aggiungere un Undo, almeno per l'ultima operazione
 -	+						Dopo un New o prima di un Open, cancellare gli item dei datagrid (in particolare dei consuntivi).
+-							Scrivere un help con versione del programma
+-							La combo box dei conti va ordinata per numero
+-							I consuntivi vanno ordinati per numero
+
 
 _______________________________________________________________________________________________________________________________
 MIGLIORIE FUTURE
 _______________________________________________________________________________________________________________________________
+-							Aggiungere un'icona
+-							Aggiungere un Undo, almeno per l'ultima operazione
+-							Dare feedback se il log dei messaggi è attivo
 -							Aggiungere salvataggio criptato (creare classe AES) e opzione
 -							Aggiungere secondo salvataggio (criptato o no) in locazione nota, configurabile (es.: dropbox)
 -							Permettere più finestre con windows.show(), lista Opvisibili, handler con lista finestre aperte
+-							Print preview	
+-							Completare i controlli di errore con eventuali altre verifiche		

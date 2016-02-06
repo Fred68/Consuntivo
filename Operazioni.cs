@@ -15,7 +15,7 @@ namespace WPF02
 	public class Operazioni
 		{
 		enum readStat { Indefinito, Operazioni, Conti, OpStandard };
-		enum checkType { Conti_Unique, OpStandard_Unique, Op_ContiValid, Op_OpStdValid, OpStd_ContiValid };
+		enum checkType { Conti_Unique, OpStandard_Unique, Op_ContiValid, Op_OpStdValid, OpStd_ContiValid, Op_Consuntivo_old };
 
 		ObservableCollection<Operazione> opVisibili						// Operazioni visibili
 			{ get; set; }			
@@ -63,11 +63,6 @@ namespace WPF02
 			get { return opStdTotali; }
 			set { opStdTotali = value; }
 			}
-		//public List<Consuntivo> consuntivi
-		//	{
-		//	get { return consTotali; }
-		//	set { consTotali = value; }
-		//	}
 		public bool status
 			{
 			get { return bStatusOk; }
@@ -479,6 +474,13 @@ namespace WPF02
 				}
 			return found;
 			}
+		public List<Consuntivo> FindListaConsuntivi(int numero_conto)		// Cerca la lista dei consuntivi per un numero di conto
+			{
+			List<Consuntivo> found = null;
+			if (dicConsuntivi.ContainsKey(numero_conto))
+				found = dicConsuntivi[numero_conto];
+			return found;
+			}
 		public void ApplicaFiltro()
 			{
 			opVisibiliChangedEventEnabled = false;
@@ -513,6 +515,7 @@ namespace WPF02
 			oki.Add(Check(checkType.OpStd_ContiValid));
 			oki.Add(Check(checkType.Op_ContiValid));
 			oki.Add(Check(checkType.Op_OpStdValid));
+			oki.Add(Check(checkType.Op_Consuntivo_old));
 			foreach (bool x in oki)
 				ok = ok && x;
 			this.status = ok;   // Usa la proprietà, per attivare l'handler
@@ -525,11 +528,11 @@ namespace WPF02
 				{
 				case checkType.Conti_Unique:
 					ok = Riga.CheckUnique(this.conti);      // verifica unicità dei numeri dei conti 
-					if (!ok) lstErr.Add("Conti duplicati");
+					if (!ok) lstErr.Add("Conti duplicati.");
 					break;
 				case checkType.OpStandard_Unique:			// Verifica unicità dei numeri dei conti 
 					ok = Riga.CheckUnique(this.opStandard);
-					if (!ok) lstErr.Add("Operazioni standard duplicate");
+					if (!ok) lstErr.Add("Operazioni standard duplicate.");
 					break;
 				case checkType.OpStd_ContiValid:			// Verifica che i conti delle opStandard esistano
 					ok = true;
@@ -546,14 +549,14 @@ namespace WPF02
 							if(!found)
 								{
 								ok = false;
-								lstErr.Add("Operazione standard <" + os.numero + "> con numero di conto non valido");
+								lstErr.Add("Operazione standard <" + os.numero + "> con numero di conto non valido.");
 								}
 							}
 						}
 					break;
 				case checkType.Op_ContiValid:				// Verifica che i conti delle Operazioni esistano
 					ok = true;
-					foreach (Operazione op in this.operazioni)
+					foreach (Operazione op in this.opTotali)
 						{
 						foreach (int nc in op.Conti())
 							{
@@ -566,14 +569,14 @@ namespace WPF02
 							if (!found)
 								{
 								ok = false;
-								lstErr.Add("Operazione <" + op.descrizione + "> del <" + op.data + "> con numero di conto non valido");
+								lstErr.Add("Operazione <" + op.descrizione + "> del <" + op.data + "> con numero di conto non valido.");
 								}
 							}
 						}
 					break;
 				case checkType.Op_OpStdValid:				// Verifica che le opStandard delle Operazioni esistano
 					ok = true;
-					foreach(Operazione op in this.operazioni)
+					foreach(Operazione op in this.opTotali)
 						{
 						bool found = false;
 						if(op.tipostd == 0)
@@ -591,10 +594,25 @@ namespace WPF02
 						if (!found)
 							{
 							ok = false;
-							lstErr.Add("Operazione <" + op.descrizione + "> del <" + op.data + "> con numero di operazione standard non valido");
+							lstErr.Add("Operazione <" + op.descrizione + "> del <" + op.data + "> con numero di operazione standard non valido.");
 							}
 						}
 					break;
+				case checkType.Op_Consuntivo_old:
+					DateTime now = DateTime.Now;
+					ok = true;
+					foreach (Operazione op in this.opTotali)
+						{
+						DateTime dt = Riga.String2DateTime(op.data);
+						if((now > dt)&&(!op.consuntivo))
+							{
+							ok = false;
+							lstErr.Add("Operazione <" + op.descrizione + "> del <" + op.data + "> non impostata come consuntivo.");
+							}
+						}	
+					break;
+				default:
+					throw new Exception("Caso CheckType non gestito.");
 				}
 			return ok;
 			}
@@ -729,6 +747,21 @@ namespace WPF02
 				}
 			return ok;
 			}	
+		public int CorreggiOperazioniSenzaConsuntivo()
+			{
+			int n = 0;
+			DateTime now = DateTime.Now;
+			foreach(Operazione op in this.opTotali)
+				{
+				DateTime dt = Riga.String2DateTime(op.data);
+				if ((now > dt) && (!op.consuntivo))
+					{
+					op.consuntivo = true;
+					n++;
+					}
+				}
+			return n;
+			}
 		#endregion
 		}
 	}

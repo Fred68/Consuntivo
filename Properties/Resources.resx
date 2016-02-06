@@ -117,5 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Autore" xml:space="preserve">
+    <value>FcSoft</value>
+  </data>
+  <data name="Blog" xml:space="preserve">
+    <value>http://fcsoft68.altervista.org</value>
+  </data>
+  <data name="Data" xml:space="preserve">
+    <value>6-feb-2016</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Icon1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon1.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Programma" xml:space="preserve">
+    <value>Consuntivo</value>
+  </data>
+  <data name="SitoWeb" xml:space="preserve">
+    <value>http://fred68.altervista.org/</value>
+  </data>
+  <data name="Versione" xml:space="preserve">
+    <value>0.1.alfa</value>
+  </data>
 </root>
