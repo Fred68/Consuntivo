@@ -77,6 +77,7 @@
     </ApplicationDefinition>
     <Compile Include="CheckItem.cs" />
     <Compile Include="Consuntivo.cs" />
+    <Compile Include="Encryption.cs" />
     <Compile Include="FilterWindow.xaml.cs">
       <DependentUpon>FilterWindow.xaml</DependentUpon>
     </Compile>
@@ -89,6 +90,9 @@
       <DependentUpon>OpEditWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="OpStandard.cs" />
+    <Compile Include="PreferenzeWindow.xaml.cs">
+      <DependentUpon>PreferenzeWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -123,6 +127,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="OpEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PreferenzeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

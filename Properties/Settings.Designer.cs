@@ -22,5 +22,89 @@ namespace WPF02.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SecondSaveActive {
+            get {
+                return ((bool)(this["SecondSaveActive"]));
+            }
+            set {
+                this["SecondSaveActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SecondSavePath {
+            get {
+                return ((string)(this["SecondSavePath"]));
+            }
+            set {
+                this["SecondSavePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SecondSaveFilename {
+            get {
+                return ((string)(this["SecondSaveFilename"]));
+            }
+            set {
+                this["SecondSaveFilename"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FirstSaveEncryptActive {
+            get {
+                return ((bool)(this["FirstSaveEncryptActive"]));
+            }
+            set {
+                this["FirstSaveEncryptActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SecondSaveEncryptActive {
+            get {
+                return ((bool)(this["SecondSaveEncryptActive"]));
+            }
+            set {
+                this["SecondSaveEncryptActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FirstSavePassphrase {
+            get {
+                return ((string)(this["FirstSavePassphrase"]));
+            }
+            set {
+                this["FirstSavePassphrase"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SecondSavePassphrase {
+            get {
+                return ((string)(this["SecondSavePassphrase"]));
+            }
+            set {
+                this["SecondSavePassphrase"] = value;
+            }
+        }
     }
 }

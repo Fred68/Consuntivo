@@ -35,6 +35,10 @@ v							Completare print delle operazioni standard (mettere tra #if la stampa de
 v							Correggere print delle operazioni standard, non stampa il numero.
 v							Titoli delle pagine in print
 v							Completare print dei consuntivi
+v							Aggiungere un'icona
+v							Aggiungere funzioni che richiamano WriteLine e ReadLine, non usarle direttamente
+v							Scrivere funzioni di criptatura e decriptatura AES a chiave simmetrica (con RijndealManaged)
+
 
 
 _______________________________________________________________________________________________________________________________
@@ -50,23 +54,24 @@ ________________________________________________________________________________
 _______________________________________________________________________________________________________________________________
  DA FARE
 _______________________________________________________________________________________________________________________________
--	+						Se documento vuoto, si genera un errore della stampante
+-	+						Se documento vuoto, si genera un errore della stampante ? Forse no.
 -	+						Dopo l'edit con finestra, la visualizzazione del datagrid non viene aggiornata subito
 -							Eseguire il check dopo ogni inserimento (o almeno i controlli specifici)
 -	+						Dopo un New o prima di un Open, cancellare gli item dei datagrid (in particolare dei consuntivi).
 -							Scrivere un help con versione del programma
 -							La combo box dei conti va ordinata per numero
 -							I consuntivi vanno ordinati per numero
+-	+						Inserendo nuova operazione su tabella vuota, a volte si genera un errore.
+-	+						Aggiungere salvataggio criptato e opzione
+-							Aggiungere secondo salvataggio in locazione nota, configurabile (es.: dropbox)
 
 
 _______________________________________________________________________________________________________________________________
 MIGLIORIE FUTURE
 _______________________________________________________________________________________________________________________________
--							Aggiungere un'icona
+-							Rendere il campo _id unico (controllo dopo inserimento) + numerazione automatica
 -							Aggiungere un Undo, almeno per l'ultima operazione
--							Dare feedback se il log dei messaggi è attivo
--							Aggiungere salvataggio criptato (creare classe AES) e opzione
--							Aggiungere secondo salvataggio (criptato o no) in locazione nota, configurabile (es.: dropbox)
+-							Dare feedback se il log dei messaggi è attivo [oppure eliminare la voce di menù]
 -							Permettere più finestre con windows.show(), lista Opvisibili, handler con lista finestre aperte
 -							Print preview	
 -							Completare i controlli di errore con eventuali altre verifiche		

@@ -1,0 +1,26 @@
+﻿<Window x:Name="Preferenze" x:Class="WPF02.PreferenzeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF02"
+        mc:Ignorable="d"
+        Title="Preferenze salvataggio" Height="289.033" Width="818.92">
+	<Grid HorizontalAlignment="Left"  Margin="10,10,10,10" VerticalAlignment="Center" >
+		<Label x:Name="label" Content="Percorso e nome file" HorizontalAlignment="Left" Margin="0,-74,0,0" VerticalAlignment="Top" Width="146" Background="#FFEAE9DD"/>
+		<Label x:Name="label1" Content="Salvataggio attivato" HorizontalAlignment="Left" Margin="0,-43,0,0" VerticalAlignment="Top" Height="26" Width="146" Background="#FFEAE9DD"/>
+		<Label x:Name="label2" Content="Criptatura dei dati" HorizontalAlignment="Left" Margin="0,-12,0,-14" VerticalAlignment="Top" Height="26" Width="146" Background="#FFEAE9DD"/>
+		<Label x:Name="label3" Content="Password" HorizontalAlignment="Left" Margin="0,19,0,-45" VerticalAlignment="Top" Height="26" Width="146" Background="#FFEAE9DD"/>
+		<Label x:Name="label3_Copy" Content="Memorizza password" HorizontalAlignment="Left" Margin="0,50,0,-76" VerticalAlignment="Top" Height="26" Width="146" Background="#FFEAE9DD"/>
+		<TextBox x:Name="textBox" HorizontalAlignment="Left" Height="26" Margin="151,-74,-198,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="264"/>
+		<TextBox x:Name="textBox_Copy" HorizontalAlignment="Left" Height="26" Margin="420,-74,-538,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="264"/>
+		<CheckBox x:Name="checkBox" Content="CheckBox" HorizontalAlignment="Left" Margin="151,-37,-198,0" VerticalAlignment="Top" Height="20" Width="264"/>
+		<CheckBox x:Name="checkBox_Copy" Content="CheckBox" HorizontalAlignment="Left" Margin="420,-37,-467,0" VerticalAlignment="Top" Height="20" Width="264"/>
+		<CheckBox x:Name="checkBox_Copy1" Content="CheckBox" HorizontalAlignment="Left" Margin="151,-6,-198,-14" VerticalAlignment="Top" Height="20" Width="264"/>
+		<CheckBox x:Name="checkBox_Copy2" Content="CheckBox" HorizontalAlignment="Left" Margin="420,-6,-467,-14" VerticalAlignment="Top" Height="20" Width="264"/>
+		<TextBox x:Name="textBox_Copy1" HorizontalAlignment="Left" Height="26" Margin="151,19,-198,-45" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="264"/>
+		<TextBox x:Name="textBox_Copy2" HorizontalAlignment="Left" Height="26" Margin="420,19,-467,-45" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="264"/>
+		<CheckBox x:Name="checkBox_Copy3" Content="CheckBox" HorizontalAlignment="Left" Margin="151,56,-198,-76" VerticalAlignment="Top" Height="20" Width="264"/>
+		<CheckBox x:Name="checkBox_Copy4" Content="CheckBox" HorizontalAlignment="Left" Margin="420,56,-467,-76" VerticalAlignment="Top" Height="20" Width="264"/>
+	</Grid>
+</Window>

@@ -19,3 +19,4 @@ D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Debug\WPF02.Properties.Resource
 D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Debug\WPF02.csproj.GenerateResource.Cache
 D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Debug\WPF02.exe
 D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Debug\WPF02.pdb
+D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Debug\WPF02.csprojResolveAssemblyReference.cache

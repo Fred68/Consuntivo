@@ -25,14 +25,14 @@ namespace WPF02
 			{ get; set; }
 		ObservableCollection<OpStandard> opStdTotali					// Tutte le operazioni standard
 			{ get; set; }
-		
+
+		Encryption encriptor;
 
 		Dictionary<int, List<Consuntivo>> dicConsuntivi	// Tutti i consuntivi
 			{ get; set; }
 		List<Consuntivo> consTotali                     // Solo i consuntivi del conto scelto
 			{ get; set; }
 		List<Consuntivo> empty;
-
 
 		bool comboContiUpdated = false;
 
@@ -151,6 +151,8 @@ namespace WPF02
 			LogAbilitato = false;
 
 			filtro = new Filtro();
+
+			encriptor = new Encryption();
 			}
 
 		public void setDatiGrid(DataGrid dgOperazioni, DataGrid dgConti, DataGrid dgOpStandard, DataGrid dgConsuntivi)
@@ -321,20 +323,20 @@ namespace WPF02
 				{
 				using (StreamWriter sw = new StreamWriter(fullfilename, false, Encoding.UTF8))
 					{
-					sw.WriteLine(new Operazione().Intestazione());
+					WriteLine(sw, new Operazione().Intestazione());
 					foreach (Operazione op in opTotali)
 						{
-						sw.WriteLine(op.ToString());
+						WriteLine(sw, op.ToString());
 						}
-					sw.WriteLine(new Conto().Intestazione());
+					WriteLine(sw, new Conto().Intestazione());
 					foreach (Conto op in cntTotali)
 						{
-						sw.WriteLine(op.ToString());
+						WriteLine(sw, op.ToString());
 						}
-					sw.WriteLine(new OpStandard().Intestazione());
+					WriteLine(sw, new OpStandard().Intestazione());
 					foreach (OpStandard op in opStdTotali)
 						{
-						sw.WriteLine(op.ToString());
+						WriteLine(sw, op.ToString());
 						}
 					this.filename = fullfilename;
 					}
@@ -367,7 +369,7 @@ namespace WPF02
 					{
 					while(sr.Peek() >= 0)
 						{
-						string rline = sr.ReadLine();
+						string rline = ReadLine(sr);
 						try
 							{
 							if (rline == new Operazione().Intestazione())
@@ -446,7 +448,16 @@ namespace WPF02
 				this.filename = fullfilename;
 			return ret;
 			}
-
+		private string ReadLine(StreamReader sr)
+			{
+			string str = "";
+			str = sr.ReadLine();
+			return str;
+			}
+		private void WriteLine(StreamWriter sw, string txt)
+			{
+			sw.WriteLine(txt);
+			}
 		#region RICERCA e FILTRO
 		public OpStandard FindOpStandard(int numero)	// Cerca OpStandard, null se non trovata
 			{
@@ -502,6 +513,7 @@ namespace WPF02
 			opVisibiliChangedEventEnabled = true;
 			filtro.IsAttivo = false;
 			}
+
 		#endregion
 
 		#region CHECK e CALCOLO

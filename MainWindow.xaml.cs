@@ -674,5 +674,34 @@ namespace WPF02
 			strb.Append("\nBlog (and program feedback): " + Properties.Resources.Blog);
 			MessageBox.Show(strb.ToString());
 			}
+		private void button_test_Click(object sender, RoutedEventArgs e)
+			{
+			
+			Encryption enc = new Encryption();
+						
+			string passwd = "ant@ni20";
+
+			// string testo = "Prova di scrittura; con più CAMPI;;e caratteri []Str@n^%$i! - fine stringa.";
+			string keyenc, keydec, ivenc, ivdec, msg;
+
+			enc.ClearErrors();
+
+			StringBuilder strb = new StringBuilder();
+			foreach(Operazione op in operazioni.operazioni)
+				{
+				string crittografato = enc.Encrypt(op.ToString(), passwd);
+				string decriptato = enc.Decrypt(crittografato, passwd);
+				bool ok = String.Equals(op.ToString(), decriptato);
+				strb.Append(decriptato + ":" + ok.ToString()+'\n');
+				}
+			MessageBox.Show(strb.ToString());
+			MessageBox.Show("ERRORS:\n" + enc.Errors());
+								
+				
+			}
+		private void Preferenze_Click(object sender, RoutedEventArgs e)
+			{
+			MessageBox.Show("Prefs");
+			}
 		}
     }
