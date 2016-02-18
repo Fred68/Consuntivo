@@ -196,7 +196,7 @@ namespace WPF02 {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/WPF02;component/opeditwindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Consuntivo;component/opeditwindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\OpEditWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

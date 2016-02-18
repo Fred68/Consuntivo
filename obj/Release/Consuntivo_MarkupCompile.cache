@@ -1,18 +1,18 @@
-﻿WPF02
+﻿Consuntivo
 
 
 winexe
 C#
 .cs
-D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Debug\
+D:\Software\Visual 2010\Projects\WPF02\WPF02\obj\Release\
 WPF02
 none
 false
-DEBUG;TRACE
+TRACE
 D:\Software\Visual 2010\Projects\WPF02\WPF02\App.xaml
 6-1282617524
 
-26-936484129
+22-1401037729
 14-1001767708
 FilterWindow.xaml;ListWindow.xaml;MainWindow.xaml;OpEditWindow.xaml;PreferenzeWindow.xaml;Test.xaml;
 

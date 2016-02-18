@@ -14,7 +14,8 @@ namespace WPF02
 	public delegate void StatusChangedHandler();
 	public class Operazioni
 		{
-		enum readStat { Indefinito, Operazioni, Conti, OpStandard };
+		static string intestazioneFile = "@INTESTAZIONE";
+		enum readStat { Indefinito, Operazioni, Conti, OpStandard, Intestazione };
 		enum checkType { Conti_Unique, OpStandard_Unique, Op_ContiValid, Op_OpStdValid, OpStd_ContiValid, Op_Consuntivo_old };
 
 		ObservableCollection<Operazione> opVisibili						// Operazioni visibili
@@ -39,7 +40,12 @@ namespace WPF02
 		StatusChangedHandler statHandler = null; 
 		bool bStatusOk = true;
 
+		// Dati per salvataggio / preferenze
 		string filename;
+		
+		// bool mempwd1, mempwd2;			// SOLO NELLE PREFERENZE
+
+
 
 		List<string> lstLog;
 		List<string> lstErr;
@@ -88,6 +94,16 @@ namespace WPF02
 			get { return comboContiUpdated; }
 			set { comboContiUpdated = value; }
 			}
+		public string NomeSecondario {get; set;}
+		public bool AttivoSecondario { get; set; }
+		public bool Cripto1 { get; set; }
+		public bool Cripto2 { get; set; }
+		public string Passphrase1 { get; set; }
+		public string Passphrase2 { get; set; }
+		public string Salt { get; set; }
+		public bool StorePassphrase1 { get; set; }
+		public bool StorePassphrase2 { get; set; }
+
 		#endregion
 
 		void opChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -129,6 +145,8 @@ namespace WPF02
 
 		public Operazioni()
 			{
+			LeggiConfigurazione();
+
 			opTotali = new ObservableCollection<Operazione>();
 			opVisibili = new ObservableCollection<Operazione>();
 			opVisibiliChangedEventEnabled = true;
@@ -143,7 +161,6 @@ namespace WPF02
 			dicConsuntivi = new Dictionary<int, List<Consuntivo>>();
 			dicConsuntivi.Add(0, empty);
 			consTotali = dicConsuntivi[0];
-			// consTotali = new ObservableCollection<Consuntivo>();
 
 			filename = "";
 			lstLog = new List<string>();
@@ -151,10 +168,37 @@ namespace WPF02
 			LogAbilitato = false;
 
 			filtro = new Filtro();
-
 			encriptor = new Encryption();
+			
 			}
-
+		/// <summary>
+		/// Legge i parametri di configurazione dalle impostazioni utente del programma
+		/// </summary>
+		public void LeggiConfigurazione()
+			{
+			NomeSecondario = Properties.Settings.Default.SecondSavePath + Path.DirectorySeparatorChar + Properties.Settings.Default.SecondSaveFilename;
+			AttivoSecondario = Properties.Settings.Default.SecondSaveActive;
+			Cripto1 = Properties.Settings.Default.FirstSaveEncryptActive;
+			Cripto2 = Properties.Settings.Default.SecondSaveEncryptActive;
+			Passphrase1 = Properties.Settings.Default.FirstSavePassphrase;
+			Passphrase2 = Properties.Settings.Default.SecondSavePassphrase;
+			Salt = Properties.Settings.Default.Salt;
+			StorePassphrase1 = Properties.Settings.Default.FirstSaveStorePassphrase;
+			StorePassphrase2 = Properties.Settings.Default.SecondSaveStorePassphrase;
+			}
+		public void ScriviConfigurazione()
+			{
+			Properties.Settings.Default.SecondSavePath = Path.GetDirectoryName(NomeSecondario);
+			Properties.Settings.Default.SecondSaveFilename = Path.GetFileName(NomeSecondario);
+			Properties.Settings.Default.SecondSaveActive = AttivoSecondario;
+			Properties.Settings.Default.FirstSaveEncryptActive = Cripto1;
+			Properties.Settings.Default.SecondSaveEncryptActive = Cripto2;
+			Properties.Settings.Default.FirstSavePassphrase = Passphrase1;
+			Properties.Settings.Default.SecondSavePassphrase = Passphrase2;
+			Properties.Settings.Default.Salt = Salt;
+			Properties.Settings.Default.FirstSaveStorePassphrase = StorePassphrase1;
+			Properties.Settings.Default.SecondSaveStorePassphrase = StorePassphrase2;
+			}
 		public void setDatiGrid(DataGrid dgOperazioni, DataGrid dgConti, DataGrid dgOpStandard, DataGrid dgConsuntivi)
 			{
 			dgOperazioni.AutoGenerateColumns = true;
@@ -323,6 +367,7 @@ namespace WPF02
 				{
 				using (StreamWriter sw = new StreamWriter(fullfilename, false, Encoding.UTF8))
 					{
+					WriteLine(sw, Intestazione());
 					WriteLine(sw, new Operazione().Intestazione());
 					foreach (Operazione op in opTotali)
 						{
@@ -378,48 +423,52 @@ namespace WPF02
 								rstat = readStat.Conti;
 							else if (rline == new OpStandard().Intestazione())
 								rstat = readStat.OpStandard;
+							else if (rline == Operazioni.intestazioneFile)
+								rstat = readStat.Intestazione;
 							else
 								{
 								switch (rstat)
 									{
 									case readStat.Operazioni:
-										{
-										Operazione op = new Operazione();
-										if (op.FromString(rline))
 											{
-											opVisibili.Add(op);
+											Operazione op = new Operazione();
+											if (op.FromString(rline))
+												{
+												opVisibili.Add(op);
+												}
+											else
+												{
+												throw new Exception("Errore analisi linea: " + rline, new Exception("Errore analisi linea"));
+												}
 											}
-										else
-											{
-											throw new Exception("Errore analisi linea: " + rline, new Exception("Errore analisi linea"));
-											}
-										}
 										break;
 									case readStat.Conti:
-										{
-										Conto op = new Conto();
-										if (op.FromString(rline))
 											{
-											cntTotali.Add(op);
+											Conto op = new Conto();
+											if (op.FromString(rline))
+												{
+												cntTotali.Add(op);
+												}
+											else
+												{
+												throw new Exception("Errore analisi linea: " + rline, new Exception("Errore analisi linea"));
+												}
 											}
-										else
-											{
-											throw new Exception("Errore analisi linea: " + rline, new Exception("Errore analisi linea"));
-											}
-										}
 										break;
 									case readStat.OpStandard:
-										{
-										OpStandard op = new OpStandard();
-										if (op.FromString(rline))
 											{
-											opStdTotali.Add(op);
+											OpStandard op = new OpStandard();
+											if (op.FromString(rline))
+												{
+												opStdTotali.Add(op);
+												}
+											else
+												{
+												throw new Exception("Errore analisi linea: " + rline, new Exception("Errore analisi linea"));
+												}
 											}
-										else
-											{
-											throw new Exception("Errore analisi linea: " + rline, new Exception("Errore analisi linea"));
-											}
-										}
+										break;
+									case readStat.Intestazione:
 										break;
 									case readStat.Indefinito:
 										throw new Exception("Errore sintattico nel file" + rline, new Exception("Errore sintattico nel file"));
@@ -447,6 +496,10 @@ namespace WPF02
 			if(ret)
 				this.filename = fullfilename;
 			return ret;
+			}
+		public string Intestazione()
+			{
+			return Operazioni.intestazioneFile;
 			}
 		private string ReadLine(StreamReader sr)
 			{

@@ -6,10 +6,10 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SecondSavePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">D:\Dropbox</Value>
     </Setting>
     <Setting Name="SecondSaveFilename" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">consuntivoBak.txt</Value>
     </Setting>
     <Setting Name="FirstSaveEncryptActive" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -18,10 +18,19 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="FirstSavePassphrase" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">antani</Value>
     </Setting>
     <Setting Name="SecondSavePassphrase" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">blinda</Value>
+    </Setting>
+    <Setting Name="FirstSaveStorePassphrase" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SecondSaveStorePassphrase" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Salt" Type="System.String" Scope="User">
+      <Value Profile="(Default)">12345678</Value>
     </Setting>
   </Settings>
 </SettingsFile>

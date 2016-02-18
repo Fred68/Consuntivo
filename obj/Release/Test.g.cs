@@ -60,7 +60,7 @@ namespace WPF02 {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/WPF02;component/test.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Consuntivo;component/test.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\Test.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

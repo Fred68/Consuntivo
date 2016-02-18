@@ -244,7 +244,7 @@ namespace WPF02 {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/WPF02;component/filterwindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Consuntivo;component/filterwindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\FilterWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

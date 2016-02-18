@@ -24,18 +24,65 @@ namespace WPF02
 		int IVbase64size;
 		List<string> errors;
 
-		private static readonly byte[] Salt = new byte[] { 10, 20, 30, 40, 50, 60, 70, 80 };
+		private byte[] salt; // = new byte[] { 10, 20, 30, 40, 50, 60, 70, 80 };
+		private const int SALTSIZE = 8;
+		private const byte SALTZERO = 0x20;
 		/// <summary>
 		/// Costruttore della classe per crittografare
 		/// </summary>
-		public Encryption()	
+		public Encryption(string strSalt = "")
 			{
 			keySize = 32;									// 32 caratteri (256 bit)
 			blockSize = 32;									// 32 caratteri (256 bit)
 			paddingMode = PaddingMode.PKCS7;				// Completa con numero progressivo
 			cipherMode = CipherMode.CBC;					// Combina blocco precedente crittografato al successivo (contro blocchi identici)
 			IVbase64size = IVbase64length();                // Imposta la lunghezza dell'IV in base64
-			errors = new List<string>();					// Lista dei messaggi di errore o altro
+			errors = new List<string>();                    // Lista dei messaggi di errore o altro
+			SetSalt(strSalt);
+			}
+		/// <summary>
+		/// Imposta il salt partendo dai caratteri Unicode UTF-8 di una stringa
+		/// Legge solo i primi 8 caratteri e li converte
+		/// in byte, se possibile, se no in 0x20
+		/// </summary>
+		/// <param name="strSalt"></param>
+		private void SetSalt(string strSalt)
+			{
+			salt = new byte[SALTSIZE];
+			byte b;
+			for (int i = 0; i < SALTSIZE; i++)
+				{
+				b = SALTZERO;
+				if (i < strSalt.Length)
+					{
+					char ch = strSalt[i];
+					try
+						{
+						b = Convert.ToByte(ch);
+						}
+					catch (OverflowException)
+						{ b = SALTZERO; }
+					}
+				salt[i] = b;
+				}
+			}
+		/// <summary>
+		/// Restituisce il salt convertito in caratteri Unicode
+		/// </summary>
+		/// <returns>Stringa con il salt</returns>
+		private string GetSalt()
+			{
+			StringBuilder strb = new StringBuilder();
+			foreach(byte b in salt)
+				{
+				strb.Append(Convert.ToChar(b));
+				}
+			return strb.ToString();
+			}
+		public string Salt
+			{
+			get { return GetSalt(); }
+			set { SetSalt(value);  }
 			}
 		/// <summary>
 		/// Cripta la stringa, inserendo l'IV in base64 all'inizio
@@ -132,7 +179,7 @@ namespace WPF02
 		private byte[] CreateKey(string passwd, int keybytes = 32)		// Crea la chiave, da stringa arbitaria. Salt fisso
 			{
 			const int iter = 301;
-			Rfc2898DeriveBytes keyGen = new Rfc2898DeriveBytes(passwd, Salt, iter);
+			Rfc2898DeriveBytes keyGen = new Rfc2898DeriveBytes(passwd, salt, iter);
 			return keyGen.GetBytes(keybytes);
 			}
 		private string GetIVheader(string txt, out string msg)		// Taglia iv dallínizio di msg e lo restituisce.

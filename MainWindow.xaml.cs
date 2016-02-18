@@ -313,7 +313,6 @@ namespace WPF02
 				}
 			rowGroup.Rows.Add(row);
 			}
-
 		#endregion
 		private void ModificaElementoSelezionato()
 			{
@@ -678,21 +677,20 @@ namespace WPF02
 			{
 			
 			Encryption enc = new Encryption();
-						
+			//enc.Salt = "12345678";
+			enc.Salt = "ABCxc@";
 			string passwd = "ant@ni20";
-
-			// string testo = "Prova di scrittura; con più CAMPI;;e caratteri []Str@n^%$i! - fine stringa.";
-			string keyenc, keydec, ivenc, ivdec, msg;
 
 			enc.ClearErrors();
 
 			StringBuilder strb = new StringBuilder();
+			strb.Append("Salt=<<<"+enc.Salt+">>>\n");
 			foreach(Operazione op in operazioni.operazioni)
 				{
 				string crittografato = enc.Encrypt(op.ToString(), passwd);
 				string decriptato = enc.Decrypt(crittografato, passwd);
 				bool ok = String.Equals(op.ToString(), decriptato);
-				strb.Append(decriptato + ":" + ok.ToString()+'\n');
+				strb.Append(decriptato + ":" + (ok ? "\t->OK" : "\t *** ERRORE ***") + '\n');
 				}
 			MessageBox.Show(strb.ToString());
 			MessageBox.Show("ERRORS:\n" + enc.Errors());
@@ -701,7 +699,12 @@ namespace WPF02
 			}
 		private void Preferenze_Click(object sender, RoutedEventArgs e)
 			{
-			MessageBox.Show("Prefs");
+			PreferenzeWindow pfw = new PreferenzeWindow(ref operazioni);
+			bool? ret = pfw.ShowDialog();
+			if (ret == true)
+				{
+				MessageBox.Show("Preferenze aggiornate...");
+				}
 			}
 		}
     }

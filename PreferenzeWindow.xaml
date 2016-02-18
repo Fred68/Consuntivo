@@ -5,22 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF02"
         mc:Ignorable="d"
-        Title="Preferenze salvataggio" Height="289.033" Width="818.92">
+        Title="Preferenze salvataggio" Height="395.033" Width="757.92">
 	<Grid HorizontalAlignment="Left"  Margin="10,10,10,10" VerticalAlignment="Center" >
-		<Label x:Name="label" Content="Percorso e nome file" HorizontalAlignment="Left" Margin="0,-74,0,0" VerticalAlignment="Top" Width="146" Background="#FFEAE9DD"/>
-		<Label x:Name="label1" Content="Salvataggio attivato" HorizontalAlignment="Left" Margin="0,-43,0,0" VerticalAlignment="Top" Height="26" Width="146" Background="#FFEAE9DD"/>
-		<Label x:Name="label2" Content="Criptatura dei dati" HorizontalAlignment="Left" Margin="0,-12,0,-14" VerticalAlignment="Top" Height="26" Width="146" Background="#FFEAE9DD"/>
-		<Label x:Name="label3" Content="Password" HorizontalAlignment="Left" Margin="0,19,0,-45" VerticalAlignment="Top" Height="26" Width="146" Background="#FFEAE9DD"/>
-		<Label x:Name="label3_Copy" Content="Memorizza password" HorizontalAlignment="Left" Margin="0,50,0,-76" VerticalAlignment="Top" Height="26" Width="146" Background="#FFEAE9DD"/>
-		<TextBox x:Name="textBox" HorizontalAlignment="Left" Height="26" Margin="151,-74,-198,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="264"/>
-		<TextBox x:Name="textBox_Copy" HorizontalAlignment="Left" Height="26" Margin="420,-74,-538,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="264"/>
-		<CheckBox x:Name="checkBox" Content="CheckBox" HorizontalAlignment="Left" Margin="151,-37,-198,0" VerticalAlignment="Top" Height="20" Width="264"/>
-		<CheckBox x:Name="checkBox_Copy" Content="CheckBox" HorizontalAlignment="Left" Margin="420,-37,-467,0" VerticalAlignment="Top" Height="20" Width="264"/>
-		<CheckBox x:Name="checkBox_Copy1" Content="CheckBox" HorizontalAlignment="Left" Margin="151,-6,-198,-14" VerticalAlignment="Top" Height="20" Width="264"/>
-		<CheckBox x:Name="checkBox_Copy2" Content="CheckBox" HorizontalAlignment="Left" Margin="420,-6,-467,-14" VerticalAlignment="Top" Height="20" Width="264"/>
-		<TextBox x:Name="textBox_Copy1" HorizontalAlignment="Left" Height="26" Margin="151,19,-198,-45" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="264"/>
-		<TextBox x:Name="textBox_Copy2" HorizontalAlignment="Left" Height="26" Margin="420,19,-467,-45" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="264"/>
-		<CheckBox x:Name="checkBox_Copy3" Content="CheckBox" HorizontalAlignment="Left" Margin="151,56,-198,-76" VerticalAlignment="Top" Height="20" Width="264"/>
-		<CheckBox x:Name="checkBox_Copy4" Content="CheckBox" HorizontalAlignment="Left" Margin="420,56,-467,-76" VerticalAlignment="Top" Height="20" Width="264"/>
+		<Label x:Name="label" Content="Percorso e nome file" HorizontalAlignment="Left" Margin="0,-111,0,0" VerticalAlignment="Top" Width="189" Background="#FFEAE9DD" Height="63" VerticalContentAlignment="Center"/>
+		<Label x:Name="label1" Content="Salvataggio" HorizontalAlignment="Left" Margin="0,-43,0,0" VerticalAlignment="Top" Height="26" Width="189" Background="#FFEAE9DD" VerticalContentAlignment="Center"/>
+		<Label x:Name="label2" Content="Criptatura dei dati" HorizontalAlignment="Left" Margin="0,-12,0,0" VerticalAlignment="Top" Height="26" Width="189" Background="#FFEAE9DD" VerticalContentAlignment="Center"/>
+		<Label x:Name="label3" Content="Password" HorizontalAlignment="Left" Margin="0,19,0,-5" VerticalAlignment="Top" Height="26" Width="189" Background="#FFEAE9DD" VerticalContentAlignment="Center"/>
+		<Label x:Name="label3_Copy" Content="Memorizzazione password" HorizontalAlignment="Left" Margin="0,50,0,-36" VerticalAlignment="Top" Height="26" Width="189" Background="#FFEAE9DD" VerticalContentAlignment="Center"/>
+		<TextBox x:Name="tbNome1" HorizontalAlignment="Left" Height="63" Margin="194,-111,-241,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="264" IsEnabled="False"/>
+		<TextBox x:Name="tbNome2" HorizontalAlignment="Left" Height="63" Margin="463,-111,-510,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="264" GotFocus="tbNome2_GotFocus"/>
+		<CheckBox x:Name="chkAttivo1" Content="Attivato" HorizontalAlignment="Left" Margin="194,-37,-241,0" VerticalAlignment="Top" Height="20" Width="264"/>
+		<CheckBox x:Name="chkAttivo2" Content="Attivato" HorizontalAlignment="Left" Margin="463,-37,-510,0" VerticalAlignment="Top" Height="20" Width="264"/>
+		<CheckBox x:Name="chkCripto1" Content="Attivata" HorizontalAlignment="Left" Margin="194,-6,-241,0" VerticalAlignment="Top" Height="20" Width="264"/>
+		<CheckBox x:Name="chkCripto2" Content="Attivata" HorizontalAlignment="Left" Margin="463,-6,-510,0" VerticalAlignment="Top" Height="20" Width="264"/>
+		<TextBox x:Name="tbPwd1" HorizontalAlignment="Left" Height="26" Margin="194,19,-241,-5" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="264"/>
+		<TextBox x:Name="tbPwd2" HorizontalAlignment="Left" Height="26" Margin="463,19,-510,-5" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="264"/>
+		<CheckBox x:Name="chkMempwd1" Content="Attivata" HorizontalAlignment="Left" Margin="194,56,-241,-36" VerticalAlignment="Top" Height="20" Width="264"/>
+		<CheckBox x:Name="chkMempwd2" Content="Attivata" HorizontalAlignment="Left" Margin="463,56,-510,-36" VerticalAlignment="Top" Height="20" Width="264"/>
+		<Label x:Name="label4" Content="File principale" HorizontalAlignment="Left" Margin="194,-142,-241,0" VerticalAlignment="Top" Width="264" FontWeight="Bold"/>
+		<Label x:Name="label4_Copy" Content="File secondario" HorizontalAlignment="Left" Margin="463,-142,-510,0" VerticalAlignment="Top" Width="264" FontWeight="Bold"/>
+		<Button x:Name="button_OK" Content="OK" HorizontalAlignment="Left" Margin="652,131,-510,-128" VerticalAlignment="Top" Width="75" Height="37" IsDefault="True" Click="button_OK_Click"/>
+		<Button x:Name="button_Annulla" Content="Annulla" HorizontalAlignment="Left" Margin="463,131,-321,-128" VerticalAlignment="Top" Width="75" Height="37" IsCancel="True" Click="button_Annulla_Click"/>
+		<Label x:Name="label3_Copy1" Content="Salt" HorizontalAlignment="Left" Margin="0,81,0,-67" VerticalAlignment="Top" Height="26" Width="189" Background="#FFEAE9DD" VerticalContentAlignment="Center"/>
+		<TextBox x:Name="tbSalt" HorizontalAlignment="Left" Height="26" Margin="194,81,-241,-67" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="264"/>
+		<Button x:Name="button_Preferenze" Content="Salva preferenze" HorizontalAlignment="Left" Margin="543,131,-430,-128" VerticalAlignment="Top" Width="104" Height="37" Click="button_Preferenze_Click"/>
 	</Grid>
 </Window>

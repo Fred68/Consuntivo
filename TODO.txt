@@ -62,8 +62,8 @@ ________________________________________________________________________________
 -							La combo box dei conti va ordinata per numero
 -							I consuntivi vanno ordinati per numero
 -	+						Inserendo nuova operazione su tabella vuota, a volte si genera un errore.
--	+						Aggiungere salvataggio criptato e opzione
--							Aggiungere secondo salvataggio in locazione nota, configurabile (es.: dropbox)
+-	+			>			Aggiungere salvataggio criptato e opzione
+-	+			>			Aggiungere secondo salvataggio in locazione nota, configurabile (es.: dropbox)
 
 
 _______________________________________________________________________________________________________________________________
@@ -74,4 +74,5 @@ ________________________________________________________________________________
 -							Dare feedback se il log dei messaggi è attivo [oppure eliminare la voce di menù]
 -							Permettere più finestre con windows.show(), lista Opvisibili, handler con lista finestre aperte
 -							Print preview	
--							Completare i controlli di errore con eventuali altre verifiche		
+-							Completare i controlli di errore con eventuali altre verifiche
+-							Criptare l'IV con password e con cifratura senza IV: CTR mode ? Attenzione alla lunghezza dell'IV criptato, se fissa o no

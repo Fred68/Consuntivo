@@ -37,7 +37,7 @@ namespace WPF02.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Dropbox")]
         public string SecondSavePath {
             get {
                 return ((string)(this["SecondSavePath"]));
@@ -49,7 +49,7 @@ namespace WPF02.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("consuntivoBak.txt")]
         public string SecondSaveFilename {
             get {
                 return ((string)(this["SecondSaveFilename"]));
@@ -85,7 +85,7 @@ namespace WPF02.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("antani")]
         public string FirstSavePassphrase {
             get {
                 return ((string)(this["FirstSavePassphrase"]));
@@ -97,13 +97,49 @@ namespace WPF02.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("blinda")]
         public string SecondSavePassphrase {
             get {
                 return ((string)(this["SecondSavePassphrase"]));
             }
             set {
                 this["SecondSavePassphrase"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FirstSaveStorePassphrase {
+            get {
+                return ((bool)(this["FirstSaveStorePassphrase"]));
+            }
+            set {
+                this["FirstSaveStorePassphrase"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SecondSaveStorePassphrase {
+            get {
+                return ((bool)(this["SecondSaveStorePassphrase"]));
+            }
+            set {
+                this["SecondSaveStorePassphrase"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("12345678")]
+        public string Salt {
+            get {
+                return ((string)(this["Salt"]));
+            }
+            set {
+                this["Salt"] = value;
             }
         }
     }
