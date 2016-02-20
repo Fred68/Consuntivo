@@ -20,8 +20,11 @@ namespace WPF02
 	/// </summary>
 	public partial class PreferenzeWindow : Window
 		{
-		Operazioni operazioni;
-
+		Operazioni operazioni;							// Riferimento all'oggetto Operazioni
+		/// <summary>
+		/// Costruttore
+		/// </summary>
+		/// <param name="operazioni">Oggetto Operazioni in reference</param>
 		public PreferenzeWindow(ref Operazioni operazioni)
 			{
 			InitializeComponent();
@@ -39,10 +42,11 @@ namespace WPF02
 			}
 		private void button_OK_Click(object sender, RoutedEventArgs e)
 			{
-			SetOperazioniFromDialog();
-			this.DialogResult = true;
-			Close();
-#warning METTERE CONTROLLO, SE password, salt nulli e crittografia abilitata: Segnalare e annullare il comando	
+			if (SetOperazioniFromDialog())
+				{
+				this.DialogResult = true;
+				Close();
+				}
 			}
 		private void SetDialogFromOperazioni()
 			{
@@ -61,7 +65,7 @@ namespace WPF02
 			chkMempwd1.IsChecked = operazioni.StorePassphrase1;
 			chkMempwd2.IsChecked = operazioni.StorePassphrase2;
 			}
-		private void SetOperazioniFromDialog()
+		private bool SetOperazioniFromDialog()
 			{
 			if (chkAttivo2.IsChecked.HasValue)	operazioni.AttivoSecondario = ((bool)chkAttivo2.IsChecked) ? true : false;
 			operazioni.NomeSecondario = tbNome2.Text;
@@ -72,10 +76,11 @@ namespace WPF02
 			operazioni.Passphrase1 = tbPwd1.Text;
 			operazioni.Passphrase2 = tbPwd2.Text;
 			operazioni.Salt = tbSalt.Text;
-			CheckDialogContent();
+			return CheckDialogContent();
 			}
 		private void SetPreferencesFromDialog()
 			{
+#if false
 			if (chkAttivo2.IsChecked.HasValue)	Properties.Settings.Default.SecondSaveActive = ((bool)chkAttivo2.IsChecked) ? true : false;
 			Properties.Settings.Default.SecondSaveFilename = Path.GetFileName(tbNome2.Text);
 			Properties.Settings.Default.SecondSavePath = Path.GetDirectoryName(tbNome2.Text);
@@ -90,6 +95,16 @@ namespace WPF02
 				Properties.Settings.Default.Save();
 			else
 				MessageBox.Show("Valori mancanti o errati: le preferenze non sono state memorizzate.");
+#endif
+			if (SetOperazioniFromDialog())
+				{
+				operazioni.ScriviConfigurazione();
+				MessageBox.Show("Preferenze memorizzate.");
+				}
+			else
+				{
+				MessageBox.Show("Valori mancanti o errati: le preferenze non sono state memorizzate.");
+				}
 			}
 		private bool CheckDialogContent()
 			{

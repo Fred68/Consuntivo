@@ -701,10 +701,6 @@ namespace WPF02
 			{
 			PreferenzeWindow pfw = new PreferenzeWindow(ref operazioni);
 			bool? ret = pfw.ShowDialog();
-			if (ret == true)
-				{
-				MessageBox.Show("Preferenze aggiornate...");
-				}
 			}
 		}
     }

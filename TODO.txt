@@ -38,7 +38,7 @@ v							Completare print dei consuntivi
 v							Aggiungere un'icona
 v							Aggiungere funzioni che richiamano WriteLine e ReadLine, non usarle direttamente
 v							Scrivere funzioni di criptatura e decriptatura AES a chiave simmetrica (con RijndealManaged)
-
+v							Aggiungere salvataggio criptato e opzione
 
 
 _______________________________________________________________________________________________________________________________
@@ -62,9 +62,9 @@ ________________________________________________________________________________
 -							La combo box dei conti va ordinata per numero
 -							I consuntivi vanno ordinati per numero
 -	+						Inserendo nuova operazione su tabella vuota, a volte si genera un errore.
--	+			>			Aggiungere salvataggio criptato e opzione
 -	+			>			Aggiungere secondo salvataggio in locazione nota, configurabile (es.: dropbox)
-
+-							Completare commenti xml
+-							Inibire salvataggio password se checkbox non abilitato
 
 _______________________________________________________________________________________________________________________________
 MIGLIORIE FUTURE

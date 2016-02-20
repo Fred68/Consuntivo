@@ -29,9 +29,9 @@ namespace WPF02
 
 		Encryption encriptor;
 
-		Dictionary<int, List<Consuntivo>> dicConsuntivi	// Tutti i consuntivi
+		Dictionary<int, List<Consuntivo>> dicConsuntivi					// Tutti i consuntivi
 			{ get; set; }
-		List<Consuntivo> consTotali                     // Solo i consuntivi del conto scelto
+		List<Consuntivo> consTotali										// Solo i consuntivi del conto scelto
 			{ get; set; }
 		List<Consuntivo> empty;
 
@@ -40,12 +40,9 @@ namespace WPF02
 		StatusChangedHandler statHandler = null; 
 		bool bStatusOk = true;
 
-		// Dati per salvataggio / preferenze
-		string filename;
-		
-		// bool mempwd1, mempwd2;			// SOLO NELLE PREFERENZE
-
-
+		string filename;												// Per operazioni su file
+		bool readwriteCripted;
+		string readwritePassword;
 
 		List<string> lstLog;
 		List<string> lstErr;
@@ -103,7 +100,6 @@ namespace WPF02
 		public string Salt { get; set; }
 		public bool StorePassphrase1 { get; set; }
 		public bool StorePassphrase2 { get; set; }
-
 		#endregion
 
 		void opChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -163,6 +159,8 @@ namespace WPF02
 			consTotali = dicConsuntivi[0];
 
 			filename = "";
+			readwriteCripted = false;
+			readwritePassword = "";
 			lstLog = new List<string>();
 			lstErr = new List<string>();
 			LogAbilitato = false;
@@ -186,6 +184,9 @@ namespace WPF02
 			StorePassphrase1 = Properties.Settings.Default.FirstSaveStorePassphrase;
 			StorePassphrase2 = Properties.Settings.Default.SecondSaveStorePassphrase;
 			}
+		/// <summary>
+		/// Scrive i parametri di configurazione nelle impostazioni utente del programma
+		/// </summary>
 		public void ScriviConfigurazione()
 			{
 			Properties.Settings.Default.SecondSavePath = Path.GetDirectoryName(NomeSecondario);
@@ -198,7 +199,15 @@ namespace WPF02
 			Properties.Settings.Default.Salt = Salt;
 			Properties.Settings.Default.FirstSaveStorePassphrase = StorePassphrase1;
 			Properties.Settings.Default.SecondSaveStorePassphrase = StorePassphrase2;
+			Properties.Settings.Default.Save();
 			}
+		/// <summary>
+		/// Aggiorna le griglie dati con le collezioni contenute
+		/// </summary>
+		/// <param name="dgOperazioni"></param>
+		/// <param name="dgConti"></param>
+		/// <param name="dgOpStandard"></param>
+		/// <param name="dgConsuntivi"></param>
 		public void setDatiGrid(DataGrid dgOperazioni, DataGrid dgConti, DataGrid dgOpStandard, DataGrid dgConsuntivi)
 			{
 			dgOperazioni.AutoGenerateColumns = true;
@@ -212,19 +221,26 @@ namespace WPF02
 			dgConsuntivi.ItemsSource = this.consTotali;
 			dgConsuntivi.IsReadOnly = true;
 			}
+		/// <summary>
+		/// Aggiorna la griglie dei consuntivi con quello con il numero selezionato
+		/// </summary>
+		/// <param name="dgConsuntivi"></param>
+		/// <param name="nc"></param>
 		public void setConsuntivoGrid(DataGrid dgConsuntivi, int nc)
 			{
-
 			if (dicConsuntivi.ContainsKey(nc))
 				this.consTotali = dicConsuntivi[nc];
 			else
 				this.consTotali = empty;
-
 			dgConsuntivi.AutoGenerateColumns = true;
 			dgConsuntivi.ItemsSource = this.consTotali;
 			dgConsuntivi.IsReadOnly = true;
 			dgConsuntivi.Items.Refresh();
 			}
+		/// <summary>
+		/// Restituisce una stringa con la lista dei messaggi
+		/// </summary>
+		/// <returns></returns>
 		public string MsgList()
 			{
 			StringBuilder strb = new StringBuilder();
@@ -235,44 +251,75 @@ namespace WPF02
 				}
 			return strb.ToString();
 			}
+		/// <summary>
+		/// Enumeratore dei messaggi
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable<string> Messaggi()
 			{
 			foreach (string str in lstLog)
 				yield return str;
 			yield break;
 			}
+		/// <summary>
+		/// Enumeratore degli errori
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable<string> Errori()
 			{
 			foreach (string str in lstErr)
 				yield return str;
 			yield break;
 			}
+		/// <summary>
+		/// Numero degli errori
+		/// </summary>
+		/// <returns></returns>
 		public int ErroriCount()
 			{
 			return lstErr.Count;
 			}
+		/// <summary>
+		/// Enumeratore delle liste dei consuntivi
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable<List<Consuntivo>> ListeConsuntivi()
 			{
 			foreach (List<Consuntivo> lc in dicConsuntivi.Values)
 				yield return lc;
 			yield break;
 			}
+		/// <summary>
+		/// Enumeratore delle operazioni standard
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable<OpStandard> OpStandard()
 			{
 			foreach (OpStandard ops in opStandard)
 				yield return ops;
 			yield break;
 			}
+		/// <summary>
+		/// Enumeratore dei conti
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable<Conto> Conti()
 			{
 			foreach (Conto cnt in cntTotali)
 				yield return cnt;
 			yield break;
 			}
+		/// <summary>
+		/// Calcella la lista dei log
+		/// </summary>
 		public void CancellaLog()
 			{
 			lstLog.Clear();
 			}
+		/// <summary>
+		/// Restituisce una stringa con le operazioni
+		/// </summary>
+		/// <returns></returns>
 		public string ListaOperazioni()
 			{
 			StringBuilder strb = new StringBuilder();
@@ -289,6 +336,10 @@ namespace WPF02
 				}
 			return strb.ToString();
 			}
+		/// <summary>
+		/// Restituisce una stringa con i conti
+		/// </summary>
+		/// <returns></returns>
 		public string ListaConti()
 			{
 			StringBuilder strb = new StringBuilder();
@@ -305,6 +356,10 @@ namespace WPF02
 				}
 			return strb.ToString();
 			}
+		/// <summary>
+		/// Restituisce una stringa con le operazioni standard
+		/// </summary>
+		/// <returns></returns>
 		public string ListaOpStandard()
 			{
 			StringBuilder strb = new StringBuilder();
@@ -321,6 +376,10 @@ namespace WPF02
 				}
 			return strb.ToString();
 			}
+		/// <summary>
+		/// Restituisce una stringa con i consuntivi attualmente elaborati
+		/// </summary>
+		/// <returns></returns>
 		public string ListaConsuntivi()
 			{
 			StringBuilder strb = new StringBuilder();
@@ -337,6 +396,11 @@ namespace WPF02
 				}
 			return strb.ToString();
 			}
+		/// <summary>
+		/// Inserisce una operazione alla riga indicata
+		/// </summary>
+		/// <param name="indx"></param>
+		/// <returns></returns>
 		public bool OpInserisciAt(int indx)
 			{
 			bool ok = false;
@@ -348,6 +412,11 @@ namespace WPF02
 				}
 			return ok;
 			}
+		/// <summary>
+		/// Inserisce una operazione prima dell'operazione indicata
+		/// </summary>
+		/// <param name="opi"></param>
+		/// <returns></returns>
 		public bool OpInserisciAt(Operazione opi)
 			{
 			bool ok = false;
@@ -360,14 +429,42 @@ namespace WPF02
 				}
 			return ok;
 			}
-		public bool Save(string fullfilename)
+		/// <summary>
+		/// Salva il file
+		/// </summary>
+		/// <param name="fullfilename">Nome completo di path</param>
+		/// <param name="primario">Se false, usa il nome secondario</param>
+		/// <returns></returns>
+		public bool Save(string fullfilename, bool primario = true)
 			{
 			bool ret = true;
+			readwriteCripted = false;
+			if(primario)
+				{
+				if(Cripto1)
+					{
+					readwriteCripted = true;
+					readwritePassword = Passphrase1;
+					encriptor.ClearErrors();
+					encriptor.Salt = Salt;
+					}
+				}
+			else
+				{
+				fullfilename = this.NomeSecondario;
+				if(Cripto2)
+					{
+					readwriteCripted = true;
+					readwritePassword = Passphrase2;
+					encriptor.ClearErrors();
+					encriptor.Salt = Salt;
+					}
+				}
 			try
 				{
 				using (StreamWriter sw = new StreamWriter(fullfilename, false, Encoding.UTF8))
 					{
-					WriteLine(sw, Intestazione());
+					WriteLine(sw, this.Intestazione());
 					WriteLine(sw, new Operazione().Intestazione());
 					foreach (Operazione op in opTotali)
 						{
@@ -394,6 +491,9 @@ namespace WPF02
 				}
 			return ret;
 			}
+		/// <summary>
+		/// Azzera i dati in memoria
+		/// </summary>
 		public void New()
 			{
 			opTotali.Clear();
@@ -403,85 +503,95 @@ namespace WPF02
 			filename = "";
 			status = true;
 			}
+		/// <summary>
+		/// Apre il file indicato
+		/// </summary>
+		/// <param name="fullfilename">Nome completo di path</param>
+		/// <returns></returns>
 		public bool Open(string fullfilename)
 			{
 			bool ret = true;
+			readwriteCripted = false;
+			readwritePassword = "";
 			readStat rstat = readStat.Indefinito;
 			status = true;
 			try
 				{
 				using (StreamReader sr = new StreamReader(fullfilename, Encoding.UTF8))
 					{
-					while(sr.Peek() >= 0)
+					if (ReadFirstLineAndSetCripted(sr, ref rstat, ref readwritePassword))
 						{
-						string rline = ReadLine(sr);
-						try
+						while (sr.Peek() >= 0)
 							{
-							if (rline == new Operazione().Intestazione())
-								rstat = readStat.Operazioni;
-							else if (rline == new Conto().Intestazione())
-								rstat = readStat.Conti;
-							else if (rline == new OpStandard().Intestazione())
-								rstat = readStat.OpStandard;
-							else if (rline == Operazioni.intestazioneFile)
-								rstat = readStat.Intestazione;
-							else
+							string rline = ReadLine(sr);
+							try
 								{
-								switch (rstat)
+								if (rline == new Operazione().Intestazione())
+									rstat = readStat.Operazioni;
+								else if (rline == new Conto().Intestazione())
+									rstat = readStat.Conti;
+								else if (rline == new OpStandard().Intestazione())
+									rstat = readStat.OpStandard;
+								//else if (rline == Operazioni.intestazioneFile)			// ELIMINARE
+								//	rstat = readStat.Intestazione;						// ELIMINARE
+								else
 									{
-									case readStat.Operazioni:
-											{
-											Operazione op = new Operazione();
-											if (op.FromString(rline))
+									switch (rstat)
+										{
+										case readStat.Operazioni:
 												{
-												opVisibili.Add(op);
+												Operazione op = new Operazione();
+												if (op.FromString(rline))
+													{
+													opVisibili.Add(op);
+													}
+												else
+													{
+													throw new Exception("Errore analisi linea: " + rline, new Exception("Errore analisi linea"));
+													}
 												}
-											else
+											break;
+										case readStat.Conti:
 												{
-												throw new Exception("Errore analisi linea: " + rline, new Exception("Errore analisi linea"));
+												Conto op = new Conto();
+												if (op.FromString(rline))
+													{
+													cntTotali.Add(op);
+													}
+												else
+													{
+													throw new Exception("Errore analisi linea: " + rline, new Exception("Errore analisi linea"));
+													}
 												}
-											}
-										break;
-									case readStat.Conti:
-											{
-											Conto op = new Conto();
-											if (op.FromString(rline))
+											break;
+										case readStat.OpStandard:
 												{
-												cntTotali.Add(op);
+												OpStandard op = new OpStandard();
+												if (op.FromString(rline))
+													{
+													opStdTotali.Add(op);
+													}
+												else
+													{
+													throw new Exception("Errore analisi linea: " + rline, new Exception("Errore analisi linea"));
+													}
 												}
-											else
-												{
-												throw new Exception("Errore analisi linea: " + rline, new Exception("Errore analisi linea"));
-												}
-											}
-										break;
-									case readStat.OpStandard:
-											{
-											OpStandard op = new OpStandard();
-											if (op.FromString(rline))
-												{
-												opStdTotali.Add(op);
-												}
-											else
-												{
-												throw new Exception("Errore analisi linea: " + rline, new Exception("Errore analisi linea"));
-												}
-											}
-										break;
-									case readStat.Intestazione:
-										break;
-									case readStat.Indefinito:
-										throw new Exception("Errore sintattico nel file" + rline, new Exception("Errore sintattico nel file"));
+											break;
+										case readStat.Intestazione:
+											break;
+										case readStat.Indefinito:
+											throw new Exception("Errore sintattico nel file" + rline, new Exception("Errore sintattico nel file"));
+										}
 									}
+								ret = true;
 								}
-							ret = true;
-							}
-						catch (Exception ex)
-							{
-							if (LogAbilitato)
-								lstLog.Add("Errore in importazione dati:\n" + ex.ToString());
-							ret = false;
-							status = false;
+							catch (Exception ex)
+								{
+								if (LogAbilitato)
+									lstLog.Add("Errore in importazione dati:\n" + ex.ToString());
+								ret = false;
+								status = false;
+								}
 							}
 						}
 					}
@@ -497,22 +607,106 @@ namespace WPF02
 				this.filename = fullfilename;
 			return ret;
 			}
+		/// <summary>
+		/// Restituisce la stringa di intestazione del file
+		/// </summary>
+		/// <returns></returns>
 		public string Intestazione()
 			{
 			return Operazioni.intestazioneFile;
 			}
+		/// <summary>
+		/// Legge una linea da file
+		/// </summary>
+		/// <param name="sr">Streamreader</param>
+		/// <returns></returns>
 		private string ReadLine(StreamReader sr)
 			{
 			string str = "";
 			str = sr.ReadLine();
+			if (readwriteCripted == true)
+				str = encriptor.Decrypt(str, readwritePassword);
 			return str;
 			}
+		/// <summary>
+		/// Scrive la linea su file
+		/// </summary>
+		/// <param name="sw">Streamwriter</param>
+		/// <param name="txt">linea da scrivere (senza newline finale)</param>
 		private void WriteLine(StreamWriter sw, string txt)
 			{
+			if(readwriteCripted)
+				{
+				txt = encriptor.Encrypt(txt, readwritePassword);
+				}
 			sw.WriteLine(txt);
 			}
+		/// <summary>
+		/// Legge la prima riga del file e determina se criptato e se con password principale o secondaria
+		/// </summary>
+		/// <param name="sr"></param>
+		/// <param name="rstat"></param>
+		/// <param name="password"></param>
+		private bool ReadFirstLineAndSetCripted(StreamReader sr, ref readStat rstat, ref string password)
+			{
+			bool ok = false;
+			password = "";
+			readwriteCripted = false;
+			string str;
+			rstat = readStat.Indefinito;
+			try
+				{
+				str = sr.ReadLine();									// Legge la prima riga
+				if(str.Length > 0)
+					{
+					if(str.StartsWith(Operazioni.intestazioneFile))     // La verifica in chiaro
+						{
+						password = "";
+						readwriteCripted = false;
+						ok = true;
+						throw new Exception("Ok");
+						}
+					else												// Prova con le password
+						{
+						string dec;
+						encriptor.ClearErrors();
+						encriptor.Salt = Salt;
+						dec = encriptor.Decrypt(str, Passphrase1);
+						if(dec.StartsWith(Operazioni.intestazioneFile))
+							{
+							password = Passphrase1;
+							readwriteCripted = true;
+							ok = true;
+							throw new Exception("Ok");
+							}
+						encriptor.ClearErrors();
+						dec = encriptor.Decrypt(str, Passphrase2);
+						if (dec.StartsWith(Operazioni.intestazioneFile))
+							{
+							password = Passphrase2;
+							readwriteCripted = true;
+							ok = true;
+							throw new Exception("Ok");
+							}
+						}
+					}
+				}
+			catch(Exception ex)
+				{
+				if (ex.Message != "Ok")
+					ok = false;
+				else
+					rstat = readStat.Intestazione;
+				}
+			return ok;
+			}
 		#region RICERCA e FILTRO
-		public OpStandard FindOpStandard(int numero)	// Cerca OpStandard, null se non trovata
+		/// <summary>
+		/// Cerca OpStandard, null se non trovata
+		/// </summary>
+		/// <param name="numero"></param>
+		/// <returns></returns>
+		public OpStandard FindOpStandard(int numero)	
 			{
 			OpStandard found = null;
 			foreach(OpStandard ops in opStdTotali)
@@ -525,7 +719,12 @@ namespace WPF02
 				}
 			return found;
 			}
-		public Conto FindConto(int numero)				// Cerca Conto , null se non trovato
+		/// <summary>
+		/// Cerca Conto , null se non trovato
+		/// </summary>
+		/// <param name="numero"></param>
+		/// <returns></returns>
+		public Conto FindConto(int numero)				
 			{
 			Conto found = null;
 			foreach (Conto ops in cntTotali)
@@ -538,13 +737,21 @@ namespace WPF02
 				}
 			return found;
 			}
-		public List<Consuntivo> FindListaConsuntivi(int numero_conto)		// Cerca la lista dei consuntivi per un numero di conto
+		/// <summary>
+		/// Cerca la lista dei consuntivi per un numero di conto
+		/// </summary>
+		/// <param name="numero_conto"></param>
+		/// <returns></returns>
+		public List<Consuntivo> FindListaConsuntivi(int numero_conto)		
 			{
 			List<Consuntivo> found = null;
 			if (dicConsuntivi.ContainsKey(numero_conto))
 				found = dicConsuntivi[numero_conto];
 			return found;
 			}
+		/// <summary>
+		/// Applica il filtro alle operazioni visualizzate
+		/// </summary>
 		public void ApplicaFiltro()
 			{
 			opVisibiliChangedEventEnabled = false;
@@ -557,6 +764,9 @@ namespace WPF02
 			opVisibiliChangedEventEnabled = true;
 			filtro.IsAttivo = true;
 			}
+		/// <summary>
+		/// Rimuove il filtro dalle operazioni visualizzate
+		/// </summary>
 		public void CancellaFiltro()
 			{
 			opVisibiliChangedEventEnabled = false;
@@ -566,11 +776,13 @@ namespace WPF02
 			opVisibiliChangedEventEnabled = true;
 			filtro.IsAttivo = false;
 			}
-
 		#endregion
-
 		#region CHECK e CALCOLO
-		public bool Check()                         // Verifica ed imposta lo stato
+		/// <summary>
+		/// Verifica ed imposta lo stato
+		/// </summary>
+		/// <returns></returns>
+		public bool Check()                         
 			{
 			bool ok = true;
 			lstErr.Clear();
@@ -586,7 +798,12 @@ namespace WPF02
 			this.status = ok;   // Usa la proprietà, per attivare l'handler
 			return ok;
 			}
-		bool Check(checkType typ)					// Esegue il controllo specifico del tipo scelto
+		/// <summary>
+		/// Esegue il controllo specifico del tipo scelto
+		/// </summary>
+		/// <param name="typ"></param>
+		/// <returns></returns>
+		bool Check(checkType typ)					
 			{
 			bool ok = false;
 			switch(typ)
@@ -681,7 +898,10 @@ namespace WPF02
 				}
 			return ok;
 			}
-		public void EspandeOpStandard()				// Inserisce i conti delle OpStandard nelle Operazioni
+		/// <summary>
+		/// Inserisce i conti delle OpStandard nelle Operazioni
+		/// </summary>
+		public void EspandeOpStandard()				
 			{
 			if (Check())
 				{
@@ -703,12 +923,20 @@ namespace WPF02
 					}
 				}
 			}
+		/// <summary>
+		/// Ordina le operazioni
+		/// </summary>
+		/// <returns></returns>
 		public List<Operazione> OrdinaOperazioni()
 			{
 			List<Operazione> tmp = this.opTotali.ToList<Operazione>();
 			List<Operazione> tmpOrd = new List<Operazione>(tmp.OrderBy(x => x));
 			return tmpOrd;
 			}
+		/// <summary>
+		/// Genera le liste dei consuntivi
+		/// </summary>
+		/// <returns></returns>
 		public bool GeneraConsuntivi()
 			{
 			bool ok = Check();
@@ -812,6 +1040,10 @@ namespace WPF02
 				}
 			return ok;
 			}	
+		/// <summary>
+		/// Imposta le operazioni antecedenti alla data di sistema come consuntivi
+		/// </summary>
+		/// <returns></returns>
 		public int CorreggiOperazioniSenzaConsuntivo()
 			{
 			int n = 0;
