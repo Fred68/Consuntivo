@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace WPF02
 	{
-	public class Conto : Riga
+	public class Conto : Riga, IComparable
 		{
 		public const int CAMPI = 4;
 
@@ -158,5 +158,13 @@ namespace WPF02
 				}
 			yield break;
 			}
+		public int CompareTo(object obj)            // Per interfaccia IComparable
+			{
+			Conto op = obj as Conto;
+			if (op == null)
+				throw new ArgumentException("obj non è un Conto");
+			return this.numero.CompareTo(op.numero);
+			}
+
 		}
 	}

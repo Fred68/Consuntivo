@@ -9,7 +9,7 @@
 	<Grid HorizontalAlignment="Left"  Margin="10,10,10,10" VerticalAlignment="Center" >
 		<Label x:Name="label" Content="Percorso e nome file" HorizontalAlignment="Left" Margin="0,-111,0,0" VerticalAlignment="Top" Width="189" Background="#FFEAE9DD" Height="63" VerticalContentAlignment="Center"/>
 		<Label x:Name="label1" Content="Salvataggio" HorizontalAlignment="Left" Margin="0,-43,0,0" VerticalAlignment="Top" Height="26" Width="189" Background="#FFEAE9DD" VerticalContentAlignment="Center"/>
-		<Label x:Name="label2" Content="Criptatura dei dati" HorizontalAlignment="Left" Margin="0,-12,0,0" VerticalAlignment="Top" Height="26" Width="189" Background="#FFEAE9DD" VerticalContentAlignment="Center"/>
+		<Label x:Name="label2" Content="Crittografia  dei dati" HorizontalAlignment="Left" Margin="0,-12,0,0" VerticalAlignment="Top" Height="26" Width="189" Background="#FFEAE9DD" VerticalContentAlignment="Center"/>
 		<Label x:Name="label3" Content="Password" HorizontalAlignment="Left" Margin="0,19,0,-5" VerticalAlignment="Top" Height="26" Width="189" Background="#FFEAE9DD" VerticalContentAlignment="Center"/>
 		<Label x:Name="label3_Copy" Content="Memorizzazione password" HorizontalAlignment="Left" Margin="0,50,0,-36" VerticalAlignment="Top" Height="26" Width="189" Background="#FFEAE9DD" VerticalContentAlignment="Center"/>
 		<TextBox x:Name="tbNome1" HorizontalAlignment="Left" Height="63" Margin="194,-111,-241,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="264" IsEnabled="False"/>

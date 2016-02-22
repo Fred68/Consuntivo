@@ -79,7 +79,7 @@ namespace WPF02.Properties {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a -feb-2016.
+        ///   Cerca una stringa localizzata simile a 22-feb-2016.
         /// </summary>
         public static string Data {
             get {
@@ -116,7 +116,7 @@ namespace WPF02.Properties {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a 0.2.alfa.
+        ///   Cerca una stringa localizzata simile a 0.4.beta.
         /// </summary>
         public static string Versione {
             get {

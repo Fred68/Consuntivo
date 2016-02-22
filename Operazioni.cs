@@ -194,11 +194,13 @@ namespace WPF02
 			Properties.Settings.Default.SecondSaveActive = AttivoSecondario;
 			Properties.Settings.Default.FirstSaveEncryptActive = Cripto1;
 			Properties.Settings.Default.SecondSaveEncryptActive = Cripto2;
-			Properties.Settings.Default.FirstSavePassphrase = Passphrase1;
-			Properties.Settings.Default.SecondSavePassphrase = Passphrase2;
 			Properties.Settings.Default.Salt = Salt;
 			Properties.Settings.Default.FirstSaveStorePassphrase = StorePassphrase1;
 			Properties.Settings.Default.SecondSaveStorePassphrase = StorePassphrase2;
+			if(StorePassphrase1)
+				Properties.Settings.Default.FirstSavePassphrase = Passphrase1;
+			if(StorePassphrase2)
+				Properties.Settings.Default.SecondSavePassphrase = Passphrase2;
 			Properties.Settings.Default.Save();
 			}
 		/// <summary>
@@ -218,7 +220,7 @@ namespace WPF02
 			dgOpStandard.ItemsSource = this.opStdTotali;
 			dgConsuntivi.AutoGenerateColumns = true;
 			dgConsuntivi.ItemsSource = this.consTotali;
-			dgConsuntivi.ItemsSource = this.consTotali;
+			dgConsuntivi.Items.Refresh();
 			dgConsuntivi.IsReadOnly = true;
 			}
 		/// <summary>
@@ -430,12 +432,35 @@ namespace WPF02
 			return ok;
 			}
 		/// <summary>
+		/// Salva il file primario e, se impostato, anche il secondario
+		/// </summary>
+		/// <param name="fullfilename"></param>
+		/// <returns></returns>
+		public bool SaveFiles(string fullfilename)
+			{
+			bool ok = true;
+			if(AttivoSecondario)								// Salva prima il secondario di backup
+				{
+				if (!Save(fullfilename, false))
+					{
+					lstLog.Add("Errore salvataggio file secondario");
+					ok = false;
+					}
+				}
+			if (!Save(fullfilename))							// Poi salva il primario (per mantenere il riferimento al file giusto)
+				{
+				lstLog.Add("Errore salvataggio file primario");
+				ok = false;
+				}
+			return ok;
+			}
+		/// <summary>
 		/// Salva il file
 		/// </summary>
 		/// <param name="fullfilename">Nome completo di path</param>
 		/// <param name="primario">Se false, usa il nome secondario</param>
 		/// <returns></returns>
-		public bool Save(string fullfilename, bool primario = true)
+		private bool Save(string fullfilename, bool primario = true)
 			{
 			bool ret = true;
 			readwriteCripted = false;
@@ -500,6 +525,7 @@ namespace WPF02
 			opVisibili.Clear();
 			cntTotali.Clear();
 			opStdTotali.Clear();
+			consTotali.Clear();
 			filename = "";
 			status = true;
 			}
@@ -700,6 +726,25 @@ namespace WPF02
 				}
 			return ok;
 			}
+		public bool CheckSaveOptions()
+			{
+			bool ok = true;
+			if ((Cripto1 == true) && !(Passphrase1.Length > 0))				// Crittografa primario con password nulla
+				ok = false;
+			if (AttivoSecondario == true)									// Se salvataggio secondario...
+				{
+				if (!(NomeSecondario.Length > 0))                           // ...ma salva secondario senza nome file
+					ok = false;
+				if ((Cripto2 == true) && !(Passphrase2.Length > 0))         // ...ma crittografa secondario con password nulla
+					ok = false;
+				}
+			if((Cripto1==true)||((Cripto2==true)&&(AttivoSecondario)))		// Primario o secondario crittografati...
+				{
+				if (!(Salt.Length > 0))										// ...ma Salt nullo
+					ok = false;
+				}
+			return ok;
+			}
 		#region RICERCA e FILTRO
 		/// <summary>
 		/// Cerca OpStandard, null se non trovata
@@ -881,12 +926,13 @@ namespace WPF02
 						}
 					break;
 				case checkType.Op_Consuntivo_old:
-					DateTime now = DateTime.Now;
+					// DateTime olderDate = DateTime.Now;
+					DateTime olderDate = DateTime.Now.Date.AddDays(-1);		
 					ok = true;
 					foreach (Operazione op in this.opTotali)
 						{
 						DateTime dt = Riga.String2DateTime(op.data);
-						if((now > dt)&&(!op.consuntivo))
+						if((olderDate >= dt)&&(!op.consuntivo))
 							{
 							ok = false;
 							lstErr.Add("Operazione <" + op.descrizione + "> del <" + op.data + "> non impostata come consuntivo.");

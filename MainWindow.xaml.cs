@@ -52,6 +52,7 @@ namespace WPF02
 				if (MessageBox.Show("Tutti i dati non salvati verranno persi.\nProcedere ?", "Nuovo archivio", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
 					{
 					operazioni.New();
+					operazioni.setDatiGrid(dgOperazioni, dgConti, dgOpStandard, dgConsuntivi);
 					AfterOpenSave(false, operazioni.Open(dlg.FileName));
 					}
 				}
@@ -64,14 +65,20 @@ namespace WPF02
 			Nullable<bool> rt = dlg.ShowDialog();
 			if (rt == true)
 				{
-				AfterOpenSave(true, operazioni.Save(dlg.FileName));
+				if (operazioni.CheckSaveOptions())
+					AfterOpenSave(true, operazioni.SaveFiles(dlg.FileName));
+				else
+					MessageBox.Show("Preferenze di salvataggio non complete");
 				}
 			}
 		void SaveWithDialog()
 			{
 			if (operazioni.Filename.Length > 0)
 				{
-				AfterOpenSave(true, operazioni.Save(operazioni.Filename));
+				if (operazioni.CheckSaveOptions())
+					AfterOpenSave(true, operazioni.SaveFiles(operazioni.Filename));
+				else
+					MessageBox.Show("Preferenze di salvataggio non complete");
 				}
 			else
 				SaveAsWithDialog();
@@ -111,8 +118,11 @@ namespace WPF02
 			}
 		void FillLstConti()
 			{
+#warning COMPLETARE ordinamento !!!
 			lstConti.Items.Clear();
-			foreach(Conto c in operazioni.conti)
+			List<Conto> tmp = operazioni.conti.ToList<Conto>();
+			List<Conto> tmpOrd = new List<Conto>(tmp.OrderBy(x => x));
+			foreach (Conto c in tmpOrd /*operazioni.conti*/)
 				{
 				lstConti.Items.Add(c.numero + MainWindow.SepNomiConti + c.descrizione);
 				}
@@ -437,15 +447,23 @@ namespace WPF02
 			}
 		private void Inserisci_Click(object sender, RoutedEventArgs e)
 			{
-			Operazione op = (Operazione)dgOperazioni.SelectedItem;
-			if (!operazioni.OpInserisciAt(op))
-				MessageBox.Show("Errore inserimento");
+			try
+				{
+				Operazione op = (Operazione)dgOperazioni.SelectedItem;
+				if (!operazioni.OpInserisciAt(op))
+					MessageBox.Show("Errore inserimento");
+				}
+			catch(Exception ex)
+				{
+				MessageBox.Show("Errore inserimento: " + ex.Message);
+				}
 			}
 		private void New_Click(object sender, RoutedEventArgs e)
 			{
 			if(MessageBox.Show("Tutti i dati non salvati verranno persi.\nProcedere ?","Nuovo archivio",MessageBoxButton.YesNo)==MessageBoxResult.Yes)
 				{
 				operazioni.New();
+				operazioni.setDatiGrid(dgOperazioni, dgConti, dgOpStandard, dgConsuntivi);
 				UpdateTitle();
 				UpdateLblStatus();
 				}
@@ -631,6 +649,7 @@ namespace WPF02
 			{
 			if((e.ChangedButton == MouseButton.Left)&&(e.ClickCount==2))
 				{
+				operazioni.Check();
 				MessageBox.Show(ViewErrors());
 				}
 			}

@@ -124,7 +124,7 @@
     <value>http://fcsoft68.altervista.org</value>
   </data>
   <data name="Data" xml:space="preserve">
-    <value>-feb-2016</value>
+    <value>22-feb-2016</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Icon1" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -137,6 +137,6 @@
     <value>http://fred68.altervista.org/</value>
   </data>
   <data name="Versione" xml:space="preserve">
-    <value>0.2.alfa</value>
+    <value>0.4.beta</value>
   </data>
 </root>

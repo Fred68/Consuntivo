@@ -78,7 +78,7 @@
 			</TabItem>
 		</TabControl>
 		<Label x:Name="lblStatus" Content="-" Margin="0,10,10,0" VerticalAlignment="Top" Width="46" HorizontalAlignment="Right" FontWeight="Bold"/>
-		<Image x:Name="imageOk" HorizontalAlignment="Right" Height="26" Margin="0,10,80,0" VerticalAlignment="Top" Width="26" Source="ok.bmp"/>
+		<Image x:Name="imageOk" HorizontalAlignment="Right" Height="26" Margin="0,10,80,0" VerticalAlignment="Top" Width="26" Source="ok.bmp" MouseDown="imageErr_MouseDown"/>
 		<Image x:Name="imageErr" HorizontalAlignment="Right" Height="26" Margin="0,10,80,0" VerticalAlignment="Top" Width="26" Source="err.bmp" MouseDown="imageErr_MouseDown"/>
 	</Grid>
 </Window>

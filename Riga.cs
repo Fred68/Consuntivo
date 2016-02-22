@@ -54,11 +54,15 @@ namespace WPF02
 		public static string DateTime2String(DateTime dt)
 			{
 			StringBuilder strb = new StringBuilder();
-			string yyyy = dt.Year.ToString().Substring(0,4);
+			//string yyyy = dt.Year.ToString().Substring(0,4);
+			string yyyy = dt.Year.ToString();
 			string mm = dt.Month.ToString();
 			string dd = dt.Day.ToString();
 			if (mm.Length == 1)	mm = "0" + mm;
 			if (dd.Length == 1) dd = "0" + dd;
+			while (yyyy.Length < 4)
+				yyyy = "0" + yyyy;
+			yyyy = yyyy.Substring(0, 4);
 			strb.Append(yyyy + Separatore.datetime);
 			strb.Append(mm + Separatore.datetime);
 			strb.Append(dd);

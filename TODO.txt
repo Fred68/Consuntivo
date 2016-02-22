@@ -39,40 +39,94 @@ v							Aggiungere un'icona
 v							Aggiungere funzioni che richiamano WriteLine e ReadLine, non usarle direttamente
 v							Scrivere funzioni di criptatura e decriptatura AES a chiave simmetrica (con RijndealManaged)
 v							Aggiungere salvataggio criptato e opzione
-
+v							Inibire salvataggio password se checkbox non abilitato
+v							Commenti xml delle funzioni principali di Operazioni (non delle altre classi)
+v							Dopo un New o prima di un Open, cancellare gli item dei datagrid (in particolare dei consuntivi).
+v							Se documento vuoto, si genera un errore della stampante.
+v							La combo box dei conti va ordinata per numero, vedere void FillLstConti()
+v							Aggiungere secondo salvataggio in locazione nota, configurabile (es.: dropbox)
+v							Inserendo nuova operazione su tabella vuota, a volte si genera un errore. Aggiunto blocco try catch
+v							Comando About... con versione del programma
+v							Prima di un Save, verificare se mancano dei dati (es.: password) e segnalarlo
+v	Debug					Doppio click sulla X deve far eseguire un nuovo controllo, prima di mostrare la finestra.
+v	Debug					Correggere criptatura con crittografia
 
 _______________________________________________________________________________________________________________________________
  VERIFICHE
 _______________________________________________________________________________________________________________________________
--	v						Verificare le larghezze delle colonne (solo per print ?)
--	v						Verificare salvataggio e caricamento file, se tutto ok
--	v						Verificare funzionalità delle varie finestre
--	v						Dopo modifica dataGrid, cliccando su X, check su dati non aggiornati. Verificare
--	v						Verificare layout e grafica, migliorare dove è necessario
--	v						Verificare le funzioni di calcolo
+
+1.0	
+	v						Colonne, testo lungo. Vista e print (V & P)
+	v						Colonne con un gruppo vuoto. V&P
+	v						Stampa orientamento carta e formati (solo pdf per ora)
+2.0
+	v						Caricamento e salvataggio normale...
+	v						...con un gruppo vuoto e con tutto vuoto
+	v						...con e senza consuntivi
+	v						...con file secondario...
+	v						...con password principale e secondaria...
+	v						...con salt e password errate...
+	v						...spostando il file in altra cartella...
+3.0
+	v						Finestre con gruppo vuoto
+	-->						Inserimento riga vuota (per i 3 gruppi): errore se inserimento da ultima riga vuota o se riga appena inserita
+	-->						Edit riga vuota (per i 3 gruppi)
+	v						Cancellazione riga (per i 3 gruppi) e cancellazione riga appena inserita
+	v						Aggiornamento datagrid dopo inserimento su riga vuota, e inserimento con edit su riga vuota
+4.0
+	v						Modifica datagrid, poi check con menù o clic su immagine X: dati aggiornati ?
+	v						Modifica riga vuota, poi Vedi dati [SI DEVE COMUNQUE TERMINARE L'EDIT DELLA CELLA]
+	v						Modifica riga vuota, poi Save (2 test) [SI DEVE COMUNQUE TERMINARE L'EDIT DELLA CELLA]
+5.0
+	v						Verifica sommaria del layout dati
+	v						Valutare larghezze colonne e leggibilità
+	-->						Attenzione: finestre tutte ridimensionabili, se no componenti non visibili con altre risoluzioni [MANCA PER LE DIALOG BOX STANDARD]
+6.0
+	v						Verifica generica funzioni di calcolo 
+	v						Verifica conti in negativo e in positivo
+	v						Verifica consuntivi e date
+	v						Stampa con filtro attivo
+7.0
+	-->						Verifica breve funzionalìtà su consuntivo reale
+	v						AGGIORNARE data e revisione programma (alfa -> beta)
+	v						Compilare debug e release, .NET Framework 4.5.2 (in seguito altri)
+
+_______________________________________________________________________________________________________________________________
+ DEBUG
+_______________________________________________________________________________________________________________________________
+
+-							Dopo un edit, la riga non viene aggiornata
+-							Stampando su formato grande, non ne viene utilizzato tutto lo spazio, ma sono quanto un A4, sembra.
+-							La finestra dei consuntivi non si aggiorna dopo un ricalcolo.
+-							Il filtro non funziona con il tipo di operazione (P, A, N)
+-							Non è possibile escludere il tipo di operazione dal filtro (indeterminato) ?
+-							Verifica breve funzionalìtà su consuntivo reale
 
 _______________________________________________________________________________________________________________________________
  DA FARE
 _______________________________________________________________________________________________________________________________
--	+						Se documento vuoto, si genera un errore della stampante ? Forse no.
--	+						Dopo l'edit con finestra, la visualizzazione del datagrid non viene aggiornata subito
--							Eseguire il check dopo ogni inserimento (o almeno i controlli specifici)
--	+						Dopo un New o prima di un Open, cancellare gli item dei datagrid (in particolare dei consuntivi).
--							Scrivere un help con versione del programma
--							La combo box dei conti va ordinata per numero
--							I consuntivi vanno ordinati per numero
--	+						Inserendo nuova operazione su tabella vuota, a volte si genera un errore.
--	+			>			Aggiungere secondo salvataggio in locazione nota, configurabile (es.: dropbox)
--							Completare commenti xml
--							Inibire salvataggio password se checkbox non abilitato
+
+
+
+
 
 _______________________________________________________________________________________________________________________________
-MIGLIORIE FUTURE
+MIGLIORIE FUTURE e DEBUG
 _______________________________________________________________________________________________________________________________
 -							Rendere il campo _id unico (controllo dopo inserimento) + numerazione automatica
+-							Eseguire il check dopo ogni inserimento (o almeno i controlli specifici)
 -							Aggiungere un Undo, almeno per l'ultima operazione
 -							Dare feedback se il log dei messaggi è attivo [oppure eliminare la voce di menù]
 -							Permettere più finestre con windows.show(), lista Opvisibili, handler con lista finestre aperte
 -							Print preview	
 -							Completare i controlli di errore con eventuali altre verifiche
 -							Criptare l'IV con password e con cifratura senza IV: CTR mode ? Attenzione alla lunghezza dell'IV criptato, se fissa o no
+-							Sostituire versione programma con versione assembly
+-							Aggiungere il nome file secondario dopo l'intestazione, specifico per file e non per utente.
+-							All'apertura del file principale, chiedere se caricare i dati dal file principale o dal secondario. Verificare se il file secondario è più recente e segnalarlo.
+-							DialogBox standard da sostituire con ridimensionabili.
+-							Aggiungere scelta se stampare operazioni, conti, consuntivi o altro.
+
+D							Sostituire i messaggi di errore dei blocchi try/catch con messaggi specifici o non mostrare alcun messaggio
+D							Dopo l'edit con finestra, la visualizzazione del datagrid non viene aggiornata subito
+D							Inserimento riga vuota (per i 3 gruppi): errore se inserimento da ultima riga vuota o se riga appena inserita

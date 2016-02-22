@@ -5,7 +5,7 @@ using System.Reflection;            // Per property info
 
 namespace WPF02
 	{
-	public class OpStandard : Riga
+	public class OpStandard : Riga, IComparable
 		{
 		public const int CAMPI = 3;
 
@@ -166,6 +166,13 @@ namespace WPF02
 			foreach (int c in cnt)
 				yield return c;
 			yield break;
+			}
+		public int CompareTo(object obj)            // Per interfaccia IComparable
+			{
+			OpStandard op = obj as OpStandard;
+			if (op == null)
+				throw new ArgumentException("obj non è una Operazione Standard");
+			return this.numero.CompareTo(op.numero);
 			}
 		}
 	}

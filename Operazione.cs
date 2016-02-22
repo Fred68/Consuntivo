@@ -215,8 +215,6 @@ namespace WPF02
 				throw new ArgumentException("obj non è una Operazione");
 			return this.dt.CompareTo(op.dt);
 			}
-		
-			
 		string getConti()							// Ottiene la string con la lista dei conti
             {
 			return ListInt2String(cnt);
